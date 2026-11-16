@@ -1,0 +1,18 @@
+# 系統暫存與同步檔
+desktop.ini
+*.tmp
+~$*
+Thumbs.db
+
+# 敏感資料
+.env
+*.key
+credentials.*
+
+# Claude Code / Antigravity 本地設定（含 permissions、可能記錄 token，絕不上雲）
+.claude/
+.gemini/
+
+# Node.js
+node_modules/
+package-lock.json
