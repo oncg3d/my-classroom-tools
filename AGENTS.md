@@ -11,7 +11,7 @@
 ## 目標與路線圖
 - [x] 專案基礎建設與 GitHub Repo、Pages 建立
 - [x] 部署跨電腦專案管理三技能（project-init, startup, shutdown）
-- [ ] 製作第一個工具：tools/coordinate-hunter（座標獵人）
+- [x] 製作第一個工具：tools/coordinate-hunter（座標獵人）
 - [ ] 串接 Firebase 免費即時資料庫
 
 ## 資料夾結構

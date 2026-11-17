@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>座標獵人 Coordinate Hunter - 班級數學互動小遊戲</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- 頂部資訊列 -->
+    <header class="header">
+      <div class="brand">
+        <span class="logo-icon">🎯</span>
+        <div>
+          <h1>座標獵人</h1>
+          <p class="subtitle">直角坐標平面練習小遊戲</p>
+        </div>
+      </div>
+
+      <div class="user-panel">
+        <div class="seat-badge">
+          <label for="seat-number">座號：</label>
+          <input type="number" id="seat-number" min="1" max="99" placeholder="座號" value="1">
+          <span class="seat-tag">號同學</span>
+        </div>
+        <button id="sound-toggle" class="btn-icon" title="切換音效">🔊</button>
+      </div>
+    </header>
+
+    <!-- 模式與設定選單 -->
+    <section class="controls-bar">
+      <div class="mode-selector">
+        <button class="mode-btn active" data-mode="hunt">🎯 模式一：看座標抓目標</button>
+        <button class="mode-btn" data-mode="identify">🔍 模式二：看目標報座標</button>
+        <button class="mode-btn" data-mode="quadrant">🧭 模式三：象限大考驗</button>
+      </div>
+
+      <div class="settings-group">
+        <label for="range-select">範圍：</label>
+        <select id="range-select">
+          <option value="5" selected>基礎 ( -5 ~ 5 )</option>
+          <option value="10">進階 ( -10 ~ 10 )</option>
+        </select>
+
+        <label class="toggle-label">
+          <input type="checkbox" id="guideline-toggle" checked>
+          <span>輔助投影線</span>
+        </label>
+      </div>
+    </section>
+
+    <!-- 主要遊戲工作區 -->
+    <main class="main-stage">
+      <!-- 左側/中間：座標平面 Canvas -->
+      <div class="canvas-wrapper">
+        <div class="canvas-header-info">
+          <span id="current-hover-coord" class="hover-coord">滑鼠游標：( -- , -- )</span>
+          <span class="quadrant-hint">Ⅰ (+,+) | Ⅱ (-,+) | Ⅲ (-,-) | Ⅳ (+,-)</span>
+        </div>
+        <div class="canvas-container" id="canvas-container">
+          <canvas id="gridCanvas"></canvas>
+          <div id="target-marker" class="target-marker hidden"></div>
+        </div>
+      </div>
+
+      <!-- 右側：題目、答題區與即時狀態 -->
+      <aside class="interaction-panel">
+        <!-- 狀態卡片 -->
+        <div class="score-board">
+          <div class="stat-item">
+            <span class="stat-label">目前得分</span>
+            <span id="score-display" class="stat-value">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">連續答對</span>
+            <span id="streak-display" class="stat-value highlight">0 🔥</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">剩餘題數</span>
+            <span id="round-display" class="stat-value">10</span>
+          </div>
+        </div>
+
+        <!-- 任務指示卡片 -->
+        <div class="task-card">
+          <div class="task-title">當前任務</div>
+          <div id="task-question" class="task-question">
+            請在座標平面上點擊：
+            <div id="target-coord-display" class="target-coord">( 3 , -2 )</div>
+          </div>
+          <div id="feedback-msg" class="feedback-msg">點選左方網格上的交叉點完成捕捉！</div>
+        </div>
+
+        <!-- 模式二專用：座標輸入表單 -->
+        <div id="input-answer-panel" class="answer-panel hidden">
+          <div class="coord-inputs">
+            <span>(</span>
+            <input type="number" id="input-x" placeholder="X" step="1">
+            <span>,</span>
+            <input type="number" id="input-y" placeholder="Y" step="1">
+            <span>)</span>
+          </div>
+          <button id="submit-coord-btn" class="btn-primary">確認送出</button>
+        </div>
+
+        <!-- 模式三專用：象限選擇按鈕群 -->
+        <div id="quadrant-buttons-panel" class="answer-panel hidden">
+          <div class="quadrant-grid">
+            <button class="quad-btn" data-answer="2">第 Ⅱ 象限<br><small>(-,+)</small></button>
+            <button class="quad-btn" data-answer="1">第 Ⅰ 象限<br><small>(+,+)</small></button>
+            <button class="quad-btn" data-answer="3">第 Ⅲ 象限<br><small>(-,-)</small></button>
+            <button class="quad-btn" data-answer="4">第 Ⅳ 象限<br><small>(+,-)</small></button>
+            <button class="quad-btn axis-btn" data-answer="x-axis">X 軸上</button>
+            <button class="quad-btn axis-btn" data-answer="y-axis">Y 軸上</button>
+            <button class="quad-btn origin-btn" data-answer="origin">原點 (0,0)</button>
+          </div>
+        </div>
+
+        <!-- 控制按鈕 -->
+        <div class="action-buttons">
+          <button id="next-question-btn" class="btn-secondary">下一題 ⏩</button>
+          <button id="reset-game-btn" class="btn-outline">重新計分 🔄</button>
+        </div>
+
+        <!-- 本地排行榜（依座號紀錄） -->
+        <div class="leaderboard-card">
+          <div class="leaderboard-header">
+            <span>🏆 本機班級排行（依座號）</span>
+            <button id="clear-records-btn" class="btn-link">清除</button>
+          </div>
+          <ul id="leaderboard-list" class="leaderboard-list">
+            <li class="empty-hint">尚無紀錄，開始練習挑戰高分吧！</li>
+          </ul>
+        </div>
+      </aside>
+    </main>
+
+    <footer class="footer">
+      <span>my-classroom-tools 班級工具庫 ｜ 座標獵人 v1.0 ｜ 適合投影與平板教學</span>
+    </footer>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
