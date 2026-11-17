@@ -3,15 +3,15 @@
 > 任何 Agent、任何電腦接手前**必讀**；收工時**必更新**。本檔只放交接必需的精簡資訊，詳細脈絡放 Obsidian（若有 L3）。
 
 ## ⏯️ 目前做到哪
-已完成專案初始化，並全面升級啟用跨電腦專案管理三層級技能組（project-init, startup, shutdown）。GitHub Repo 與 Pages 已就緒，準備製作第一個工具「座標獵人」。
+已完成專案初始化、跨電腦專案管理三層級技能組，並安裝了 AntiGravity 懶人包全部技能（01-notebooklm, 02-github, 03-firebase, 04-draw, 05-workflow, 06-obsidian）。MCP 伺服器已配置 NotebookLM 與 Firebase。
 
 ## 🚦 目前狀態
-環境健全（Node.js, Git, GitHub CLI 已授權），L1/L2/L3 結構完整可運行。
+環境健全，.agents/skills/ 包含 6 個專案技能，MCP 配置完成。
 
 ## ➡️ 下一步
-1. 在 `tools/coordinate-hunter/` 建立座標獵人小遊戲前端（`index.html`）
-2. 進行本機預覽與測試
-3. 執行「收工」驗證自動同步
+1. 視需要於終端機執行 `nlm login` 與 `firebase login` 完成 Google 帳號授權
+2. 在 `tools/coordinate-hunter/` 建立座標獵人小遊戲前端（`index.html`）
+3. 進行本機預覽與測試
 
 ## ⚠️ 注意事項
 - 本專案採用繁體中文
@@ -19,6 +19,6 @@
 - 學生資料去識別化，僅記錄座號
 
 ## 🕐 最後更新
-- 時間：2026-11-17 13:38
+- 時間：2026-11-17 22:05
 - 更新者：Antigravity @ ISON
 - Git push：✅ 已推

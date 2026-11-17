@@ -1,0 +1,18 @@
+﻿{
+    "mcpServers":  {
+                       "gemini-notebook-mcp":  {
+                                                   "command":  "C:\\Users\\IsonWu\\.local\\bin\\notebooklm-mcp.EXE",
+                                                   "args":  [
+
+                                                            ]
+                                               },
+                       "firebase":  {
+                                        "command":  "npx.cmd",
+                                        "args":  [
+                                                     "-y",
+                                                     "firebase-tools@latest",
+                                                     "mcp"
+                                                 ]
+                                    }
+                   }
+}
