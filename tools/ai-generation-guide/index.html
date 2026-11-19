@@ -1,0 +1,1888 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 魔法畫布與時光機：文字生成圖片與影音的奇幻探險 | 國小互動教學簡報</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Noto+Sans+TC:wght@400;500;700;900&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --bg-card: rgba(30, 41, 59, 0.85);
+      --bg-card-hover: rgba(51, 65, 85, 0.9);
+      --primary: #38bdf8;
+      --primary-dark: #0284c7;
+      --secondary: #ec4899;
+      --accent: #f59e0b;
+      --accent-purple: #8b5cf6;
+      --accent-green: #10b981;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-color: rgba(255, 255, 255, 0.12);
+      --radius-sm: 10px;
+      --radius-md: 18px;
+      --radius-lg: 24px;
+      --shadow-glow: 0 10px 30px -10px rgba(56, 189, 248, 0.3);
+      --transition-fast: 0.25s ease;
+      --transition-smooth: 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 15% 20%, rgba(139, 92, 246, 0.15), transparent 40%),
+        radial-gradient(circle at 85% 75%, rgba(56, 189, 248, 0.15), transparent 45%),
+        radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.08), transparent 50%);
+      color: var(--text-main);
+      font-family: 'Outfit', 'Noto Sans TC', sans-serif;
+      min-height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Navigation Bar */
+    header.deck-header {
+      height: 60px;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      z-index: 100;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 1.15rem;
+      letter-spacing: 0.5px;
+      color: #fff;
+    }
+
+    .brand-badge {
+      background: linear-gradient(135deg, var(--primary), var(--accent-purple));
+      color: #0f172a;
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+    }
+
+    .deck-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .control-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transition-fast);
+      outline: none;
+    }
+
+    .control-btn:hover {
+      background: rgba(255, 255, 255, 0.18);
+      transform: translateY(-1px);
+    }
+
+    .control-btn.active {
+      background: var(--primary);
+      color: #0f172a;
+      border-color: var(--primary);
+    }
+
+    /* Progress bar */
+    .progress-bar-container {
+      width: 100%;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.08);
+      position: relative;
+      z-index: 99;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+      transition: width 0.3s ease;
+    }
+
+    /* Main Deck Stage */
+    main.deck-stage {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 30px;
+    }
+
+    .slide {
+      position: absolute;
+      width: 100%;
+      max-width: 1200px;
+      height: 90%;
+      max-height: 740px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(0.94) translateY(20px);
+      transition: opacity var(--transition-smooth), transform var(--transition-smooth), visibility var(--transition-smooth);
+      pointer-events: none;
+      padding: 10px;
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1) translateY(0);
+      pointer-events: auto;
+      z-index: 10;
+    }
+
+    .slide.prev {
+      transform: scale(0.92) translateX(-60px);
+    }
+
+    .slide.next {
+      transform: scale(0.92) translateX(60px);
+    }
+
+    /* Slide Header */
+    .slide-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: var(--primary);
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      width: fit-content;
+    }
+
+    .slide-title {
+      font-size: 2.2rem;
+      font-weight: 900;
+      line-height: 1.25;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #ffffff 40%, #cbd5e1 90%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .slide-desc {
+      font-size: 1.08rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    /* Grid Layouts */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      height: 100%;
+      align-items: center;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    /* Presentation Cards */
+    .glow-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 22px;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+      transition: var(--transition-fast);
+    }
+
+    .glow-card:hover {
+      border-color: rgba(56, 189, 248, 0.4);
+      background: var(--bg-card-hover);
+      transform: translateY(-3px);
+    }
+
+    .card-icon {
+      font-size: 2.2rem;
+      margin-bottom: 12px;
+      display: inline-block;
+    }
+
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .card-text {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    .pill-tag {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-top: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #e2e8f0;
+    }
+
+    .pill-tag.easy {
+      background: rgba(16, 185, 129, 0.2);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    .pill-tag.magic {
+      background: rgba(139, 92, 246, 0.2);
+      color: #c084fc;
+      border: 1px solid rgba(139, 92, 246, 0.3);
+    }
+    .pill-tag.cinema {
+      background: rgba(245, 158, 11, 0.2);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    /* Hero / Cover Slide */
+    .hero-content {
+      text-align: center;
+      max-width: 850px;
+      margin: 0 auto;
+    }
+
+    .hero-title {
+      font-size: 3.2rem;
+      font-weight: 900;
+      line-height: 1.15;
+      margin-bottom: 18px;
+      background: linear-gradient(135deg, #38bdf8 0%, #c084fc 50%, #f472b6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 4px 12px rgba(139, 92, 246, 0.3));
+    }
+
+    .hero-subtitle {
+      font-size: 1.35rem;
+      color: #e2e8f0;
+      margin-bottom: 30px;
+      font-weight: 500;
+    }
+
+    .hero-tags {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 36px;
+      flex-wrap: wrap;
+    }
+
+    .hero-tag {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-size: 0.95rem;
+      color: #f1f5f9;
+      font-weight: 600;
+    }
+
+    .btn-start {
+      background: linear-gradient(135deg, var(--primary), var(--accent-purple));
+      color: #0f172a;
+      font-size: 1.2rem;
+      font-weight: 800;
+      padding: 14px 38px;
+      border-radius: 30px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(56, 189, 248, 0.4);
+      transition: var(--transition-fast);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-start:hover {
+      transform: scale(1.05);
+      box-shadow: 0 15px 35px rgba(139, 92, 246, 0.5);
+    }
+
+    /* Interactive Denoising Widget */
+    .interactive-box {
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .denoise-canvas-wrapper {
+      width: 100%;
+      height: 240px;
+      border-radius: var(--radius-sm);
+      position: relative;
+      overflow: hidden;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px dashed rgba(255, 255, 255, 0.2);
+    }
+
+    #denoiseCanvas {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .slider-control-group {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .slider-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    input[type=range] {
+      width: 100%;
+      accent-color: var(--primary);
+      height: 8px;
+      cursor: pointer;
+    }
+
+    .denoise-status-badge {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.12);
+      padding: 4px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+
+    /* Comparison Box */
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 10px;
+    }
+
+    .compare-card {
+      border-radius: var(--radius-md);
+      padding: 18px;
+      background: rgba(30, 41, 59, 0.7);
+    }
+
+    .compare-card.bad {
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      background: rgba(239, 68, 68, 0.08);
+    }
+
+    .compare-card.good {
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      background: rgba(16, 185, 129, 0.08);
+    }
+
+    .compare-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 800;
+      font-size: 1.05rem;
+      margin-bottom: 10px;
+    }
+
+    .compare-card.bad .compare-header { color: #f87171; }
+    .compare-card.good .compare-header { color: #34d399; }
+
+    /* Interactive Prompt Builder */
+    .prompt-builder-container {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    .selector-columns {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 480px;
+      overflow-y: auto;
+      padding-right: 8px;
+    }
+
+    .select-category {
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+    }
+
+    .category-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #38bdf8;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .chip-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .chip {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      cursor: pointer;
+      color: #cbd5e1;
+      transition: all 0.2s;
+    }
+
+    .chip:hover {
+      background: rgba(255, 255, 255, 0.18);
+      color: #fff;
+    }
+
+    .chip.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent-purple));
+      color: #0f172a;
+      font-weight: 700;
+      border-color: transparent;
+      box-shadow: 0 4px 10px rgba(56, 189, 248, 0.3);
+    }
+
+    .prompt-preview-card {
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(139, 92, 246, 0.4);
+      border-radius: var(--radius-md);
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2);
+    }
+
+    .prompt-output-box {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px dashed rgba(255, 255, 255, 0.2);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: #f8fafc;
+      min-height: 140px;
+      word-break: break-all;
+    }
+
+    .btn-copy {
+      background: linear-gradient(135deg, var(--secondary), var(--accent));
+      color: #fff;
+      font-weight: 700;
+      padding: 10px 20px;
+      border-radius: var(--radius-sm);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 14px;
+      transition: var(--transition-fast);
+    }
+
+    .btn-copy:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(236, 72, 153, 0.4);
+    }
+
+    /* Quiz Component */
+    .quiz-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      max-width: 800px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .quiz-question {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .quiz-option {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-color);
+      padding: 14px 20px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #e2e8f0;
+      transition: var(--transition-fast);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .quiz-option:hover {
+      background: rgba(255, 255, 255, 0.14);
+      transform: translateX(4px);
+    }
+
+    .quiz-option.correct {
+      background: rgba(16, 185, 129, 0.25) !important;
+      border-color: #10b981 !important;
+      color: #34d399 !important;
+    }
+
+    .quiz-option.wrong {
+      background: rgba(239, 68, 68, 0.25) !important;
+      border-color: #ef4444 !important;
+      color: #f87171 !important;
+    }
+
+    .quiz-feedback {
+      margin-top: 16px;
+      padding: 12px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 0.98rem;
+      font-weight: 600;
+      display: none;
+    }
+
+    /* Bottom Deck Navigation */
+    footer.deck-footer {
+      height: 68px;
+      padding: 0 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(15, 23, 42, 0.85);
+      border-top: 1px solid var(--border-color);
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-btn-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-color);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: var(--transition-fast);
+      outline: none;
+    }
+
+    .nav-btn:hover:not(:disabled) {
+      background: var(--primary);
+      color: #0f172a;
+      transform: scale(1.08);
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    .slide-indicator {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+    }
+
+    .slide-indicator span {
+      color: #fff;
+    }
+
+    /* Shortcuts modal */
+    .shortcuts-hint {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .kbd {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+      color: #fff;
+      font-size: 0.75rem;
+    }
+
+    /* Canvas Confetti */
+    #confettiCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .grid-3, .grid-4 {
+        grid-template-columns: 1fr;
+      }
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+      .prompt-builder-container {
+        grid-template-columns: 1fr;
+      }
+      .slide-title {
+        font-size: 1.6rem;
+      }
+      .hero-title {
+        font-size: 2.2rem;
+      }
+      .slide {
+        height: 94%;
+        overflow-y: auto;
+        justify-content: flex-start;
+        padding-top: 15px;
+      }
+    }
+
+    /* Print Stylesheet for PDF Export */
+    @media print {
+      body {
+        overflow: visible;
+        background: #fff;
+        color: #000;
+      }
+      header.deck-header, footer.deck-footer, .progress-bar-container, #confettiCanvas {
+        display: none !important;
+      }
+      main.deck-stage {
+        display: block;
+        padding: 0;
+      }
+      .slide {
+        position: relative !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: none !important;
+        page-break-after: always;
+        height: 100vh;
+        max-height: none;
+        max-width: 100%;
+        color: #111;
+        background: #f8fafc;
+        border: 1px solid #cbd5e1;
+        margin-bottom: 20px;
+        padding: 40px;
+      }
+      .glow-card {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        color: #333;
+      }
+      .slide-title {
+        color: #0f172a;
+        -webkit-text-fill-color: initial;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Confetti Canvas -->
+  <canvas id="confettiCanvas"></canvas>
+
+  <!-- Deck Top Header -->
+  <header class="deck-header">
+    <div class="brand-logo">
+      <span>🎨 國小 AI 探索教室</span>
+      <span class="brand-badge">互動簡報</span>
+    </div>
+
+    <div class="deck-controls">
+      <button class="control-btn" id="soundToggleBtn" title="開啟/關閉音效">
+        <span id="soundIcon">🔊</span> 音效開
+      </button>
+      <button class="control-btn" id="fsToggleBtn" title="切換全螢幕模式">
+        ⛶ 全螢幕
+      </button>
+      <button class="control-btn" id="printBtn" title="列印或另存成 PDF">
+        🖨️ 列印/PDF
+      </button>
+    </div>
+  </header>
+
+  <!-- Progress Bar -->
+  <div class="progress-bar-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <!-- Main Slide Stage -->
+  <main class="deck-stage" id="deckStage">
+
+    <!-- Slide 1: 封面 -->
+    <section class="slide active" data-index="1">
+      <div class="hero-content">
+        <div class="hero-tags">
+          <span class="hero-tag">🌟 小學生必備數位科技素養</span>
+          <span class="hero-tag">🚀 資訊教育與創意思考</span>
+          <span class="hero-tag">🛡️ 負責任的 AI 小公民</span>
+        </div>
+        <h1 class="hero-title">AI 魔法畫布與時光機</h1>
+        <p class="hero-subtitle">用一句話把想像變成畫作與電影！文字生成圖片與影音的奇幻探險</p>
+        <button class="btn-start" onclick="deck.nextSlide()">
+          <span>開始探險之旅 ➔</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Slide 2: 暖身思考：想像力的神燈精靈 -->
+    <section class="slide" data-index="2">
+      <div class="slide-badge">💡 暖身導入篇</div>
+      <h2 class="slide-title">想像一下：電腦什麼時候學會畫畫的？</h2>
+      <p class="slide-desc">從前我們用小畫家辛苦拉直線，現在只要「跟電腦聊天」，它就能懂你的想像！</p>
+      
+      <div class="grid-2">
+        <div class="glow-card">
+          <div class="card-icon">⌨️</div>
+          <h3 class="card-title">從前的電腦：認真按指令的打字機</h3>
+          <p class="card-text">
+            以前的電腦只會算數學題、儲存文字。想要在電腦裡畫出一隻貓咪，我們必須拿滑鼠一筆一筆慢慢畫，畫不好還會手抖！
+          </p>
+          <div class="pill-tag">手動繪圖時代</div>
+        </div>
+
+        <div class="glow-card" style="border-color: rgba(139, 92, 246, 0.4);">
+          <div class="card-icon">🪄</div>
+          <h3 class="card-title">現在的生成式 AI：會讀心術的神燈精靈</h3>
+          <p class="card-text">
+            現在只要輸入文字：<strong>「一隻戴著太空帽的柴犬在月球吃西瓜」</strong>，幾秒鐘內，電腦就能憑空創造出一張栩栩如生的全新作品！
+          </p>
+          <div class="pill-tag magic">生成式 AI (Generative AI)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 3: 兩大超能力：生圖 vs 生片 -->
+    <section class="slide" data-index="3">
+      <div class="slide-badge">⚡ 雙核心概念</div>
+      <h2 class="slide-title">今天認識的兩大 AI 超能力</h2>
+      <p class="slide-desc">文字如何變成視覺魔法？我們先搞懂這兩個厲害的兄弟！</p>
+
+      <div class="grid-2">
+        <div class="glow-card" style="background: linear-gradient(180deg, rgba(30, 41, 59, 0.9), rgba(14, 165, 233, 0.15));">
+          <div class="card-icon">🖼️</div>
+          <h3 class="card-title">超能力 ①：文字生成圖片 (Text-to-Image)</h3>
+          <p class="card-text">
+            <strong>把單詞變成單張靜態畫作。</strong><br>
+            輸入你的「提示詞（Prompt）」，AI 就像博學多聞的畫家，融合上億張圖片的學習經驗，幫你把心中所想的光影、色彩與角色畫出來。
+          </p>
+          <div class="pill-tag easy">適合：故事插圖、海報設計、角色卡片</div>
+        </div>
+
+        <div class="glow-card" style="background: linear-gradient(180deg, rgba(30, 41, 59, 0.9), rgba(236, 72, 153, 0.15));">
+          <div class="card-icon">🎬</div>
+          <h3 class="card-title">超能力 ②：文字生成影片 (Text-to-Video)</h3>
+          <p class="card-text">
+            <strong>讓畫面具備時間與動態！</strong><br>
+            不只畫一張圖，而是連續算出一秒 24 張流暢連貫的畫面，甚至計算風吹草動、重力掉落與攝影機的鏡頭推進（Zoom in）！
+          </p>
+          <div class="pill-tag cinema">適合：短動畫、成語動態故事、自然科學模擬</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 4: 熱門平台介紹（圖片篇） -->
+    <section class="slide" data-index="4">
+      <div class="slide-badge">🛠️ 平台工具箱</div>
+      <h2 class="slide-title">認識主流的「AI 生圖好幫手」</h2>
+      <p class="slide-desc">世界上有哪些常見的生圖工具？它們各自有什麼拿手絕活？</p>
+
+      <div class="grid-4">
+        <div class="glow-card">
+          <div class="card-icon">🎨</div>
+          <h3 class="card-title">Canva Magic</h3>
+          <p class="card-text">最適合小學生！內建在常用的美工海報軟體中，介面親切且安全。</p>
+          <div class="pill-tag easy">國小課堂首選</div>
+        </div>
+
+        <div class="glow-card">
+          <div class="card-icon">✨</div>
+          <h3 class="card-title">Microsoft Copilot / Designer</h3>
+          <p class="card-text">搭載 DALL-E 3 模型，微軟免費提供，中文理解力超強，風格豐富！</p>
+          <div class="pill-tag easy">免費中文友善</div>
+        </div>
+
+        <div class="glow-card">
+          <div class="card-icon">🛡️</div>
+          <h3 class="card-title">Adobe Firefly</h3>
+          <p class="card-text">由老牌設計公司打造，訓練圖庫乾淨合法，最尊重藝術家原創版權。</p>
+          <div class="pill-tag magic">版權最安心</div>
+        </div>
+
+        <div class="glow-card">
+          <div class="card-icon">👑</div>
+          <h3 class="card-title">Midjourney</h3>
+          <p class="card-text">細緻度之王！光影、材質就像電影大片，常被專業設計師與藝術家使用。</p>
+          <div class="pill-tag cinema">藝術大師級</div>
+        </div>
+      </div>
+      
+      <p style="margin-top: 14px; font-size: 0.85rem; color: #94a3b8; text-align: center;">
+        ⚠️ 課堂溫馨提醒：多數獨立商業平台要求 13 歲以上使用，國小階段建議由老師在課堂示範或在家長陪同下探索喔！
+      </p>
+    </section>
+
+    <!-- Slide 5: 熱門平台介紹（影片篇） -->
+    <section class="slide" data-index="5">
+      <div class="slide-badge">📽️ 平台工具箱</div>
+      <h2 class="slide-title">走進時光機：令人驚豔的「AI 影片大導演」</h2>
+      <p class="slide-desc">只要一句話，電影特效鏡頭就誕生了！看看當前世界頂尖的影片生成黑科技。</p>
+
+      <div class="grid-4">
+        <div class="glow-card">
+          <div class="card-icon">🚀</div>
+          <h3 class="card-title">Runway (Gen-3)</h3>
+          <p class="card-text">好萊塢電影導演愛用！獨創「動態筆刷」，能指定只有水在流動或火焰在飄。</p>
+          <div class="pill-tag cinema">電影級控制</div>
+        </div>
+
+        <div class="glow-card">
+          <div class="card-icon">🪐</div>
+          <h3 class="card-title">Luma Dream</h3>
+          <p class="card-text">物理世界動態非常擬真，旋轉鏡頭與速度感非常震撼！</p>
+          <div class="pill-tag magic">極致動態流暢</div>
+        </div>
+
+        <div class="glow-card">
+          <div class="card-icon">⚡</div>
+          <h3 class="card-title">快手 Kling (可靈)</h3>
+          <p class="card-text">人物動作細膩自然，能做出很厲害的表情動態與武術動作短片。</p>
+          <div class="pill-tag easy">生動表情特效</div>
+        </div>
+
+        <div class="glow-card">
+          <div class="card-icon">🌌</div>
+          <h3 class="card-title">OpenAI Sora / Veo</h3>
+          <p class="card-text">世界模型新境界！能模擬現實物理規律，生成長達數十秒的超逼真影片。</p>
+          <div class="pill-tag cinema">未來趨勢指標</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 6: 生成圖片的原理：除霧魔法（擴散模型 Diffusion Model） -->
+    <section class="slide" data-index="6">
+      <div class="slide-badge">🔬 原理解密室</div>
+      <h2 class="slide-title">圖片是怎麼變出來的？「除霧魔法」擴散模型！</h2>
+      <p class="slide-desc">AI 不是上網去剪貼別人的圖，而是像個在「大霧」中雕刻畫作的雕刻家！</p>
+
+      <div class="grid-2">
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div class="glow-card">
+            <h4 style="color: #38bdf8; margin-bottom: 6px;">第 1 步：字詞翻譯機 (Text Encoder)</h4>
+            <p class="card-text">AI 把你說的「戴墨鏡的貓」拆成數學代碼，找出它腦中理解的形狀與顏色概念。</p>
+          </div>
+          <div class="glow-card">
+            <h4 style="color: #c084fc; margin-bottom: 6px;">第 2 步：電視雪花雜訊 (Noise)</h4>
+            <p class="card-text">AI 的起點是一張全都是亂碼雜訊的「電視雪花」畫面，裡面什麼都看不清。</p>
+          </div>
+          <div class="glow-card">
+            <h4 style="color: #34d399; margin-bottom: 6px;">第 3 步：一步一步擦掉雜訊 (Denoising)</h4>
+            <p class="card-text">AI 猜想：「雪花裡哪裡有點像貓耳朵？哪裡有點像墨鏡？」把雜訊擦拭掉，直到畫面清晰浮現！</p>
+          </div>
+        </div>
+
+        <div class="interactive-box">
+          <div style="font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px;">
+            <span>🎛️ 動手玩：體驗 AI 擦除雜訊的過程</span>
+          </div>
+          <div class="denoise-canvas-wrapper">
+            <canvas id="denoiseCanvas" width="300" height="200"></canvas>
+          </div>
+          <div class="slider-control-group">
+            <div class="slider-labels">
+              <span>← 100% 原始雜訊</span>
+              <span id="denoisePercentText">去噪進度：50%</span>
+              <span>0% 完美清晰 →</span>
+            </div>
+            <input type="range" id="denoiseSlider" min="0" max="100" value="50" oninput="updateDenoiseSimulation(this.value)">
+          </div>
+          <div class="denoise-status-badge" id="denoiseBadge">
+            正在猜測形狀... 輪廓開始浮現！
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 7: 生成影片的原理：時間的魔法（時空一致性） -->
+    <section class="slide" data-index="7">
+      <div class="slide-badge">🎞️ 原理解密室</div>
+      <h2 class="slide-title">影片又是怎麼動起來的？「時間的魔法」</h2>
+      <p class="slide-desc">影片就是走得很快的連環畫！但 AI 面臨的最大難關是什麼呢？</p>
+
+      <div class="grid-2">
+        <div class="glow-card">
+          <div class="card-icon">📖</div>
+          <h3 class="card-title">原理 ①：視覺暫留與連續影格 (Frames)</h3>
+          <p class="card-text">
+            如同小時候玩過的「手翻書」，人類的眼睛只要在一秒鐘內看到 <strong>24 ~ 30 張</strong>連續變化的圖片，大腦就會覺得它「動起來」了！
+          </p>
+          <div style="margin-top: 14px; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; font-size: 0.88rem; color: #cbd5e1;">
+            💡 產生 5 秒的影片，AI 必須精準計算畫出超過 <strong>120 張</strong> 彼此關聯的高清圖片！
+          </div>
+        </div>
+
+        <div class="glow-card" style="border-color: rgba(236, 72, 153, 0.4);">
+          <div class="card-icon">🧠</div>
+          <h3 class="card-title">原理 ②：最大挑戰：時空一致性 (Consistency)</h3>
+          <p class="card-text">
+            如果每一格各畫各的，下一秒貓咪的臉可能突然變成小狗！<br>
+            現代影片 AI 加入了<strong>「時間注意力機制 (Temporal Attention)」</strong>，記住前一秒角色的位置、毛色與光線，計算重力與物理慣性，確保角色不會中途融化或變形！
+          </p>
+          <div class="pill-tag cinema">時空連貫不變形</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 8: 提示詞魔法咒語：五星黃金公式 -->
+    <section class="slide" data-index="8">
+      <div class="slide-badge">✨ 咒語大揭秘</div>
+      <h2 class="slide-title">提示詞 (Prompt) 撰寫原則：五星黃金公式</h2>
+      <p class="slide-desc">不要只會輸入「畫一隻恐龍」！學會這五個法寶，你也是神級指揮官。</p>
+
+      <div class="grid-4" style="grid-template-columns: repeat(5, 1fr); gap: 12px;">
+        <div class="glow-card" style="text-align: center;">
+          <div style="font-size: 2rem;">👤</div>
+          <h4 style="color: #38bdf8; margin: 6px 0;">① 主角 (Who)</h4>
+          <p style="font-size: 0.82rem; color: #94a3b8;">清楚說出主角特徵<br>（穿披風的白兔）</p>
+        </div>
+        <div class="glow-card" style="text-align: center;">
+          <div style="font-size: 2rem;">🏃</div>
+          <h4 style="color: #c084fc; margin: 6px 0;">② 動作 (Action)</h4>
+          <p style="font-size: 0.82rem; color: #94a3b8;">正在做什麼與心情<br>（開心地奔跑跳躍）</p>
+        </div>
+        <div class="glow-card" style="text-align: center;">
+          <div style="font-size: 2rem;">🏞️</div>
+          <h4 style="color: #34d399; margin: 6px 0;">③ 場景 (Where)</h4>
+          <p style="font-size: 0.82rem; color: #94a3b8;">身處在什麼環境<br>（漂浮的糖果雲朵）</p>
+        </div>
+        <div class="glow-card" style="text-align: center;">
+          <div style="font-size: 2rem;">🎨</div>
+          <h4 style="color: #fbbf24; margin: 6px 0;">④ 風格 (Style)</h4>
+          <p style="font-size: 0.82rem; color: #94a3b8;">指明繪畫藝術類型<br>（吉卜力手繪水彩風）</p>
+        </div>
+        <div class="glow-card" style="text-align: center;">
+          <div style="font-size: 2rem;">💡</div>
+          <h4 style="color: #f472b6; margin: 6px 0;">⑤ 光影 (Lighting)</h4>
+          <p style="font-size: 0.82rem; color: #94a3b8;">鏡頭視角與氛圍<br>（溫暖夕陽金色逆光）</p>
+        </div>
+      </div>
+
+      <div class="compare-grid" style="margin-top: 16px;">
+        <div class="compare-card bad">
+          <div class="compare-header">❌ 隨便說說（AI 容易翻車）</div>
+          <div style="font-size: 0.95rem; color: #fca5a5;">「一隻小狗在玩。」</div>
+          <div style="font-size: 0.82rem; color: #cbd5e1; margin-top: 4px;">結果：AI 不知道什麼品種、在哪裡玩、什麼風格，畫出來往往平淡無奇。</div>
+        </div>
+        <div class="compare-card good">
+          <div class="compare-header">✅ 五星魔法咒語（精準驚艷）</div>
+          <div style="font-size: 0.95rem; color: #86efac;">「一隻戴著護目鏡的柯基犬，在綠意盎然的向日葵花田裡開心地接飛盤，3D 皮克斯動畫風格，明亮溫暖的陽光特寫。」</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 9: 咒語大調配室 (互動工具) -->
+    <section class="slide" data-index="9">
+      <div class="slide-badge">🧪 互動實驗室</div>
+      <h2 class="slide-title">咒語大調配室：自己動手調出神級指令！</h2>
+      <p class="slide-desc">點選下面的積木，即時拼裝屬於你的五星提示詞：</p>
+
+      <div class="prompt-builder-container">
+        <!-- Selectors -->
+        <div class="selector-columns">
+          <!-- Subject -->
+          <div class="select-category">
+            <div class="category-title"><span>👤</span> 選擇主角 (Subject)</div>
+            <div class="chip-group" data-type="subject">
+              <span class="chip active" data-val="一隻穿著金屬太空服的柴犬">太空服柴犬</span>
+              <span class="chip" data-val="一個戴著魔法尖帽的小機器人">魔法小機器人</span>
+              <span class="chip" data-val="一隻背著書包的可愛胖小恐龍">書包小恐龍</span>
+              <span class="chip" data-val="一隻抱著珍珠奶茶的調皮企鵝">奶茶企鵝</span>
+            </div>
+          </div>
+
+          <!-- Action -->
+          <div class="select-category">
+            <div class="category-title"><span>🏃</span> 選擇動作與表情 (Action)</div>
+            <div class="chip-group" data-type="action">
+              <span class="chip active" data-val="正在好奇地用放大鏡觀察發光的水晶">好奇觀察發光水晶</span>
+              <span class="chip" data-val="開心地在空中踩著滑板旋轉特技">滑板空中特技</span>
+              <span class="chip" data-val="小心翼翼地在巨型蘑菇下烤甜甜圈">蘑菇下烤甜甜圈</span>
+              <span class="chip" data-val="彈著發光的尤克里里吉他唱歌">彈發光吉他唱歌</span>
+            </div>
+          </div>
+
+          <!-- Scene -->
+          <div class="select-category">
+            <div class="category-title"><span>🏞️</span> 選擇場景 (Scene)</div>
+            <div class="chip-group" data-type="scene">
+              <span class="chip active" data-val="在漂浮於宇宙星空中的七彩糖果群島">漂浮宇宙糖果島</span>
+              <span class="chip" data-val="在充滿螢光水母的海底童話水晶宮殿">螢光水母海底宮殿</span>
+              <span class="chip" data-val="在落葉紛飛的金色古老魔法森林">秋天金色魔法森林</span>
+              <span class="chip" data-val="在飄滿棉花糖雲朵的天空城鎮">棉花糖天空城</span>
+            </div>
+          </div>
+
+          <!-- Style -->
+          <div class="select-category">
+            <div class="category-title"><span>🎨</span> 選擇畫風 (Style)</div>
+            <div class="chip-group" data-type="style">
+              <span class="chip active" data-val="3D 皮克斯 (Pixar) 精緻動畫風格">3D 皮克斯動畫風</span>
+              <span class="chip" data-val="宮崎駿吉卜力手繪清新水彩風">吉卜力水彩手繪風</span>
+              <span class="chip" data-val="溫馨可愛的黏土偶定格定格動畫風格">黏土人偶風</span>
+              <span class="chip" data-val="復古懷舊的 16-bit 像素像素藝術風">復古像素風</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Output Card -->
+        <div class="prompt-preview-card">
+          <div>
+            <div style="font-weight: 800; font-size: 1.15rem; color: #c084fc; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+              <span>📜 你的魔法咒語產出：</span>
+            </div>
+            <div class="prompt-output-box" id="promptResult">
+              載入中...
+            </div>
+          </div>
+          <div>
+            <div style="font-size: 0.85rem; color: #94a3b8; margin-top: 10px;">
+              💡 提示：點擊按鈕複製後，可以貼到 Canva 或 Copilot 體驗喔！
+            </div>
+            <button class="btn-copy" id="copyPromptBtn" onclick="copyCurrentPrompt()">
+              <span>📋 複製這段魔法咒語！</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 10: 避坑指南：小學生的三大咒語地雷 -->
+    <section class="slide" data-index="10">
+      <div class="slide-badge">⚠️ 避坑指南</div>
+      <h2 class="slide-title">寫提示詞小心踩雷！三大常見迷思</h2>
+      <p class="slide-desc">想要圖畫更漂亮？記得避開這三種會讓 AI 抓狂的說話方式！</p>
+
+      <div class="grid-3">
+        <div class="glow-card" style="border-top: 4px solid #ef4444;">
+          <div style="font-size: 2.2rem; margin-bottom: 8px;">🚫</div>
+          <h3 class="card-title">迷思 1：不要用否定句！</h3>
+          <p class="card-text">
+            <strong>錯誤示範：</strong>「不要下雨、不要出現樹木」<br>
+            <strong>為什麼？</strong> AI 看到關鍵字「下雨」「樹木」，反而更容易把它畫進去！<br>
+            <span style="color: #34d399; font-weight: 700;">✅ 正確做法：</span>說出你想要的，改寫成「晴空萬里的大晴天，空曠的沙漠」。
+          </p>
+        </div>
+
+        <div class="glow-card" style="border-top: 4px solid #f59e0b;">
+          <div style="font-size: 2.2rem; margin-bottom: 8px;">🌀</div>
+          <h3 class="card-title">迷思 2：不要用空泛的形容詞！</h3>
+          <p class="card-text">
+            <strong>錯誤示範：</strong>「畫一個宇宙超級無敵好看的東西」<br>
+            <strong>為什麼？</strong> AI 無法理解你的「好看」是什麼標準。<br>
+            <span style="color: #34d399; font-weight: 700;">✅ 正確做法：</span>具體描述特徵，例如「金光閃爍的羽毛、如水晶般清澈的眼眸」。
+          </p>
+        </div>
+
+        <div class="glow-card" style="border-top: 4px solid #8b5cf6;">
+          <div style="font-size: 2.2rem; margin-bottom: 8px;">🌪️</div>
+          <h3 class="card-title">迷思 3：一次不要塞太多衝突元素！</h3>
+          <p class="card-text">
+            <strong>錯誤示範：</strong>「古代恐龍同時在現代開高鐵又是外星人又是水下...」<br>
+            <strong>為什麼？</strong> 太多互相打架的概念會讓 AI 混亂融合成奇怪生物！<br>
+            <span style="color: #34d399; font-weight: 700;">✅ 正確做法：</span>確立一個核心焦點，一步一步微調。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 11: 數位素養與安全守則：做負責任的小小魔法師 -->
+    <section class="slide" data-index="11">
+      <div class="slide-badge">🛡️ 科技倫理篇</div>
+      <h2 class="slide-title">做個聰明又善良的「AI 小小魔法師」</h2>
+      <p class="slide-desc">超能力越大，責任越大！使用生成式 AI 必須遵守的四大安全守則：</p>
+
+      <div class="grid-4">
+        <div class="glow-card">
+          <div class="card-icon">🔒</div>
+          <h3 class="card-title">① 保護個人隱私</h3>
+          <p class="card-text">
+            <strong>絕不</strong>把自己的本名、真實住址、電話或自己的私人臉部照片餵給網路上的 AI 工具。
+          </p>
+        </div>
+
+        <div class="glow-card">
+          <div class="card-icon">🎭</div>
+          <h3 class="card-title">② 拒絕 Deepfake 惡搞</h3>
+          <p class="card-text">
+            不可以拿同學或老師的照片生成出惡意惡搞、嘲笑或散布不實訊息的合成圖片與影片！
+          </p>
+        </div>
+
+        <div class="glow-card">
+          <div class="card-icon">🏷️</div>
+          <h3 class="card-title">③ 誠實標示 AI 協作</h3>
+          <p class="card-text">
+            交作業或分享時，大方誠實註明「本作品使用 AI 共同創作」，這是尊重原創與誠實的美德。
+          </p>
+        </div>
+
+        <div class="glow-card">
+          <div class="card-icon">👨‍🏫</div>
+          <h3 class="card-title">④ 在師長指導下探索</h3>
+          <p class="card-text">
+            遇到奇怪的畫面或不確定的內容，立刻舉手告訴老師或爸爸媽媽，安全第一！
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 12: 課堂大闖關：小小 AI 大師隨堂考 -->
+    <section class="slide" data-index="12">
+      <div class="slide-badge">🏆 挑戰大闖關</div>
+      <h2 class="slide-title">小試身手：你是 AI 小達人嗎？</h2>
+      <p class="slide-desc">點選你認為最正確的答案，看看你能答對幾題！</p>
+
+      <div class="quiz-card">
+        <div class="quiz-question" id="quizQuestion">
+          題目載入中...
+        </div>
+        <div class="quiz-options" id="quizOptions">
+          <!-- Options injected by JS -->
+        </div>
+        <div class="quiz-feedback" id="quizFeedback"></div>
+        <div style="margin-top: 20px; display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 0.9rem; color: #94a3b8;" id="quizCounter">第 1 / 3 題</span>
+          <button class="control-btn" id="quizNextBtn" style="display: none;" onclick="nextQuizQuestion()">
+            下一題 ➔
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 13: 總結與課後任務 -->
+    <section class="slide" data-index="13">
+      <div class="slide-badge">🎉 探險終點站</div>
+      <h2 class="slide-title">恭喜完成探索！今天的四大收穫</h2>
+      <p class="slide-desc">拿起你的創意畫筆，讓 AI 成為你學習路上的超級智囊！</p>
+
+      <div class="grid-4" style="margin-bottom: 24px;">
+        <div class="glow-card" style="text-align: center;">
+          <div style="font-size: 2rem;">🧰</div>
+          <div style="font-weight: 700; color: #fff; margin: 8px 0;">認識工具</div>
+          <div style="font-size: 0.85rem; color: #94a3b8;">Canva、Copilot、Runway 都是我們的得力幫手</div>
+        </div>
+        <div class="glow-card" style="text-align: center;">
+          <div style="font-size: 2rem;">💡</div>
+          <div style="font-weight: 700; color: #fff; margin: 8px 0;">了解原理</div>
+          <div style="font-size: 0.85rem; color: #94a3b8;">擴散去雜訊與時間影格連續性</div>
+        </div>
+        <div class="glow-card" style="text-align: center;">
+          <div style="font-size: 2rem;">📜</div>
+          <div style="font-weight: 700; color: #fff; margin: 8px 0;">五星咒語</div>
+          <div style="font-size: 0.85rem; color: #94a3b8;">主角＋動作＋場景＋風格＋光影</div>
+        </div>
+        <div class="glow-card" style="text-align: center;">
+          <div style="font-size: 2rem;">🛡️</div>
+          <div style="font-weight: 700; color: #fff; margin: 8px 0;">安全守則</div>
+          <div style="font-size: 0.85rem; color: #94a3b8;">保護隱私、尊重版權、誠實標註</div>
+        </div>
+      </div>
+
+      <div class="glow-card" style="background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(139, 92, 246, 0.15)); text-align: center; padding: 20px;">
+        <h3 style="color: #f1f5f9; margin-bottom: 8px;">🎯 今日課堂挑戰小任務：</h3>
+        <p style="font-size: 1.05rem; color: #cbd5e1;">
+          「在筆記本上寫下一句專屬於你的『五星魔法咒語』，下週上機課由老師示範讓你的畫作動起來！」
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Deck Bottom Footer Navigation -->
+  <footer class="deck-footer">
+    <div class="shortcuts-hint">
+      <span>💡 操作提示：</span>
+      <span class="kbd">←</span> <span class="kbd">→</span> <span>翻頁</span>
+      <span class="kbd">Space</span> <span>下一頁</span>
+    </div>
+
+    <div class="nav-btn-group">
+      <button class="nav-btn" id="prevBtn" onclick="deck.prevSlide()" title="上一頁">
+        ❮
+      </button>
+      
+      <div class="slide-indicator">
+        <span id="currentSlideNum">1</span> / <span id="totalSlideNum">13</span>
+      </div>
+
+      <button class="nav-btn" id="nextBtn" onclick="deck.nextSlide()" title="下一頁">
+        ❯
+      </button>
+    </div>
+  </footer>
+
+  <!-- Script Logic -->
+  <script>
+    /* =========================================================
+       1. Sound Manager (Web Audio API - No external audio files!)
+       ========================================================= */
+    class SoundEffects {
+      constructor() {
+        this.ctx = null;
+        this.enabled = true;
+      }
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) {
+            this.ctx = new AudioContext();
+          }
+        }
+      }
+      playTone(freq, type = 'sine', duration = 0.15, vol = 0.15) {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+          gain.gain.setValueAtTime(vol, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + duration);
+        } catch(e) {}
+      }
+      playSlide() {
+        this.playTone(440, 'sine', 0.08, 0.08);
+      }
+      playCorrect() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+          setTimeout(() => this.playTone(freq, 'triangle', 0.2, 0.15), i * 80);
+        });
+      }
+      playWrong() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        [220, 185].forEach((freq, i) => {
+          setTimeout(() => this.playTone(freq, 'sawtooth', 0.25, 0.12), i * 140);
+        });
+      }
+    }
+    const sound = new SoundEffects();
+
+    /* =========================================================
+       2. Slide Deck Navigation Engine
+       ========================================================= */
+    class SlideDeck {
+      constructor() {
+        this.slides = Array.from(document.querySelectorAll('.slide'));
+        this.currentIndex = 0;
+        this.totalSlides = this.slides.length;
+        this.progressBar = document.getElementById('progressBar');
+        this.currentSlideNum = document.getElementById('currentSlideNum');
+        this.totalSlideNum = document.getElementById('totalSlideNum');
+        this.prevBtn = document.getElementById('prevBtn');
+        this.nextBtn = document.getElementById('nextBtn');
+        
+        this.init();
+      }
+
+      init() {
+        this.totalSlideNum.textContent = this.totalSlides;
+        this.updateSlideState();
+
+        // Keyboard navigation
+        window.addEventListener('keydown', (e) => {
+          if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+            e.preventDefault();
+            this.nextSlide();
+          } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+            e.preventDefault();
+            this.prevSlide();
+          } else if (e.key === 'Home') {
+            e.preventDefault();
+            this.goToSlide(0);
+          } else if (e.key === 'End') {
+            e.preventDefault();
+            this.goToSlide(this.totalSlides - 1);
+          }
+        });
+
+        // Touch Swipe
+        let startX = 0;
+        let endX = 0;
+        const stage = document.getElementById('deckStage');
+        stage.addEventListener('touchstart', (e) => {
+          startX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        stage.addEventListener('touchend', (e) => {
+          endX = e.changedTouches[0].screenX;
+          if (startX - endX > 50) {
+            this.nextSlide();
+          } else if (endX - startX > 50) {
+            this.prevSlide();
+          }
+        }, { passive: true });
+      }
+
+      goToSlide(index) {
+        if (index < 0 || index >= this.totalSlides) return;
+        this.currentIndex = index;
+        this.updateSlideState();
+        sound.playSlide();
+      }
+
+      nextSlide() {
+        if (this.currentIndex < this.totalSlides - 1) {
+          this.currentIndex++;
+          this.updateSlideState();
+          sound.playSlide();
+        }
+      }
+
+      prevSlide() {
+        if (this.currentIndex > 0) {
+          this.currentIndex--;
+          this.updateSlideState();
+          sound.playSlide();
+        }
+      }
+
+      updateSlideState() {
+        this.slides.forEach((slide, idx) => {
+          slide.classList.remove('active', 'prev', 'next');
+          if (idx === this.currentIndex) {
+            slide.classList.add('active');
+          } else if (idx < this.currentIndex) {
+            slide.classList.add('prev');
+          } else {
+            slide.classList.add('next');
+          }
+        });
+
+        const progressPercent = ((this.currentIndex + 1) / this.totalSlides) * 100;
+        this.progressBar.style.width = `${progressPercent}%`;
+        this.currentSlideNum.textContent = this.currentIndex + 1;
+
+        this.prevBtn.disabled = this.currentIndex === 0;
+        this.nextBtn.disabled = this.currentIndex === this.totalSlides - 1;
+
+        // If slide 6 (Denoise) becomes active, redraw canvas
+        if (this.currentIndex === 5) {
+          const slider = document.getElementById('denoiseSlider');
+          if (slider) updateDenoiseSimulation(slider.value);
+        }
+      }
+    }
+    const deck = new SlideDeck();
+
+    /* =========================================================
+       3. Header Controls (Sound, Fullscreen, Print)
+       ========================================================= */
+    const soundToggleBtn = document.getElementById('soundToggleBtn');
+    soundToggleBtn.addEventListener('click', () => {
+      sound.enabled = !sound.enabled;
+      soundToggleBtn.classList.toggle('active', sound.enabled);
+      document.getElementById('soundIcon').textContent = sound.enabled ? '🔊' : '🔇';
+      soundToggleBtn.innerHTML = `<span id="soundIcon">${sound.enabled ? '🔊' : '🔇'}</span> 音效${sound.enabled ? '開' : '關'}`;
+    });
+
+    const fsToggleBtn = document.getElementById('fsToggleBtn');
+    fsToggleBtn.addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+        fsToggleBtn.textContent = '✕ 退出全螢幕';
+      } else {
+        document.exitFullscreen().catch(() => {});
+        fsToggleBtn.textContent = '⛶ 全螢幕';
+      }
+    });
+
+    document.getElementById('printBtn').addEventListener('click', () => {
+      window.print();
+    });
+
+    /* =========================================================
+       4. Denoise Visualizer Canvas Simulator (Slide 6)
+       ========================================================= */
+    const denoiseCanvas = document.getElementById('denoiseCanvas');
+    const denoiseCtx = denoiseCanvas.getContext('2d');
+
+    function drawCuteCatIllustration(ctx, width, height) {
+      // Clear
+      ctx.fillStyle = "#1e1b4b";
+      ctx.fillRect(0, 0, width, height);
+
+      // Stars
+      ctx.fillStyle = "#ffffff";
+      const stars = [[30, 30], [260, 40], [80, 70], [240, 140], [40, 160]];
+      stars.forEach(([x, y]) => {
+        ctx.beginPath();
+        ctx.arc(x, y, 2, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      // Ground / Moon surface
+      ctx.fillStyle = "#4338ca";
+      ctx.beginPath();
+      ctx.arc(width / 2, height + 80, 140, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Cat Body
+      ctx.fillStyle = "#f59e0b";
+      ctx.beginPath();
+      ctx.ellipse(width / 2, height / 2 + 30, 45, 40, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Cat Head
+      ctx.beginPath();
+      ctx.arc(width / 2, height / 2 - 15, 36, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Ears
+      ctx.fillStyle = "#d97706";
+      ctx.beginPath();
+      ctx.moveTo(width / 2 - 30, height / 2 - 35);
+      ctx.lineTo(width / 2 - 15, height / 2 - 58);
+      ctx.lineTo(width / 2 - 5, height / 2 - 35);
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.moveTo(width / 2 + 5, height / 2 - 35);
+      ctx.lineTo(width / 2 + 15, height / 2 - 58);
+      ctx.lineTo(width / 2 + 30, height / 2 - 35);
+      ctx.fill();
+
+      // Sunglasses
+      ctx.fillStyle = "#0f172a";
+      ctx.fillRect(width / 2 - 28, height / 2 - 24, 24, 15);
+      ctx.fillRect(width / 2 + 4, height / 2 - 24, 24, 15);
+      ctx.fillRect(width / 2 - 6, height / 2 - 20, 12, 5);
+
+      // Glasses shine
+      ctx.fillStyle = "#38bdf8";
+      ctx.fillRect(width / 2 - 24, height / 2 - 21, 5, 9);
+      ctx.fillRect(width / 2 + 8, height / 2 - 21, 5, 9);
+
+      // Cat Smile & Nose
+      ctx.fillStyle = "#fbbf24";
+      ctx.beginPath();
+      ctx.arc(width / 2, height / 2 - 3, 3, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Whiskers
+      ctx.strokeStyle = "#fff";
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(width / 2 - 25, height / 2 - 2);
+      ctx.lineTo(width / 2 - 42, height / 2 - 5);
+      ctx.moveTo(width / 2 - 25, height / 2 + 3);
+      ctx.lineTo(width / 2 - 42, height / 2 + 6);
+
+      ctx.moveTo(width / 2 + 25, height / 2 - 2);
+      ctx.lineTo(width / 2 + 42, height / 2 - 5);
+      ctx.moveTo(width / 2 + 25, height / 2 + 3);
+      ctx.lineTo(width / 2 + 42, height / 2 + 6);
+      ctx.stroke();
+    }
+
+    function updateDenoiseSimulation(sliderVal) {
+      const val = parseInt(sliderVal);
+      const w = denoiseCanvas.width;
+      const h = denoiseCanvas.height;
+
+      // 1. Draw clean image to offscreen canvas
+      const offCanvas = document.createElement('canvas');
+      offCanvas.width = w;
+      offCanvas.height = h;
+      const offCtx = offCanvas.getContext('2d');
+      drawCuteCatIllustration(offCtx, w, h);
+
+      // 2. Blend with noise
+      const imgData = offCtx.getImageData(0, 0, w, h);
+      const data = imgData.data;
+
+      const noiseRatio = 1 - (val / 100); // 1 = 100% noise, 0 = pure image
+
+      for (let i = 0; i < data.length; i += 4) {
+        if (Math.random() < noiseRatio) {
+          const gray = Math.floor(Math.random() * 255);
+          data[i] = gray;     // R
+          data[i + 1] = gray; // G
+          data[i + 2] = gray; // B
+        }
+      }
+
+      denoiseCtx.putImageData(imgData, 0, 0);
+
+      // Update text & badge
+      const percentText = document.getElementById('denoisePercentText');
+      const badge = document.getElementById('denoiseBadge');
+      percentText.textContent = `去噪進度：${val}%`;
+
+      if (val < 25) {
+        badge.textContent = "❄️ 雜訊極高：就像一片電視雪花，AI 剛拿到題目！";
+        badge.style.color = "#94a3b8";
+      } else if (val < 65) {
+        badge.textContent = "🔍 輪廓浮現：AI 開始辨識出耳朵與身體形狀！";
+        badge.style.color = "#38bdf8";
+      } else if (val < 95) {
+        badge.textContent = "✨ 豐富細節：墨鏡反光、貓咪毛色與星星細節正在形成！";
+        badge.style.color = "#c084fc";
+      } else {
+        badge.textContent = "🎉 去噪完成：一張高清完美的太空墨鏡貓誕生！";
+        badge.style.color = "#34d399";
+      }
+    }
+
+    /* =========================================================
+       5. Interactive Prompt Builder (Slide 9)
+       ========================================================= */
+    const promptSelections = {
+      subject: "一隻穿著金屬太空服的柴犬",
+      action: "正在好奇地用放大鏡觀察發光的水晶",
+      scene: "在漂浮於宇宙星空中的七彩糖果群島",
+      style: "3D 皮克斯 (Pixar) 精緻動畫風格"
+    };
+
+    function updatePromptOutput() {
+      const resultBox = document.getElementById('promptResult');
+      const fullPrompt = `${promptSelections.subject}，${promptSelections.action}，${promptSelections.scene}，${promptSelections.style}，溫暖柔和的電影光影，特寫細緻鏡頭，8K 超高畫質。`;
+      resultBox.textContent = `"${fullPrompt}"`;
+    }
+
+    document.querySelectorAll('.chip-group').forEach(group => {
+      const type = group.getAttribute('data-type');
+      group.querySelectorAll('.chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+          group.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+          chip.classList.add('active');
+          promptSelections[type] = chip.getAttribute('data-val');
+          updatePromptOutput();
+          sound.playTone(550, 'sine', 0.05, 0.05);
+        });
+      });
+    });
+
+    function copyCurrentPrompt() {
+      const resultBox = document.getElementById('promptResult');
+      const textToCopy = resultBox.textContent.replace(/^"|"$/g, '');
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        const btn = document.getElementById('copyPromptBtn');
+        btn.innerHTML = '<span>✅ 咒語已成功複製到剪貼簿！</span>';
+        btn.style.background = '#10b981';
+        sound.playCorrect();
+        triggerConfetti(window.innerWidth / 2, window.innerHeight / 2);
+        setTimeout(() => {
+          btn.innerHTML = '<span>📋 複製這段魔法咒語！</span>';
+          btn.style.background = '';
+        }, 2500);
+      }).catch(() => {
+        alert("複製失敗，請手動複製文字！");
+      });
+    }
+
+    // Init prompt output
+    updatePromptOutput();
+
+    /* =========================================================
+       6. Interactive Quiz System (Slide 12)
+       ========================================================= */
+    const quizData = [
+      {
+        question: "1. 現代主流的「擴散模型（Diffusion Model）」生圖時，第一步通常是從什麼開始？",
+        options: [
+          "A. 一張從網路上隨機抓來的照片",
+          "B. 一片完全都是亂碼的「電視雪花雜訊」",
+          "C. 一張全白沒有任何東西的畫布"
+        ],
+        correct: 1,
+        explanation: "答對了！擴散模型就像除霧魔法一樣，是從混亂的雪花雜訊中一步步擦掉雜訊並還原出畫面喔！"
+      },
+      {
+        question: "2. 如果想要生成一張「大晴天的照片」，提示詞怎麼寫最不易讓 AI 搞混？",
+        options: [
+          "A. 絕對不要下雨、不要看到烏雲",
+          "B. 萬里無雲、陽光燦爛的大晴天",
+          "C. 雨傘全部收起來不要打開"
+        ],
+        correct: 1,
+        explanation: "太棒了！AI 常常容易把否定詞（例如『不要下雨』）只提取出『下雨』關鍵字，因此使用正面具體的肯定句才是高手的寫法！"
+      },
+      {
+        question: "3. 文字生成「影片」比起「圖片」，多了解決什麼最重要的核心技術難關？",
+        options: [
+          "A. 顏色的數量要超過一千萬種",
+          "B. 每一秒鐘要維持角色不變形的「時空一致性」",
+          "C. 影片生成的檔案容量一定要小於 1MB"
+        ],
+        correct: 1,
+        explanation: "賓果！一秒鐘有 24 張影格，AI 必須具備時間注意力機制，讓小貓小狗在每一影格的動態與光影都能連貫不融化！"
+      }
+    ];
+
+    let currentQuizIndex = 0;
+    let quizAnswered = false;
+
+    function renderQuiz() {
+      const q = quizData[currentQuizIndex];
+      quizAnswered = false;
+      document.getElementById('quizQuestion').textContent = q.question;
+      document.getElementById('quizCounter').textContent = `第 ${currentQuizIndex + 1} / ${quizData.length} 題`;
+      const optContainer = document.getElementById('quizOptions');
+      const feedback = document.getElementById('quizFeedback');
+      const nextBtn = document.getElementById('quizNextBtn');
+
+      optContainer.innerHTML = '';
+      feedback.style.display = 'none';
+      nextBtn.style.display = 'none';
+
+      q.options.forEach((optText, idx) => {
+        const btn = document.createElement('div');
+        btn.className = 'quiz-option';
+        btn.textContent = optText;
+        btn.addEventListener('click', () => checkQuizAnswer(idx, btn));
+        optContainer.appendChild(btn);
+      });
+    }
+
+    function checkQuizAnswer(selectedIdx, clickedElement) {
+      if (quizAnswered) return;
+      quizAnswered = true;
+      const q = quizData[currentQuizIndex];
+      const optElements = document.querySelectorAll('.quiz-option');
+      const feedback = document.getElementById('quizFeedback');
+      const nextBtn = document.getElementById('quizNextBtn');
+
+      if (selectedIdx === q.correct) {
+        clickedElement.classList.add('correct');
+        feedback.style.display = 'block';
+        feedback.style.background = 'rgba(16, 185, 129, 0.2)';
+        feedback.style.color = '#34d399';
+        feedback.textContent = `🎉 ${q.explanation}`;
+        sound.playCorrect();
+        triggerConfetti(window.innerWidth / 2, window.innerHeight / 2);
+      } else {
+        clickedElement.classList.add('wrong');
+        optElements[q.correct].classList.add('correct');
+        feedback.style.display = 'block';
+        feedback.style.background = 'rgba(239, 68, 68, 0.2)';
+        feedback.style.color = '#f87171';
+        feedback.textContent = `💡 哎呀差一點點！正確答案是選項 (${String.fromCharCode(65 + q.correct)}) 喔！${q.explanation}`;
+        sound.playWrong();
+      }
+
+      if (currentQuizIndex < quizData.length - 1) {
+        nextBtn.textContent = '下一題 ➔';
+        nextBtn.style.display = 'inline-block';
+      } else {
+        nextBtn.textContent = '完成闖關 🎉';
+        nextBtn.style.display = 'inline-block';
+      }
+    }
+
+    function nextQuizQuestion() {
+      if (currentQuizIndex < quizData.length - 1) {
+        currentQuizIndex++;
+        renderQuiz();
+      } else {
+        deck.nextSlide();
+      }
+    }
+
+    renderQuiz();
+
+    /* =========================================================
+       7. Lightweight Pure JS Canvas Confetti
+       ========================================================= */
+    const confettiCanvas = document.getElementById('confettiCanvas');
+    const confettiCtx = confettiCanvas.getContext('2d');
+    let confettiParticles = [];
+
+    function resizeConfetti() {
+      confettiCanvas.width = window.innerWidth;
+      confettiCanvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeConfetti);
+    resizeConfetti();
+
+    function triggerConfetti(originX, originY) {
+      const colors = ['#38bdf8', '#ec4899', '#f59e0b', '#8b5cf6', '#10b981', '#f43f5e'];
+      for (let i = 0; i < 60; i++) {
+        confettiParticles.push({
+          x: originX,
+          y: originY,
+          vx: (Math.random() - 0.5) * 14,
+          vy: (Math.random() - 1.2) * 12,
+          size: Math.random() * 8 + 4,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          rotation: Math.random() * 360,
+          rotationSpeed: (Math.random() - 0.5) * 10,
+          life: 1.0,
+          decay: Math.random() * 0.02 + 0.015
+        });
+      }
+      if (!confettiAnimationRunning) {
+        animateConfetti();
+      }
+    }
+
+    let confettiAnimationRunning = false;
+    function animateConfetti() {
+      confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+      confettiAnimationRunning = true;
+
+      for (let i = confettiParticles.length - 1; i >= 0; i--) {
+        const p = confettiParticles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.35; // Gravity
+        p.rotation += p.rotationSpeed;
+        p.life -= p.decay;
+
+        if (p.life <= 0) {
+          confettiParticles.splice(i, 1);
+          continue;
+        }
+
+        confettiCtx.save();
+        confettiCtx.translate(p.x, p.y);
+        confettiCtx.rotate((p.rotation * Math.PI) / 180);
+        confettiCtx.globalAlpha = p.life;
+        confettiCtx.fillStyle = p.color;
+        confettiCtx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 1.5);
+        confettiCtx.restore();
+      }
+
+      if (confettiParticles.length > 0) {
+        requestAnimationFrame(animateConfetti);
+      } else {
+        confettiAnimationRunning = false;
+      }
+    }
+
+    // First frame initialization of Denoise canvas
+    updateDenoiseSimulation(50);
+  </script>
+</body>
+</html>

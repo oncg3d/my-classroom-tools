@@ -12,17 +12,20 @@
 - [x] 專案基礎建設與 GitHub Repo、Pages 建立
 - [x] 部署跨電腦專案管理三技能（project-init, startup, shutdown）
 - [x] 製作第一個工具：tools/coordinate-hunter（座標獵人）
+- [x] 製作第二個工具：tools/ai-generation-guide（AI 圖像與影音生成互動簡報）
 - [ ] 串接 Firebase 免費即時資料庫
 
 ## 資料夾結構
 ```
 my-classroom-tools/
+├── index.html                   # 工具庫導覽入口首頁
 ├── AGENTS.md                   # 跨 Agent 專案藍圖
 ├── CLAUDE.md                   # Claude / Antigravity 專案設定
 ├── handoff.md                  # 跨 Session / 跨電腦交接檔
 ├── .gitignore                  # Git 忽略設定
 ├── README.md                   # 專案入口說明
 └── tools/
+    ├── ai-generation-guide/    # AI 圖像與影音生成互動教學簡報
     └── coordinate-hunter/      # 直角座標練習小遊戲
 ```
 

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>班級工具網頁庫 | My Classroom Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Noto+Sans+TC:wght@400;500;700;900&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: rgba(30, 41, 59, 0.7);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #38bdf8;
+      --secondary: #a855f7;
+      --accent: #f59e0b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.12), transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(168, 85, 247, 0.12), transparent 45%);
+      color: var(--text);
+      font-family: 'Outfit', 'Noto Sans TC', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 60px 24px 40px;
+      flex: 1;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(168, 85, 247, 0.2));
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #38bdf8;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 6px 16px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+      letter-spacing: 0.5px;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #fff 40%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p.subtitle {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 28px;
+    }
+
+    .tool-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 30px;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      backdrop-filter: blur(12px);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tool-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .tool-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(56, 189, 248, 0.4);
+      background: rgba(30, 41, 59, 0.9);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    .tool-card:hover::before {
+      opacity: 1;
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .icon-box {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .card-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .card-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+      display: inline-block;
+      margin-top: 4px;
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+    }
+
+    .card-desc {
+      font-size: 0.98rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .card-action {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      font-weight: 700;
+      font-size: 0.92rem;
+      color: var(--primary);
+    }
+
+    .arrow-icon {
+      transition: transform 0.2s;
+    }
+
+    .tool-card:hover .arrow-icon {
+      transform: translateX(4px);
+    }
+
+    footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 0.85rem;
+      color: #64748b;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <span class="badge">🏫 國小教學互動數位教材庫</span>
+      <h1>班級互動工具與教學簡報</h1>
+      <p class="subtitle">由老師為教學現場量身打造的互動工具庫，無廣告、無外部追蹤，給學生最純粹直覺的學習體驗。</p>
+    </header>
+
+    <div class="tools-grid">
+      <!-- Tool 1: AI Generation Presentation -->
+      <a href="tools/ai-generation-guide/" class="tool-card">
+        <div>
+          <div class="card-top">
+            <div class="icon-box" style="background: rgba(168, 85, 247, 0.15); border-color: rgba(168, 85, 247, 0.3);">🎨</div>
+            <div>
+              <div class="card-title">AI 魔法畫布與時光機</div>
+              <span class="card-tag" style="background: rgba(168, 85, 247, 0.2); color: #c084fc;">國小互動教學簡報</span>
+            </div>
+          </div>
+          <p class="card-desc">
+            圖解文字生成圖片（T2I）與影音（T2V）生成原理！內建擴散除霧滑桿互動、五星咒語調配室、隨堂闖關測驗與防坑指南。
+          </p>
+        </div>
+        <div class="card-action">
+          <span>開啟簡報展示</span>
+          <span class="arrow-icon">➔</span>
+        </div>
+      </a>
+
+      <!-- Tool 2: Coordinate Hunter -->
+      <a href="tools/coordinate-hunter/" class="tool-card">
+        <div>
+          <div class="card-top">
+            <div class="icon-box" style="background: rgba(56, 189, 248, 0.15); border-color: rgba(56, 189, 248, 0.3);">🎯</div>
+            <div>
+              <div class="card-title">座標獵人 Coordinate Hunter</div>
+              <span class="card-tag">數學互動練習小遊戲</span>
+            </div>
+          </div>
+          <p class="card-desc">
+            直角坐標系趣味練習小遊戲！支援四象限尋寶、點位獵人與極限計時模式，內建座號榜單與沉浸式音效。
+          </p>
+        </div>
+        <div class="card-action">
+          <span>開始玩小遊戲</span>
+          <span class="arrow-icon">➔</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <footer>
+    <p>班級工具總專案 &bull; 託管於 GitHub Pages &bull; 開放教學使用</p>
+  </footer>
+</body>
+</html>
