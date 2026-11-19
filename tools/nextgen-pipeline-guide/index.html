@@ -662,12 +662,40 @@
       align-items: center;
       gap: 4px;
       background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      padding: 2px 6px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      padding: 3px 8px;
       border-radius: 4px;
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.75rem;
-      color: var(--text-muted);
+      color: #cbd5e1;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s ease;
+      outline: none;
+    }
+
+    button.key-badge {
+      border: 1px solid rgba(255, 255, 255, 0.14);
+    }
+
+    button.key-badge:hover, .key-badge:hover {
+      background: rgba(0, 229, 255, 0.14);
+      border-color: var(--ue-cyan);
+      color: #ffffff;
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.35);
+      transform: translateY(-1px);
+    }
+
+    button.key-badge:active, .key-badge:active {
+      transform: translateY(1px) scale(0.96);
+      background: rgba(0, 229, 255, 0.25);
+    }
+
+    button.key-badge.active, .key-badge.active {
+      background: rgba(0, 229, 255, 0.2);
+      border-color: var(--ue-cyan);
+      color: var(--ue-cyan);
+      box-shadow: 0 0 8px rgba(0, 229, 255, 0.3);
     }
 
     /* Modals & Drawers */
@@ -3239,12 +3267,17 @@
   <footer class="deck-footer">
     <div class="keyboard-hints">
       <span>快捷鍵導覽：</span>
-      <span class="key-badge">← / → 上下一頁</span>
-      <span class="key-badge">Space 下一頁</span>
-      <span class="key-badge">G 目錄縮圖</span>
-      <span class="key-badge">N 講義講稿</span>
-      <span class="key-badge">P 講義模式</span>
-      <span class="key-badge">F 全螢幕</span>
+      <button class="key-badge" id="footer-btn-nav" title="點擊左側上一頁 (←)，點擊右側下一頁 (→)">
+        <span id="footer-sub-prev">←</span>
+        <span style="opacity: 0.5;">/</span>
+        <span id="footer-sub-next">→</span>
+        <span>上下一頁</span>
+      </button>
+      <button class="key-badge" id="footer-btn-space" title="點擊切換下一頁 (Space 空白鍵)">Space 下一頁</button>
+      <button class="key-badge" id="footer-btn-grid" title="開啟投影片縮圖目錄 (G 鍵)">G 目錄縮圖</button>
+      <button class="key-badge" id="footer-btn-notes" title="切換講師講稿備忘錄 (N 鍵)">N 講義講稿</button>
+      <button class="key-badge" id="footer-btn-mode" title="切換講義/簡報模式 (P 鍵)">P 講義模式</button>
+      <button class="key-badge" id="footer-btn-fullscreen" title="全螢幕切換 (F 鍵)">F 全螢幕</button>
     </div>
     <div>
       <span>3D 數位遊戲藝術與動畫專業課程 &bull; 製作者：吳信成</span>
@@ -3508,25 +3541,31 @@
 
     btnNotes.addEventListener('click', () => {
       notesDrawer.classList.toggle('open');
-      btnNotes.classList.toggle('active', notesDrawer.classList.contains('open'));
+      const isOpen = notesDrawer.classList.contains('open');
+      btnNotes.classList.toggle('active', isOpen);
+      if (footerBtnNotes) footerBtnNotes.classList.toggle('active', isOpen);
       playSfx('switch');
     });
 
     btnCloseNotes.addEventListener('click', () => {
       notesDrawer.classList.remove('open');
       btnNotes.classList.remove('active');
+      if (footerBtnNotes) footerBtnNotes.classList.remove('active');
     });
 
     btnToggleGrid.addEventListener('click', () => {
       gridModal.classList.toggle('open');
+      if (footerBtnGrid) footerBtnGrid.classList.toggle('active', gridModal.classList.contains('open'));
       playSfx('switch');
     });
     deckJumpBtn.addEventListener('click', () => {
       gridModal.classList.toggle('open');
+      if (footerBtnGrid) footerBtnGrid.classList.toggle('active', gridModal.classList.contains('open'));
       playSfx('switch');
     });
     btnCloseGrid.addEventListener('click', () => {
       gridModal.classList.remove('open');
+      if (footerBtnGrid) footerBtnGrid.classList.remove('active');
     });
 
     // Handout Mode Toggle
@@ -3535,6 +3574,10 @@
       const isHandout = document.body.classList.contains('handout-mode');
       btnMode.classList.toggle('active', isHandout);
       btnMode.querySelector('span').textContent = isHandout ? '🖥️ 簡報模式' : '📖 講義模式';
+      if (footerBtnMode) {
+        footerBtnMode.classList.toggle('active', isHandout);
+        footerBtnMode.textContent = isHandout ? 'P 簡報模式' : 'P 講義模式';
+      }
       playSfx('switch');
     });
 
@@ -3555,10 +3598,106 @@
       }
     });
 
+    document.addEventListener('fullscreenchange', () => {
+      const isFull = !!document.fullscreenElement;
+      btnFullscreen.classList.toggle('active', isFull);
+      if (footerBtnFullscreen) footerBtnFullscreen.classList.toggle('active', isFull);
+    });
+
+    // Footer Keyboard Hint Buttons (Interactive)
+    const footerBtnNav = document.getElementById('footer-btn-nav');
+    const footerSubPrev = document.getElementById('footer-sub-prev');
+    const footerSubNext = document.getElementById('footer-sub-next');
+    const footerBtnSpace = document.getElementById('footer-btn-space');
+    const footerBtnGrid = document.getElementById('footer-btn-grid');
+    const footerBtnNotes = document.getElementById('footer-btn-notes');
+    const footerBtnMode = document.getElementById('footer-btn-mode');
+    const footerBtnFullscreen = document.getElementById('footer-btn-fullscreen');
+
+    if (footerBtnNav) {
+      footerBtnNav.addEventListener('mousemove', (e) => {
+        const rect = footerBtnNav.getBoundingClientRect();
+        const isLeft = (e.clientX - rect.left) < rect.width / 2;
+        if (isLeft) {
+          footerBtnNav.title = "點擊切換上一頁 (← 鍵)";
+          if (footerSubPrev) {
+            footerSubPrev.style.color = "var(--ue-cyan)";
+            footerSubPrev.style.textShadow = "0 0 6px var(--ue-cyan)";
+          }
+          if (footerSubNext) {
+            footerSubNext.style.color = "";
+            footerSubNext.style.textShadow = "";
+          }
+        } else {
+          footerBtnNav.title = "點擊切換下一頁 (→ 鍵)";
+          if (footerSubNext) {
+            footerSubNext.style.color = "var(--ue-cyan)";
+            footerSubNext.style.textShadow = "0 0 6px var(--ue-cyan)";
+          }
+          if (footerSubPrev) {
+            footerSubPrev.style.color = "";
+            footerSubPrev.style.textShadow = "";
+          }
+        }
+      });
+
+      footerBtnNav.addEventListener('mouseleave', () => {
+        if (footerSubPrev) {
+          footerSubPrev.style.color = "";
+          footerSubPrev.style.textShadow = "";
+        }
+        if (footerSubNext) {
+          footerSubNext.style.color = "";
+          footerSubNext.style.textShadow = "";
+        }
+      });
+
+      footerBtnNav.addEventListener('click', (e) => {
+        const rect = footerBtnNav.getBoundingClientRect();
+        const isLeft = (e.clientX - rect.left) < rect.width / 2;
+        if (isLeft) {
+          showSlide(currentSlide - 1);
+        } else {
+          showSlide(currentSlide + 1);
+        }
+      });
+    }
+
+    if (footerBtnSpace) {
+      footerBtnSpace.addEventListener('click', () => {
+        showSlide(currentSlide + 1);
+      });
+    }
+
+    if (footerBtnGrid) {
+      footerBtnGrid.addEventListener('click', () => {
+        btnToggleGrid.click();
+      });
+    }
+
+    if (footerBtnNotes) {
+      footerBtnNotes.addEventListener('click', () => {
+        btnNotes.click();
+      });
+    }
+
+    if (footerBtnMode) {
+      footerBtnMode.addEventListener('click', () => {
+        btnMode.click();
+      });
+    }
+
+    if (footerBtnFullscreen) {
+      footerBtnFullscreen.addEventListener('click', () => {
+        btnFullscreen.click();
+      });
+    }
+
     // Keyboard Shortcuts
     window.addEventListener('keydown', (e) => {
       if (gridModal.classList.contains('open') && e.key === 'Escape') {
         gridModal.classList.remove('open');
+        if (footerBtnGrid) footerBtnGrid.classList.remove('active');
         return;
       }
       if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
@@ -3570,12 +3709,9 @@
       } else if (e.key === 'End') {
         showSlide(totalSlides);
       } else if (e.key === 'g' || e.key === 'G') {
-        gridModal.classList.toggle('open');
-        playSfx('switch');
+        btnToggleGrid.click();
       } else if (e.key === 'n' || e.key === 'N') {
-        notesDrawer.classList.toggle('open');
-        btnNotes.classList.toggle('active', notesDrawer.classList.contains('open'));
-        playSfx('switch');
+        btnNotes.click();
       } else if (e.key === 'p' || e.key === 'P') {
         btnMode.click();
       } else if (e.key === 'f' || e.key === 'F') {
