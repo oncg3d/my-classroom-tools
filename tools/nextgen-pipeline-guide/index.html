@@ -939,7 +939,7 @@
 
     <!-- Center Current Slide Display -->
     <div class="current-slide-info" id="deck-jump-btn" title="點擊展開投影片目錄 (快捷鍵: G)">
-      <span style="color: var(--ue-cyan); font-family: 'JetBrains Mono', monospace;" id="slide-counter">SLIDE 01 / 13</span>
+      <span style="color: var(--ue-cyan); font-family: 'JetBrains Mono', monospace;" id="slide-counter">SLIDE 01 / 14</span>
       <span style="color: var(--text-muted); font-size: 0.8rem;">▾</span>
     </div>
 
@@ -1639,9 +1639,182 @@
     </section>
 
     <!-- ==========================================
-         SLIDE 8: Phase 6: PBR 物理材質與 Substance Painter
+         SLIDE 8: 核心專題: PBR 物理基礎渲染原理 (PBR Optics & Theory)
          ========================================== -->
-    <section class="slide" data-index="8" data-title="Phase 6: PBR 材質與 Substance Painter" data-phase="PHASE 06">
+    <section class="slide" data-index="8" data-title="核心光學理論: PBR 物理渲染四大原理" data-phase="PBR OPTICS">
+      <div class="slide-header">
+        <div>
+          <div class="slide-badge-row">
+            <span class="slide-phase-pill pill-cyan">PBR 物理渲染核心專題</span>
+            <span class="soft-tag">Microfacet &bull; Energy Conservation &bull; Fresnel &bull; Cook-Torrance BRDF</span>
+          </div>
+          <h2 class="slide-title">PBR 物理基礎渲染光學原理（Physically Based Rendering）</h2>
+          <p class="slide-subtitle">深入光與物質的交互作用：能量守恆定律、微表面散射、菲涅爾效應與金屬/非金屬物理本質</p>
+        </div>
+      </div>
+
+      <div class="slide-body grid-2col">
+        <!-- Left: Core 4 Principles -->
+        <div class="content-card">
+          <h3 class="card-title"><span class="icon">⚛️</span> PBR 物理渲染四大核心光學定律</h3>
+          <ul class="tech-list">
+            <li class="tech-item">
+              <span class="tech-bullet" style="background: var(--ue-cyan);"></span>
+              <div>
+                <strong style="color: var(--ue-cyan);">1. 能量守恆定律（Energy Conservation）：</strong>
+                出射光總能量（鏡面反射 Specular ＋ 漫反射 Diffuse）<strong>絕不可能大於入射光總能量</strong>。當物體表面越光滑、鏡面高光越強越聚攏時，穿透至內部的漫反射光必須相應減弱，杜絕舊世代遊戲中高光與漫射同時死亮的違和過曝！
+              </div>
+            </li>
+            <li class="tech-item">
+              <span class="tech-bullet" style="background: var(--zb-orange);"></span>
+              <div>
+                <strong style="color: var(--zb-orange);">2. 微表面散射理論（Microfacet Theory）：</strong>
+                任何巨觀平整的物體，微觀下皆是由無數微小的凹凸反射鏡（Microfacets）所組成。<span class="tech-term">Roughness</span> 控制微表面法線的混亂度（GGX 分佈）。越光滑則微面朝向一致（高光銳利）；越粗糙則光線四散（高光模糊擴散）。
+              </div>
+            </li>
+            <li class="tech-item">
+              <span class="tech-bullet" style="background: var(--sp-crimson);"></span>
+              <div>
+                <strong style="color: var(--sp-crimson);">3. 菲涅爾效應（Fresnel Effect, Schlick 近似式）：</strong>
+                <strong>視角決定反射率！</strong> 正視表面時（0°）反射率最低，稱為基礎反射率 F0；但當視線與表面呈擦邊掠射角（80° ~ 90°）時，<strong>無論任何物質，反射率均會暴增至接近 100%</strong>！
+              </div>
+            </li>
+            <li class="tech-item">
+              <span class="tech-bullet" style="background: var(--topo-green);"></span>
+              <div>
+                <strong style="color: var(--topo-green);">4. 導體與電介質的本質分野（Conductors vs Dielectrics）：</strong>
+                <strong>非金屬（電介質）</strong>：F0 約 4%，折射光形成豐富漫反射（BaseColor），高光呈純白無彩色。<br>
+                <strong>純金屬（導體）</strong>：F0 高達 70% ~ 100%，自由電子吞噬折射光（漫反射為 0），高光帶有 BaseColor 顏色（如黃金高光呈金黃）！因此 Metallic 貼圖必須「非黑即白」。
+              </div>
+            </li>
+          </ul>
+
+          <div class="callout-box">
+            <div class="callout-title">💡 現代雙工作流之爭：為什麼 Metallic/Roughness 勝出？</div>
+            舊式 Specular/Glossiness 允許美術隨意手繪高光顏色與強度，極易打破能量守恆；而 <strong>Metallic/Roughness 工作流</strong>將物理常數鎖死在演算法內部，既節省一張貼圖頻寬，又確保資產在任何光照下絕不破圖！
+          </div>
+        </div>
+
+        <!-- Right: Interactive PBR Optics Lab -->
+        <div class="content-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <h3 class="card-title"><span class="icon">🔬</span> PBR 光學物理與菲涅爾互動實驗室</h3>
+          </div>
+
+          <!-- Lab Tab Navigation -->
+          <div class="pbr-switcher-row" id="optics-tab-group" style="margin-bottom: 12px;">
+            <button class="pbr-btn active" data-tab="fresnel">1. 菲涅爾視角實驗</button>
+            <button class="pbr-btn" data-tab="microfacet">2. 微表面光束散射</button>
+            <button class="pbr-btn" data-tab="metal">3. 金屬 vs 非金屬透射</button>
+          </div>
+
+          <!-- Tab Content 1: Fresnel -->
+          <div id="tab-pane-fresnel" class="optics-pane">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <span style="font-size: 0.85rem; color: #cbd5e1;">調整攝影機視線夾角（掠射角）：</span>
+              <span id="fresnel-angle-val" class="tech-term" style="color: var(--ue-cyan);">正視 0° (F0 = 4%)</span>
+            </div>
+            <input type="range" id="fresnel-slider" min="0" max="85" step="1" value="0" style="width: 100%; accent-color: var(--ue-cyan); cursor: pointer; margin-bottom: 12px;">
+
+            <div class="interactive-viewport" style="min-height: 190px;">
+              <div class="viewport-overlay">
+                <span class="view-tag" id="fresnel-status-tag">反射率：4% (非金屬正視基準值)</span>
+              </div>
+              <svg viewBox="0 0 300 170" style="height: 160px;">
+                <defs>
+                  <radialGradient id="fresnel-sphere" cx="40%" cy="40%" r="60%">
+                    <stop offset="0%" stop-color="#38bdf8"/>
+                    <stop offset="60%" stop-color="#0369a1"/>
+                    <stop offset="100%" stop-color="#082f49"/>
+                  </radialGradient>
+                </defs>
+                <!-- Base Sphere -->
+                <circle cx="150" cy="85" r="60" fill="url(#fresnel-sphere)"/>
+                <!-- Fresnel Glancing Rim Light Ring (Dynamically scaled) -->
+                <circle id="fresnel-rim-glow" cx="150" cy="85" r="59" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.15"/>
+                <!-- Eye Sightline Indicator -->
+                <line id="fresnel-eye-ray" x1="40" y1="85" x2="90" y2="85" stroke="#f59e0b" stroke-width="2.5"/>
+                <text x="35" y="75" fill="#f59e0b" font-size="10" font-weight="700">視線方向</text>
+              </svg>
+            </div>
+            <div id="fresnel-explain-text" style="font-size: 0.8rem; color: #cbd5e1; margin-top: 8px; line-height: 1.4;">
+              拖曳滑桿至 85°，觀察球體邊緣的白色菲涅爾掠射強光（Fresnel Rim Light）如何急遽爆發至 100% 反射！
+            </div>
+          </div>
+
+          <!-- Tab Content 2: Microfacet -->
+          <div id="tab-pane-microfacet" class="optics-pane" style="display: none;">
+            <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+              <button class="control-btn active" id="btn-micro-smooth" style="flex:1;">光滑微表面 (Roughness 0.05)</button>
+              <button class="control-btn" id="btn-micro-rough" style="flex:1;">粗糙微表面 (Roughness 0.85)</button>
+            </div>
+            <div class="interactive-viewport" style="min-height: 190px;">
+              <svg viewBox="0 0 340 170" style="height: 160px;">
+                <!-- Incoming Parallel Rays -->
+                <line x1="80" y1="20" x2="130" y2="90" stroke="#f59e0b" stroke-width="2"/>
+                <line x1="120" y1="20" x2="170" y2="90" stroke="#f59e0b" stroke-width="2"/>
+                <line x1="160" y1="20" x2="210" y2="90" stroke="#f59e0b" stroke-width="2"/>
+                <text x="100" y="30" fill="#f59e0b" font-size="10" font-weight="700">平行入射光束</text>
+
+                <!-- Surface Base: Smooth vs Rough Microfacets -->
+                <path id="micro-surface-path" d="M 30 90 L 310 90" stroke="#00e5ff" stroke-width="3" fill="none"/>
+
+                <!-- Reflected Rays -->
+                <g id="micro-reflected-rays">
+                  <!-- Smooth by default: tight parallel reflected beam -->
+                  <line x1="130" y1="90" x2="180" y2="20" stroke="#00e5ff" stroke-width="2.5"/>
+                  <line x1="170" y1="90" x2="220" y2="20" stroke="#00e5ff" stroke-width="2.5"/>
+                  <line x1="210" y1="90" x2="260" y2="20" stroke="#00e5ff" stroke-width="2.5"/>
+                </g>
+                <text id="micro-reflect-label" x="200" y="30" fill="#00e5ff" font-size="10" font-weight="700">鏡面平行反射 (高光銳利清晰)</text>
+              </svg>
+            </div>
+            <div id="micro-explain-text" style="font-size: 0.8rem; color: #cbd5e1; margin-top: 8px; line-height: 1.4;">
+              光滑表面上的微反射鏡法線高度一致，所有反射光線朝同向射出，形成耀眼銳利的高光亮點。
+            </div>
+          </div>
+
+          <!-- Tab Content 3: Conductor vs Dielectric -->
+          <div id="tab-pane-metal" class="optics-pane" style="display: none;">
+            <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+              <button class="control-btn active" id="btn-mat-plastic" style="flex:1;">非金屬 (Plastic / Wood)</button>
+              <button class="control-btn" id="btn-mat-gold" style="flex:1;">純金屬 (Gold / Copper)</button>
+            </div>
+            <div class="interactive-viewport" style="min-height: 190px;">
+              <svg viewBox="0 0 340 170" style="height: 160px;">
+                <!-- Boundary Line -->
+                <line x1="20" y1="75" x2="320" y2="75" stroke="#64748b" stroke-width="2"/>
+                <text x="30" y="65" fill="#94a3b8" font-size="10">空氣介質 (Air)</text>
+                <text id="mat-subsurface-label" x="30" y="95" fill="#38bdf8" font-size="10">非金屬內部：折射光多次散射產生固有色</text>
+
+                <!-- Incoming Light Ray -->
+                <line x1="110" y1="20" x2="170" y2="75" stroke="#ffffff" stroke-width="2.5"/>
+                <text x="110" y="35" fill="#fff" font-size="10">白色入射光</text>
+
+                <!-- Specular Ray -->
+                <line id="mat-spec-ray" x1="170" y1="75" x2="230" y2="20" stroke="#ffffff" stroke-width="2"/>
+                <text id="mat-spec-text" x="225" y="35" fill="#ffffff" font-size="10">4% 純白高光 (F0=0.04)</text>
+
+                <!-- Refracted Subsurface Rays -->
+                <g id="mat-diffuse-rays">
+                  <path d="M 170 75 Q 190 110 210 130 Q 230 110 240 75" fill="none" stroke="#ef4444" stroke-width="2" stroke-dasharray="3,3"/>
+                  <path d="M 170 75 Q 150 120 170 140 Q 190 120 200 75" fill="none" stroke="#ef4444" stroke-width="2" stroke-dasharray="3,3"/>
+                  <text x="170" y="155" fill="#ef4444" font-size="10" font-weight="700">折射散射光出射 (Albedo 固有色)</text>
+                </g>
+              </svg>
+            </div>
+            <div id="mat-explain-text" style="font-size: 0.8rem; color: #cbd5e1; margin-top: 8px; line-height: 1.4;">
+              非金屬：96% 光線折射進內部經色素粒子多次彈射帶出色彩（漫反射）；4% 在表面直接彈出純白高光。
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 9: Phase 6: PBR 物理材質與 Substance Painter
+         ========================================== -->
+    <section class="slide" data-index="9" data-title="Phase 6: PBR 材質與 Substance Painter" data-phase="PHASE 06">
       <div class="slide-header">
         <div>
           <div class="slide-badge-row">
@@ -1745,9 +1918,9 @@
     </section>
 
     <!-- ==========================================
-         SLIDE 9: Phase 7: 骨架綁定與蒙皮 (Rigging & Skinning)
+         SLIDE 10: Phase 7: 骨架綁定與蒙皮 (Rigging & Skinning)
          ========================================== -->
-    <section class="slide" data-index="9" data-title="Phase 7: 骨架綁定與蒙皮" data-phase="PHASE 07">
+    <section class="slide" data-index="10" data-title="Phase 7: 骨架綁定與蒙皮" data-phase="PHASE 07">
       <div class="slide-header">
         <div>
           <div class="slide-badge-row">
@@ -1845,9 +2018,9 @@
     </section>
 
     <!-- ==========================================
-         SLIDE 10: Phase 8: 遊戲動畫製作與動作循環 (Game Animation)
+         SLIDE 11: Phase 8: 遊戲動畫製作與動作循環 (Game Animation)
          ========================================== -->
-    <section class="slide" data-index="10" data-title="Phase 8: 遊戲動畫製作" data-phase="PHASE 08">
+    <section class="slide" data-index="11" data-title="Phase 8: 遊戲動畫製作" data-phase="PHASE 08">
       <div class="slide-header">
         <div>
           <div class="slide-badge-row">
@@ -1955,9 +2128,9 @@
     </section>
 
     <!-- ==========================================
-         SLIDE 11: Phase 9: 整合至 Unreal Engine (UE5 實戰管線)
+         SLIDE 12: Phase 9: 整合至 Unreal Engine (UE5 實戰管線)
          ========================================== -->
-    <section class="slide" data-index="11" data-title="Phase 9: Unreal Engine 5 實戰整合" data-phase="PHASE 09">
+    <section class="slide" data-index="12" data-title="Phase 9: Unreal Engine 5 實戰整合" data-phase="PHASE 09">
       <div class="slide-header">
         <div>
           <div class="slide-badge-row">
@@ -2044,9 +2217,9 @@
     </section>
 
     <!-- ==========================================
-         SLIDE 12: 業界規格標準與除錯避坑清單 (Standards & Pitfalls)
+         SLIDE 13: 業界規格標準與除錯避坑清單 (Standards & Pitfalls)
          ========================================== -->
-    <section class="slide" data-index="12" data-title="業界規格標準與避坑清單" data-phase="SUMMARY & SPECS">
+    <section class="slide" data-index="13" data-title="業界規格標準與避坑清單" data-phase="SUMMARY & SPECS">
       <div class="slide-header">
         <div>
           <div class="slide-badge-row">
@@ -2139,9 +2312,9 @@
     </section>
 
     <!-- ==========================================
-         SLIDE 13: 結語與專案評量指導 (Conclusion & Portfolio)
+         SLIDE 14: 結語與專案評量指導 (Conclusion & Portfolio)
          ========================================== -->
-    <section class="slide" data-index="13" data-title="結語與作品集建構心法" data-phase="PORTFOLIO GUIDE">
+    <section class="slide" data-index="14" data-title="結語與作品集建構心法" data-phase="PORTFOLIO GUIDE">
       <div class="slide-header">
         <div>
           <div class="slide-badge-row">
@@ -2294,31 +2467,36 @@
         focus: "解釋外籠（Cage）如何避免手指與腋下光線穿透誤擊。"
       },
       8: {
-        tag: "PBR 物理材質原理",
+        tag: "PBR 物理渲染四大光學定律",
+        script: "在同學打開 Substance Painter 之前，一定要先掌握 PBR 的核心物理光學！大家常問：『老師，為什麼不能在 Base Color 畫暗角？』因為 PBR 遵循能量守恆定律，高光反射與漫反射折射相互消長，暗角應該由即時陰影或 AO 決定。請大家操作右側實驗室的菲涅爾滑桿：正視物體時反射率只有 4%，但當視線平行擦邊（85 度掠射角）時，幾乎所有物體都會暴增到 100% 鏡面反射！這就是次世代材質邊緣輪廓光的秘密！另外切記：非金屬高光是白色的，只有純金屬的高光才會被 BaseColor 染色，所以金屬度絕不能隨便給 0.5！",
+        focus: "透過互動實驗室，釐清能量守恆、微表面粗糙度、菲涅爾掠射角與金屬二值化的光學本質。"
+      },
+      9: {
+        tag: "PBR 物理材質通道實戰",
         script: "在 Substance 3D Painter 中，我們繪製的是 PBR 物理材質。請同學切換上方按鈕觀察各通道：Base Color 純淨無陰影、Roughness 控制光圈散開程度、Metallic 遵循非黑即白（0 或 1）。別忘了運用 Anchor Points（錨點）讓下層雕刻的刮痕自動傳遞給上層生成器，這才叫專業聰明的工作流！",
         focus: "點擊各通道按鈕，向學生展示材質並非一團顏色，而是多重物理層的疊加。"
       },
-      9: {
+      10: {
         tag: "骨架蒙皮與變形守恆",
         script: "進到骨架與蒙皮。骨骼就像人體骨架，關節軸向一定要一致。蒙皮時最常見的 Bug 就是『糖果包裝紙扭縮（Candy-wrapper artifact）』，當手腕轉 180 度時整隻手扭扁成麻花。解法就是加入 Twist Bones（扭轉輔助骨），將旋轉角度平均分配給兩根骨頭。",
         focus: "強調頂點權重總和必須為 1.0 的數學守恆定律。"
       },
-      10: {
+      11: {
         tag: "遊戲動畫的模組化思維",
         script: "遊戲動畫跟電影完全不同！電影是線性單向播放，遊戲則隨時會被玩家的手把打斷。所以我們製作的是 Idle、Walk、Run 等循環動畫。請注意 In-Place（原地踩跑步機）與 Root Motion（根骨骼位移）的差異，要徹底避免腳步滑步，Root Motion 是最頂尖的方案。",
         focus: "解析走路循環四大關鍵相位（Contact, Down, Passing, Up）與重心起伏。"
       },
-      11: {
+      12: {
         tag: "Unreal Engine 5 落地實戰",
         script: "到了最後整合階段，把資產送進 Unreal Engine 5！請務必記住 ORM 貼圖通道打包：Red 放 AO、Green 放 Roughness、Blue 放 Metallic。還有最關鍵的一點——導入 UE5 後必須取消勾選 sRGB！否則貼圖會被 Gamma 增亮，導致金屬感與粗糙度全面崩潰！",
         focus: "介紹動畫藍圖狀態機切換與 UE5 Nanite/Lumen 次世代特性。"
       },
-      12: {
+      13: {
         tag: "除錯與規格避坑",
         script: "這是老師幫大家整理的『新手十大地雷清單』與 AAA 規格速查表。期末專案交件前，請務必逐一核對：Freeze Transforms 做了沒？單位是不是公分？ORM 有沒有關 sRGB？法線 Y 軸有沒有翻轉？這份清單能幫大家省下幾十個小時的除錯時間。",
         focus: "指導學生如何以專業標準自我檢查作業。"
       },
-      13: {
+      14: {
         tag: "作品集與期末總結",
         script: "最後，同學們要拿去投遞遊戲公司的 ArtStation 作品集，千萬不要只放單純的照片。主美要看的是：360 度轉盤影片、乾淨的線框拓撲圖、拆解的 PBR 貼圖，以及帶骨架的動態姿態。大家可以點擊下方的『匯出完整講義 PDF』，隨時複習今天的所有知識點！",
         focus: "激勵學生打造符合國際標準的次世代 3D 美術作品集。"
@@ -2327,7 +2505,7 @@
 
     // Application State
     let currentSlide = 1;
-    const totalSlides = 13;
+    const totalSlides = 14;
     let audioEnabled = true;
 
     // Web Audio Synthesizer for High-Tech Clicks
@@ -2903,6 +3081,155 @@
           armDeformNote.textContent = "❌ 糖果紙效應：手腕旋轉時網格像轉動糖果紙般被絞緊塌扁！";
           armDeformNote.setAttribute('fill', '#ff2a5f');
         }
+      });
+    }
+
+    // --- Interactive Component for Slide 8: PBR Optics & Fresnel Laboratory ---
+    const opticsTabBtns = document.querySelectorAll('#optics-tab-group .pbr-btn');
+    const opticsPanes = {
+      fresnel: document.getElementById('tab-pane-fresnel'),
+      microfacet: document.getElementById('tab-pane-microfacet'),
+      metal: document.getElementById('tab-pane-metal')
+    };
+
+    if (opticsTabBtns.length > 0) {
+      opticsTabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          opticsTabBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const tab = btn.dataset.tab;
+          playSfx('switch');
+          Object.keys(opticsPanes).forEach(k => {
+            if (opticsPanes[k]) {
+              opticsPanes[k].style.display = (k === tab) ? 'block' : 'none';
+            }
+          });
+        });
+      });
+    }
+
+    // Fresnel Slider
+    const fresnelSlider = document.getElementById('fresnel-slider');
+    const fresnelAngleVal = document.getElementById('fresnel-angle-val');
+    const fresnelStatusTag = document.getElementById('fresnel-status-tag');
+    const fresnelRimGlow = document.getElementById('fresnel-rim-glow');
+    const fresnelEyeRay = document.getElementById('fresnel-eye-ray');
+    const fresnelExplainText = document.getElementById('fresnel-explain-text');
+
+    if (fresnelSlider) {
+      fresnelSlider.addEventListener('input', (e) => {
+        const deg = parseInt(e.target.value, 10);
+        const rad = (deg * Math.PI) / 180;
+        const cosTheta = Math.cos(rad);
+        const f0 = 0.04;
+        const fresnel = f0 + (1 - f0) * Math.pow(1 - cosTheta, 5);
+        const percent = Math.round(fresnel * 100);
+
+        fresnelAngleVal.textContent = `掠射角 ${deg}° (F0 = ${percent}%)`;
+        fresnelStatusTag.textContent = `反射率：${percent}% (${deg >= 70 ? '掠射角強烈鏡面反射！' : '漫反射主導'})`;
+        
+        if (fresnelRimGlow) {
+          const glowOpacity = Math.min(1, 0.15 + (percent / 100) * 0.85);
+          const strokeW = 1 + (deg / 85) * 6;
+          fresnelRimGlow.setAttribute('opacity', glowOpacity);
+          fresnelRimGlow.setAttribute('stroke-width', strokeW);
+          fresnelRimGlow.setAttribute('stroke', deg >= 60 ? '#ffffff' : '#38bdf8');
+        }
+
+        if (fresnelEyeRay) {
+          const eyeY = 85 - (deg / 85) * 55;
+          fresnelEyeRay.setAttribute('y1', eyeY);
+          fresnelEyeRay.setAttribute('y2', 85 - (deg / 85) * 50);
+        }
+
+        if (fresnelExplainText) {
+          if (deg < 30) {
+            fresnelExplainText.innerHTML = `<strong>正視低反射區（${deg}°）：</strong> 光線垂直入射，反射率僅約 4%，絕大部分光線折射進入物體內部產生漫反射。`;
+          } else if (deg < 70) {
+            fresnelExplainText.innerHTML = `<strong>過渡視角（${deg}°）：</strong> 隨視線傾斜，菲涅爾反射率平緩上升至 ${percent}%，物體邊緣開始浮現微微光暈。`;
+          } else {
+            fresnelExplainText.innerHTML = `<strong>掠射極限角（${deg}°）：</strong> 接近切角時反射率暴增至 <strong>${percent}%</strong>！所有物質在邊緣皆近乎 100% 反射，形成清脆輪廓光！`;
+          }
+        }
+      });
+    }
+
+    // Microfacet Smooth / Rough Toggle
+    const btnMicroSmooth = document.getElementById('btn-micro-smooth');
+    const btnMicroRough = document.getElementById('btn-micro-rough');
+    const microSurfacePath = document.getElementById('micro-surface-path');
+    const microReflectedRays = document.getElementById('micro-reflected-rays');
+    const microReflectLabel = document.getElementById('micro-reflect-label');
+    const microExplainText = document.getElementById('micro-explain-text');
+
+    if (btnMicroSmooth && btnMicroRough) {
+      btnMicroSmooth.addEventListener('click', () => {
+        btnMicroSmooth.classList.add('active');
+        btnMicroRough.classList.remove('active');
+        playSfx('switch');
+        microSurfacePath.setAttribute('d', 'M 30 90 L 310 90');
+        microReflectedRays.innerHTML = `
+          <line x1="130" y1="90" x2="180" y2="20" stroke="#00e5ff" stroke-width="2.5"/>
+          <line x1="170" y1="90" x2="220" y2="20" stroke="#00e5ff" stroke-width="2.5"/>
+          <line x1="210" y1="90" x2="260" y2="20" stroke="#00e5ff" stroke-width="2.5"/>
+        `;
+        microReflectLabel.textContent = "鏡面平行反射 (高光銳利清晰)";
+        microReflectLabel.setAttribute('fill', '#00e5ff');
+        microExplainText.innerHTML = "光滑表面（Roughness 0.05）：微表面朝向高度整齊，所有反射光束朝同一方向鏡面射出，形成極致清晰的亮點。";
+      });
+
+      btnMicroRough.addEventListener('click', () => {
+        btnMicroRough.classList.add('active');
+        btnMicroSmooth.classList.remove('active');
+        playSfx('switch');
+        microSurfacePath.setAttribute('d', 'M 30 90 L 60 84 L 90 95 L 120 86 L 150 94 L 180 85 L 210 96 L 240 84 L 270 94 L 310 90');
+        microReflectedRays.innerHTML = `
+          <line x1="120" y1="86" x2="135" y2="25" stroke="#f43f5e" stroke-width="2" stroke-dasharray="3,2"/>
+          <line x1="170" y1="90" x2="230" y2="40" stroke="#f43f5e" stroke-width="2" stroke-dasharray="3,2"/>
+          <line x1="210" y1="96" x2="280" y2="60" stroke="#f43f5e" stroke-width="2" stroke-dasharray="3,2"/>
+          <line x1="150" y1="94" x2="110" y2="35" stroke="#f43f5e" stroke-width="2" stroke-dasharray="3,2"/>
+        `;
+        microReflectLabel.textContent = "混亂散射光 (高光擴散暗淡)";
+        microReflectLabel.setAttribute('fill', '#f43f5e');
+        microExplainText.innerHTML = "粗糙表面（Roughness 0.85）：微表面宛如鋸齒亂石，法線隨機分散，平行入射光被彈向四面八方，呈現均勻漫散霧面質感。";
+      });
+    }
+
+    // Material Dielectric vs Conductor Toggle
+    const btnMatPlastic = document.getElementById('btn-mat-plastic');
+    const btnMatGold = document.getElementById('btn-mat-gold');
+    const matSubsurfaceLabel = document.getElementById('mat-subsurface-label');
+    const matSpecRay = document.getElementById('mat-spec-ray');
+    const matSpecText = document.getElementById('mat-spec-text');
+    const matDiffuseRays = document.getElementById('mat-diffuse-rays');
+    const matExplainText = document.getElementById('mat-explain-text');
+
+    if (btnMatPlastic && btnMatGold) {
+      btnMatPlastic.addEventListener('click', () => {
+        btnMatPlastic.classList.add('active');
+        btnMatGold.classList.remove('active');
+        playSfx('switch');
+        matSubsurfaceLabel.textContent = "非金屬內部：折射光多次散射產生固有色";
+        matSubsurfaceLabel.setAttribute('fill', '#38bdf8');
+        matSpecRay.setAttribute('stroke', '#ffffff');
+        matSpecText.textContent = "4% 純白高光 (F0=0.04)";
+        matSpecText.setAttribute('fill', '#ffffff');
+        matDiffuseRays.style.display = 'block';
+        matExplainText.innerHTML = "<strong>非金屬（電介質）：</strong> 96% 光線折射進內部經色素粒子多次彈射帶出色彩（漫反射）；4% 在表面直接彈出純白高光。";
+      });
+
+      btnMatGold.addEventListener('click', () => {
+        btnMatGold.classList.add('active');
+        btnMatPlastic.classList.remove('active');
+        playSfx('switch');
+        matSubsurfaceLabel.textContent = "純金屬內部：自由電子完全吞噬折射光 (漫反射 Diffuse = 0)";
+        matSubsurfaceLabel.setAttribute('fill', '#f59e0b');
+        matSpecRay.setAttribute('stroke', '#fbbf24');
+        matSpecRay.setAttribute('stroke-width', '3.5');
+        matSpecText.textContent = "90% 金黃色高光 (F0=0.90，被金屬染色)";
+        matSpecText.setAttribute('fill', '#fbbf24');
+        matDiffuseRays.style.display = 'none';
+        matExplainText.innerHTML = "<strong>純金屬（導體）：</strong> 折射光在表面奈米深度內被自由電子 100% 吸收轉化為熱能（完全無漫反射）！90% 以上光線在表面直接反射，且<strong>高光被材質顏色染色</strong>。";
       });
     }
 
