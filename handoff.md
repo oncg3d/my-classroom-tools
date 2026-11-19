@@ -14,11 +14,11 @@
 - AI 生成互動教學簡報：[tools/ai-generation-guide/index.html](file:///g:/_Codex/20261117_專案模式設定/tools/ai-generation-guide/index.html)
 - 班級工具導覽入口：[index.html](file:///g:/_Codex/20261117_專案模式設定/index.html)
 - GitHub Pages 線上網址：`https://oncg3d.github.io/my-classroom-tools/tools/nextgen-pipeline-guide/`
-- Git 狀態：✅ 已加入多邊形建模布線原理 (Edge Flow/Poles/Reduction/Holding) 與製作者署名，已推送到遠端 (commit: 4e7be5a)。
+- Git 狀態：✅ 頁尾快捷鍵按鈕已全面實作點擊互動功能與動態懸浮回饋，已推送到遠端 (commit: 914b643)。
 
 ## ➡️ 下一步
 1. 可在瀏覽器中直接開啟 `tools/nextgen-pipeline-guide/index.html` 進行課堂投影展示。
-2. 支援全鍵盤快捷鍵（方向鍵、N 開啟講稿、P 切換連續好讀模式、G 投影片目錄、F 全螢幕）。
+2. 頁尾快捷鍵標籤（←/→、Space、G、N、P、F）支援滑鼠直接點擊操作與全鍵盤快捷鍵無縫聯動。
 3. 後續可依教學進度補充特定軟體的課堂實作作業範例檔。
 
 ## ⚠️ 注意事項
@@ -27,6 +27,6 @@
 - 遵守個資與安全規範
 
 ## 🕐 最後更新
-- 時間：2026-11-19 12:11
+- 時間：2026-11-19 12:23
 - 更新者：Antigravity
-- Git push：✅ 已推 (commit: 4e7be5a)
+- Git push：✅ 已推 (commit: 914b643)
