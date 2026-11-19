@@ -6,7 +6,7 @@
 1. 已完成專案基礎建設、GitHub Pages 與跨電腦專案管理。
 2. 已建立第一套工具：`tools/coordinate-hunter/`（座標獵人：直角坐標練習小遊戲）。
 3. 已建立第二套工具：`tools/ai-generation-guide/`（AI 圖像與影音生成互動簡報）。
-4. 已全新打造第三套工具：`tools/nextgen-pipeline-guide/`（專為大學 3D 遊戲與動畫課程量身製作的「次世代遊戲角色與美術製作流程」14 頁互動講義與展示，包含獨立的「PBR 物理渲染四大光學原理」專題、8 大互動實驗室、14 頁全圖解視覺示意圖，以及講師備忘講稿）。
+4. 已全新打造第三套工具：`tools/nextgen-pipeline-guide/`（專為大學 3D 遊戲與動畫課程量身製作的「次世代遊戲角色與美術製作流程」14 頁互動講義與展示，包含多邊形建模布線四大原理與拓撲實驗室、獨立的「PBR 物理渲染四大光學原理」專題、8 大互動實驗室、14 頁全圖解視覺示意圖，以及講師備忘講稿，頁尾製作者已署名「吳信成」）。
 5. 已在導覽入口首頁 `index.html` 與專案藍圖 `AGENTS.md` 完成整合。
 
 ## 🚦 目前狀態
@@ -14,7 +14,7 @@
 - AI 生成互動教學簡報：[tools/ai-generation-guide/index.html](file:///g:/_Codex/20261117_專案模式設定/tools/ai-generation-guide/index.html)
 - 班級工具導覽入口：[index.html](file:///g:/_Codex/20261117_專案模式設定/index.html)
 - GitHub Pages 線上網址：`https://oncg3d.github.io/my-classroom-tools/tools/nextgen-pipeline-guide/`
-- Git 狀態：✅ 14 頁全圖解示意圖與 PBR 物理光學專題已完整部署並推送到遠端 (commit: 5146566)。
+- Git 狀態：✅ 已加入多邊形建模布線原理 (Edge Flow/Poles/Reduction/Holding) 與製作者署名，已推送到遠端 (commit: 4e7be5a)。
 
 ## ➡️ 下一步
 1. 可在瀏覽器中直接開啟 `tools/nextgen-pipeline-guide/index.html` 進行課堂投影展示。
@@ -27,6 +27,6 @@
 - 遵守個資與安全規範
 
 ## 🕐 最後更新
-- 時間：2026-11-19 11:55
+- 時間：2026-11-19 12:11
 - 更新者：Antigravity
-- Git push：✅ 已推 (commit: 5146566)
+- Git push：✅ 已推 (commit: 4e7be5a)
