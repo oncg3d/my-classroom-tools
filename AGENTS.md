@@ -13,6 +13,7 @@
 - [x] 部署跨電腦專案管理三技能（project-init, startup, shutdown）
 - [x] 製作第一個工具：tools/coordinate-hunter（座標獵人）
 - [x] 製作第二個工具：tools/ai-generation-guide（AI 圖像與影音生成互動簡報）
+- [x] 製作第三個工具：tools/nextgen-pipeline-guide（次世代遊戲美術製作流程講義與互動展示）
 - [ ] 串接 Firebase 免費即時資料庫
 
 ## 資料夾結構
@@ -26,7 +27,8 @@ my-classroom-tools/
 ├── README.md                   # 專案入口說明
 └── tools/
     ├── ai-generation-guide/    # AI 圖像與影音生成互動教學簡報
-    └── coordinate-hunter/      # 直角座標練習小遊戲
+    ├── coordinate-hunter/      # 直角座標練習小遊戲
+    └── nextgen-pipeline-guide/ # 次世代遊戲角色與美術製作流程講義
 ```
 
 ## 同步層級（本專案初始化至第 3 層級）

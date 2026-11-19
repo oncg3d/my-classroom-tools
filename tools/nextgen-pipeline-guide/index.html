@@ -1,0 +1,2934 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>次世代遊戲角色與美術製作全流程解析 | 大學 3D 數位遊戲藝術與動畫專業講義</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;700;900&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0a0d14;
+      --bg-panel: rgba(16, 22, 34, 0.85);
+      --bg-card: rgba(22, 30, 46, 0.7);
+      --bg-card-hover: rgba(30, 42, 66, 0.9);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-glow: rgba(0, 229, 255, 0.25);
+      
+      /* Theme accents matching AAA game tools */
+      --ue-cyan: #00e5ff;
+      --ue-blue: #0070f3;
+      --zb-orange: #ff7700;
+      --sp-crimson: #ff2a5f;
+      --maya-teal: #00b4d8;
+      --topo-green: #10b981;
+      --rig-purple: #a855f7;
+      --warn-amber: #f59e0b;
+      
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+      
+      --shadow-elevation: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+      --shadow-cyan-glow: 0 0 35px -5px rgba(0, 229, 255, 0.25);
+      --shadow-orange-glow: 0 0 35px -5px rgba(255, 119, 0, 0.25);
+      
+      --trans-fast: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      --trans-smooth: 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 10% 15%, rgba(0, 229, 255, 0.08), transparent 35%),
+        radial-gradient(circle at 90% 85%, rgba(255, 42, 95, 0.08), transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.05), transparent 50%),
+        linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+      color: var(--text-main);
+      font-family: 'Outfit', 'Noto Sans TC', sans-serif;
+      min-height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.2);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--ue-cyan);
+    }
+
+    /* Top Navigation Bar */
+    header.deck-header {
+      height: 64px;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(10, 13, 20, 0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-subtle);
+      z-index: 100;
+      position: relative;
+    }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+    }
+
+    .back-home {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: var(--trans-fast);
+      font-size: 1rem;
+    }
+    .back-home:hover {
+      background: rgba(0, 229, 255, 0.15);
+      border-color: var(--ue-cyan);
+      color: #fff;
+    }
+
+    .brand-title {
+      font-weight: 800;
+      font-size: 1.1rem;
+      letter-spacing: -0.2px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-badge {
+      background: linear-gradient(135deg, var(--ue-cyan), #0099ff);
+      color: #06090e;
+      font-size: 0.72rem;
+      font-weight: 900;
+      padding: 3px 8px;
+      border-radius: 5px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+    }
+
+    .current-slide-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 14px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--trans-fast);
+    }
+    .current-slide-info:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--ue-cyan);
+    }
+
+    .deck-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .control-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      padding: 7px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--trans-fast);
+      outline: none;
+      font-family: inherit;
+    }
+
+    .control-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-1px);
+    }
+
+    .control-btn.active {
+      background: rgba(0, 229, 255, 0.2);
+      border-color: var(--ue-cyan);
+      color: var(--ue-cyan);
+      box-shadow: 0 0 12px rgba(0, 229, 255, 0.2);
+    }
+
+    .btn-nav {
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+
+    /* Progress bar */
+    .progress-bar-container {
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.06);
+      position: relative;
+      z-index: 99;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--ue-cyan), var(--zb-orange), var(--sp-crimson));
+      transition: width 0.35s ease;
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+    }
+
+    /* Main Deck Stage */
+    main.deck-stage {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 24px;
+    }
+
+    .slide {
+      position: absolute;
+      width: 100%;
+      max-width: 1320px;
+      height: calc(100vh - 120px);
+      max-height: 820px;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(0.95) translateY(24px);
+      transition: opacity var(--trans-smooth), transform var(--trans-smooth), visibility var(--trans-smooth);
+      pointer-events: none;
+      padding: 16px;
+      overflow-y: auto;
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1) translateY(0);
+      pointer-events: auto;
+      z-index: 10;
+    }
+
+    .slide.prev {
+      transform: scale(0.94) translateX(-80px);
+    }
+
+    .slide.next {
+      transform: scale(0.94) translateX(80px);
+    }
+
+    /* Slide Headers & Typography */
+    .slide-header {
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 12px;
+      flex-shrink: 0;
+    }
+
+    .slide-badge-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .slide-phase-pill {
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .pill-cyan { background: rgba(0, 229, 255, 0.15); color: var(--ue-cyan); border: 1px solid rgba(0, 229, 255, 0.3); }
+    .pill-orange { background: rgba(255, 119, 0, 0.15); color: var(--zb-orange); border: 1px solid rgba(255, 119, 0, 0.3); }
+    .pill-green { background: rgba(16, 185, 129, 0.15); color: var(--topo-green); border: 1px solid rgba(16, 185, 129, 0.3); }
+    .pill-purple { background: rgba(168, 85, 247, 0.15); color: var(--rig-purple); border: 1px solid rgba(168, 85, 247, 0.3); }
+    .pill-crimson { background: rgba(255, 42, 95, 0.15); color: var(--sp-crimson); border: 1px solid rgba(255, 42, 95, 0.3); }
+
+    .slide-title {
+      font-size: 2.1rem;
+      font-weight: 900;
+      line-height: 1.2;
+      background: linear-gradient(135deg, #ffffff 40%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+
+    .slide-subtitle {
+      font-size: 0.98rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+      font-weight: 400;
+    }
+
+    .software-stack {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .soft-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      padding: 3px 8px;
+      border-radius: 6px;
+      color: #cbd5e1;
+    }
+
+    /* Layout Grids */
+    .slide-body {
+      flex: 1;
+      display: grid;
+      gap: 16px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .grid-2col {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .grid-3col {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .grid-12 {
+      grid-template-columns: 1fr 2fr;
+    }
+
+    .grid-21 {
+      grid-template-columns: 2fr 1fr;
+    }
+
+    /* Cards & Containers */
+    .content-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+      transition: border-color var(--trans-fast), background var(--trans-fast);
+    }
+
+    .content-card:hover {
+      border-color: rgba(255, 255, 255, 0.15);
+      background: var(--bg-card-hover);
+    }
+
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-title .icon {
+      font-size: 1.25rem;
+    }
+
+    /* Technical Bullet Points */
+    .tech-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .tech-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.92rem;
+      line-height: 1.55;
+      color: #e2e8f0;
+      user-select: text;
+    }
+
+    .tech-bullet {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--ue-cyan);
+      margin-top: 8px;
+      flex-shrink: 0;
+      box-shadow: 0 0 8px var(--ue-cyan);
+    }
+
+    .tech-highlight {
+      color: var(--ue-cyan);
+      font-weight: 700;
+    }
+
+    .tech-term {
+      color: #f1f5f9;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+    }
+
+    /* Concept Callouts */
+    .callout-box {
+      border-left: 3px solid var(--ue-cyan);
+      background: rgba(0, 229, 255, 0.06);
+      padding: 12px 16px;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin-top: 14px;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: #cbd5e1;
+    }
+
+    .callout-box.warn {
+      border-left-color: var(--warn-amber);
+      background: rgba(245, 158, 11, 0.07);
+    }
+
+    .callout-box.danger {
+      border-left-color: var(--sp-crimson);
+      background: rgba(255, 42, 95, 0.07);
+    }
+
+    .callout-title {
+      font-weight: 700;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .callout-box.warn .callout-title { color: var(--warn-amber); }
+    .callout-box.danger .callout-title { color: var(--sp-crimson); }
+    .callout-box:not(.warn):not(.danger) .callout-title { color: var(--ue-cyan); }
+
+    /* Interactive Diagrams & Demos */
+    .interactive-viewport {
+      background: #06090e;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 260px;
+    }
+
+    .viewport-overlay {
+      position: absolute;
+      top: 10px;
+      left: 12px;
+      display: flex;
+      gap: 6px;
+      z-index: 5;
+    }
+
+    .view-tag {
+      font-size: 0.72rem;
+      font-family: 'JetBrains Mono', monospace;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 2px 8px;
+      border-radius: 4px;
+      color: var(--text-muted);
+    }
+
+    /* Comparison Split Slider */
+    .split-slider-container {
+      position: relative;
+      width: 100%;
+      height: 260px;
+      overflow: hidden;
+      border-radius: var(--radius-md);
+      cursor: ew-resize;
+    }
+
+    .split-img-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .split-handle {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: #fff;
+      box-shadow: 0 0 12px rgba(0, 229, 255, 0.8);
+      z-index: 10;
+      cursor: ew-resize;
+    }
+
+    .split-knob {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #fff;
+      color: #06090e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 900;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+    }
+
+    /* Step Timeline in Slide 2 */
+    .pipeline-nav-strip {
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .pipeline-step-node {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 10px 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--trans-fast);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .pipeline-step-node:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .pipeline-step-node.active {
+      border-color: var(--ue-cyan);
+      background: rgba(0, 229, 255, 0.15);
+      box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
+    }
+
+    .node-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+
+    .node-name {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap;
+    }
+
+    /* PBR Layer Switcher */
+    .pbr-switcher-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .pbr-btn {
+      flex: 1;
+      padding: 6px 10px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: var(--trans-fast);
+      text-align: center;
+    }
+
+    .pbr-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+
+    .pbr-btn.active {
+      background: var(--ue-cyan);
+      color: #06090e;
+      border-color: var(--ue-cyan);
+      font-weight: 800;
+      box-shadow: 0 0 12px rgba(0, 229, 255, 0.4);
+    }
+
+    /* Bottom Deck Footer */
+    footer.deck-footer {
+      height: 48px;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(10, 13, 20, 0.95);
+      border-top: 1px solid var(--border-subtle);
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      z-index: 100;
+    }
+
+    .keyboard-hints {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .key-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* Modals & Drawers */
+    /* Lecture Notes Drawer (Professor Speaking Notes) */
+    .notes-drawer {
+      position: fixed;
+      bottom: 48px;
+      right: 24px;
+      width: 480px;
+      max-height: 440px;
+      background: rgba(16, 22, 34, 0.96);
+      border: 1px solid var(--border-glow);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-elevation), var(--shadow-cyan-glow);
+      backdrop-filter: blur(20px);
+      z-index: 200;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      animation: slideUp 0.3s ease;
+    }
+
+    .notes-drawer.open {
+      display: flex;
+    }
+
+    .drawer-header {
+      padding: 12px 18px;
+      background: rgba(0, 229, 255, 0.1);
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .drawer-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--ue-cyan);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .drawer-body {
+      padding: 16px 18px;
+      overflow-y: auto;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: #e2e8f0;
+      user-select: text;
+    }
+
+    .notes-section {
+      margin-bottom: 14px;
+    }
+
+    .notes-tag {
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--zb-orange);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    /* Slide Grid Modal */
+    .grid-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(6, 9, 14, 0.92);
+      backdrop-filter: blur(20px);
+      z-index: 300;
+      display: none;
+      flex-direction: column;
+      padding: 40px;
+      overflow-y: auto;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .grid-modal.open {
+      display: flex;
+    }
+
+    .modal-header {
+      max-width: 1200px;
+      margin: 0 auto 30px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .grid-cards-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .thumb-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      cursor: pointer;
+      transition: var(--trans-fast);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 140px;
+    }
+
+    .thumb-card:hover {
+      border-color: var(--ue-cyan);
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px -5px rgba(0, 229, 255, 0.3);
+    }
+
+    .thumb-card.active {
+      border-color: var(--ue-cyan);
+      background: rgba(0, 229, 255, 0.12);
+    }
+
+    .thumb-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--ue-cyan);
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .thumb-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.3;
+    }
+
+    .thumb-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+
+    /* Print / Continuous Handout Mode */
+    body.handout-mode {
+      overflow-y: auto !important;
+      height: auto !important;
+    }
+
+    body.handout-mode header.deck-header,
+    body.handout-mode footer.deck-footer,
+    body.handout-mode .progress-bar-container {
+      position: sticky;
+      top: 0;
+    }
+
+    body.handout-mode main.deck-stage {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      padding: 40px 20px;
+      height: auto;
+      overflow: visible;
+    }
+
+    body.handout-mode .slide {
+      position: relative !important;
+      transform: none !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      max-height: none !important;
+      height: auto !important;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      background: var(--bg-panel);
+      padding: 30px;
+      box-shadow: var(--shadow-elevation);
+    }
+
+    /* Keyframes */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* SVG Graphics & Custom Visual Styles */
+    .svg-canvas {
+      width: 100%;
+      height: 100%;
+      max-height: 280px;
+    }
+
+    .code-block {
+      background: #04070c;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      color: #38bdf8;
+      overflow-x: auto;
+      line-height: 1.5;
+    }
+
+    /* Badge Grid for Specs */
+    .specs-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      margin-top: 8px;
+    }
+
+    .specs-table th, .specs-table td {
+      padding: 8px 12px;
+      border: 1px solid var(--border-subtle);
+      text-align: left;
+    }
+
+    .specs-table th {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--ue-cyan);
+      font-weight: 700;
+    }
+
+    .specs-table td {
+      color: #cbd5e1;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .grid-2col, .grid-3col, .grid-12, .grid-21 {
+        grid-template-columns: 1fr;
+      }
+      .slide {
+        height: auto;
+        max-height: none;
+      }
+      body {
+        overflow-y: auto;
+      }
+      .slide-title {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header class="deck-header">
+    <div class="brand-section">
+      <a href="../../index.html" class="back-home" title="返回班級工具首頁">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </a>
+      <div class="brand-title" id="btn-toggle-grid">
+        <span>次世代遊戲美術製作全流程</span>
+        <span class="brand-badge">AAA PIPELINE</span>
+      </div>
+    </div>
+
+    <!-- Center Current Slide Display -->
+    <div class="current-slide-info" id="deck-jump-btn" title="點擊展開投影片目錄 (快捷鍵: G)">
+      <span style="color: var(--ue-cyan); font-family: 'JetBrains Mono', monospace;" id="slide-counter">SLIDE 01 / 13</span>
+      <span style="color: var(--text-muted); font-size: 0.8rem;">▾</span>
+    </div>
+
+    <!-- Right Controls -->
+    <div class="deck-controls">
+      <button class="control-btn" id="btn-notes" title="切換講師講稿備忘錄 (快捷鍵: N)">
+        <span>🎙️ 講稿</span>
+      </button>
+      <button class="control-btn" id="btn-mode" title="切換簡報/連續講義模式 (快捷鍵: P)">
+        <span>📖 講義模式</span>
+      </button>
+      <button class="control-btn" id="btn-audio" title="音效開關 (快捷鍵: M)">
+        <span id="audio-icon">🔊</span>
+      </button>
+      <button class="control-btn" id="btn-fullscreen" title="全螢幕切換 (快捷鍵: F)">
+        <span>⛶ 全螢幕</span>
+      </button>
+      <div style="width: 1px; height: 24px; background: var(--border-subtle); margin: 0 4px;"></div>
+      <button class="control-btn btn-nav" id="btn-prev" title="上一頁 (← / PageUp)">‹</button>
+      <button class="control-btn btn-nav" id="btn-next" title="下一頁 (→ / Space / PageDown)">›</button>
+    </div>
+  </header>
+
+  <!-- Progress Bar -->
+  <div class="progress-bar-container">
+    <div class="progress-bar" id="progress-bar"></div>
+  </div>
+
+  <!-- Main Slide Stage -->
+  <main class="deck-stage" id="deck-stage">
+
+    <!-- ==========================================
+         SLIDE 1: 封面與引言 (Title & Introduction)
+         ========================================== -->
+    <section class="slide active" data-index="1" data-title="次世代遊戲製作管線總覽" data-phase="COURSE INTRO">
+      <div class="slide-header">
+        <div>
+          <div class="slide-badge-row">
+            <span class="slide-phase-pill pill-cyan">數位遊戲藝術與 3D 動畫專業講義</span>
+            <span class="soft-tag">Unreal Engine 5 &bull; Substance 3D &bull; ZBrush &bull; Maya</span>
+          </div>
+          <h1 class="slide-title">次世代遊戲角色製作全流程：從數位雕刻到 Unreal Engine 5</h1>
+          <p class="slide-subtitle">深入剖析高模雕刻、反拓撲、UV 展平、物理烘焙、PBR 貼圖、骨架蒙皮至即時遊戲引擎落地</p>
+        </div>
+      </div>
+
+      <div class="slide-body grid-2col">
+        <!-- Left: Core Philosophy -->
+        <div class="content-card" style="border-left: 4px solid var(--ue-cyan);">
+          <h2 class="card-title">
+            <span class="icon">🎯</span> 什麼是「次世代（Next-Gen）」遊戲美術？
+          </h2>
+          <ul class="tech-list">
+            <li class="tech-item">
+              <span class="tech-bullet"></span>
+              <div>
+                <strong class="tech-highlight">即時運算（Real-time）的極限平衡：</strong>
+                電影動畫可以花費數小時渲染單一畫格，但遊戲引擎必須在 <span class="tech-term">16.6ms</span>（60 FPS）甚至 <span class="tech-term">8.3ms</span>（120 FPS）內，即時計算幾何體、光影、動態與物理碰撞。
+              </div>
+            </li>
+            <li class="tech-item">
+              <span class="tech-bullet"></span>
+              <div>
+                <strong class="tech-highlight">維度壓縮的核心魔法：</strong>
+                傳統手繪模型依賴美術畫死光影；次世代模型則透過 <span class="tech-term">高低模雙軌流水線</span>，將數千萬面高模的光影法線「烘焙」於數萬面的低模貼圖上，以假亂真。
+              </div>
+            </li>
+            <li class="tech-item">
+              <span class="tech-bullet"></span>
+              <div>
+                <strong class="tech-highlight">PBR 物理渲染與物理材質：</strong>
+                依照光學能量守恆與微表面散射定律，讓同一個角色資產在沙漠烈日、地底火把與夜間霓虹燈下，皆呈現精確無瑕的材質質感。
+              </div>
+            </li>
+          </ul>
+
+          <div class="callout-box">
+            <div class="callout-title">💡 教授給學生的核心心法</div>
+            「次世代美術從來不是比誰的面數多，而是比誰能用<strong>最精準的拓撲布線與最合理的貼圖預算</strong>，在遊戲引擎中榨出最極致的視覺震撼。」
+          </div>
+        </div>
+
+        <!-- Right: Comparison Interactive Box -->
+        <div class="content-card">
+          <h2 class="card-title">
+            <span class="icon">⚖️</span> 世代演進與管線思維對比
+          </h2>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+            <div style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: var(--radius-sm); border-top: 3px solid var(--text-dim);">
+              <div style="font-weight: 700; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 6px;">舊世代傳統手繪 (Legacy)</div>
+              <ul style="font-size: 0.8rem; color: #94a3b8; list-style: none; display: flex; flex-direction: column; gap: 6px;">
+                <li>❌ 依賴 Diffuse 貼圖手繪高光陰影</li>
+                <li>❌ 換場景光照即產生穿幫穿模</li>
+                <li>❌ 僅依靠簡易 Bump 灰階凹凸</li>
+                <li>❌ 三角面低於 5,000 面，幾何生硬</li>
+              </ul>
+            </div>
+            <div style="background: rgba(0, 229, 255, 0.05); padding: 12px; border-radius: var(--radius-sm); border-top: 3px solid var(--ue-cyan);">
+              <div style="font-weight: 700; color: var(--ue-cyan); font-size: 0.85rem; margin-bottom: 6px;">次世代 AAA 管線 (PBR / UE5)</div>
+              <ul style="font-size: 0.8rem; color: #cbd5e1; list-style: none; display: flex; flex-direction: column; gap: 6px;">
+                <li>✅ 物理真實感 PBR (Albedo/Rough/Metal)</li>
+                <li>✅ 切線空間法線 (Tangent Space Normal)</li>
+                <li>✅ 高達 80K~150K 三角面 + 4K ORM 貼圖</li>
+                <li>✅ 結合 Lumen 動態全局光與 Nanite 幾何</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Flowchart Graphic Preview -->
+          <div class="interactive-viewport" style="min-height: 140px; padding: 12px;">
+            <div class="viewport-overlay">
+              <span class="view-tag">雙軌管線核心流向</span>
+            </div>
+            <svg class="svg-canvas" viewBox="0 0 500 130" style="max-height: 120px;">
+              <defs>
+                <linearGradient id="grad-line" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#ff7700"/>
+                  <stop offset="50%" stop-color="#00e5ff"/>
+                  <stop offset="100%" stop-color="#a855f7"/>
+                </linearGradient>
+              </defs>
+              <!-- High-Poly Path -->
+              <rect x="20" y="20" width="110" height="34" rx="6" fill="#ff7700" fill-opacity="0.15" stroke="#ff7700" stroke-width="1.5"/>
+              <text x="75" y="42" fill="#ff7700" font-size="11" font-weight="700" text-anchor="middle">高模雕刻 (千萬面)</text>
+
+              <!-- Low-Poly Path -->
+              <rect x="20" y="75" width="110" height="34" rx="6" fill="#00e5ff" fill-opacity="0.15" stroke="#00e5ff" stroke-width="1.5"/>
+              <text x="75" y="97" fill="#00e5ff" font-size="11" font-weight="700" text-anchor="middle">反拓撲與UV (數萬面)</text>
+
+              <!-- Convergence Bake -->
+              <path d="M 130 37 L 200 65 M 130 92 L 200 65" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4,4"/>
+              
+              <rect x="180" y="45" width="100" height="38" rx="6" fill="#ff2a5f" fill-opacity="0.2" stroke="#ff2a5f" stroke-width="1.8"/>
+              <text x="230" y="68" fill="#fff" font-size="11" font-weight="800" text-anchor="middle">物理烘焙 (Bake)</text>
+
+              <!-- SP & UE5 -->
+              <path d="M 280 65 L 320 65" stroke="var(--ue-cyan)" stroke-width="2"/>
+              <rect x="320" y="45" width="80" height="38" rx="6" fill="#10b981" fill-opacity="0.15" stroke="#10b981" stroke-width="1.5"/>
+              <text x="360" y="68" fill="#10b981" font-size="11" font-weight="700" text-anchor="middle">SP 上材質</text>
+
+              <path d="M 400 65 L 430 65" stroke="var(--ue-cyan)" stroke-width="2"/>
+              <rect x="430" y="45" width="60" height="38" rx="6" fill="#0070f3" fill-opacity="0.2" stroke="#00e5ff" stroke-width="1.5"/>
+              <text x="460" y="68" fill="#00e5ff" font-size="11" font-weight="800" text-anchor="middle">UE5 整合</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 2: 全景鳥瞰：次世代角色製作管線地圖 (Roadmap)
+         ========================================== -->
+    <section class="slide" data-index="2" data-title="全景鳥瞰：管線全貌與工序依賴" data-phase="PIPELINE ROADMAP">
+      <div class="slide-header">
+        <div>
+          <div class="slide-badge-row">
+            <span class="slide-phase-pill pill-cyan">雙軌道並行架構</span>
+            <span class="soft-tag">全流程 9 大工序依賴關係圖</span>
+          </div>
+          <h2 class="slide-title">次世代角色管線全景圖：工序、資產流通與軟體鏈</h2>
+          <p class="slide-subtitle">點擊下方步驟節點，即時檢視該環節的「輸入資產」、「工具軟體」與「交付標準」</p>
+        </div>
+      </div>
+
+      <div class="slide-body">
+        <!-- Interactive Step Strip -->
+        <div class="pipeline-nav-strip" id="pipeline-strip">
+          <div class="pipeline-step-node active" data-step="1">
+            <span class="node-num">01</span>
+            <span class="node-name">概念原型</span>
+          </div>
+          <div class="pipeline-step-node" data-step="2">
+            <span class="node-num">02</span>
+            <span class="node-name">高模雕刻</span>
+          </div>
+          <div class="pipeline-step-node" data-step="3">
+            <span class="node-num">03</span>
+            <span class="node-name">反拓撲</span>
+          </div>
+          <div class="pipeline-step-node" data-step="4">
+            <span class="node-num">04</span>
+            <span class="node-name">拆 UV</span>
+          </div>
+          <div class="pipeline-step-node" data-step="5">
+            <span class="node-num">05</span>
+            <span class="node-name">烘焙貼圖</span>
+          </div>
+          <div class="pipeline-step-node" data-step="6">
+            <span class="node-num">06</span>
+            <span class="node-name">SP 材質</span>
+          </div>
+          <div class="pipeline-step-node" data-step="7">
+            <span class="node-num">07</span>
+            <span class="node-name">骨架蒙皮</span>
+          </div>
+          <div class="pipeline-step-node" data-step="8">
+            <span class="node-num">08</span>
+            <span class="node-name">動畫製作</span>
+          </div>
+          <div class="pipeline-step-node" data-step="9">
+            <span class="node-num">09</span>
+            <span class="node-name">UE5 整合</span>
+          </div>
+        </div>
+
+        <!-- Dynamic Step Inspector Card -->
+        <div class="content-card" id="step-detail-box" style="flex: 1; border-color: var(--ue-cyan);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span id="step-icon" style="font-size: 1.8rem;">📐</span>
+              <div>
+                <h3 id="step-title" style="font-size: 1.3rem; font-weight: 800; color: #fff;">01. 概念設計與基礎大型 (Concept & Blockout)</h3>
+                <span id="step-softwares" class="tech-term" style="color: var(--ue-cyan);">Maya / Blender / Photoshop / PureRef</span>
+              </div>
+            </div>
+            <span id="step-role-badge" class="slide-phase-pill pill-cyan">概念與前期規劃</span>
+          </div>
+
+          <div class="grid-3col" style="gap: 16px;">
+            <div style="background: rgba(0,0,0,0.3); padding: 14px; border-radius: var(--radius-sm);">
+              <div style="font-weight: 700; color: var(--ue-cyan); font-size: 0.85rem; margin-bottom: 6px;">📥 輸入前置 (Inputs)</div>
+              <p id="step-input-text" style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.5;">2D 原畫三視圖、情緒板 (Moodboard)、角色世界觀設定、體型規格標準（男性 180cm / 女性 168cm）。</p>
+            </div>
+            <div style="background: rgba(0,0,0,0.3); padding: 14px; border-radius: var(--radius-sm);">
+              <div style="font-weight: 700; color: var(--zb-orange); font-size: 0.85rem; margin-bottom: 6px;">⚙️ 工藝核心 (Core Tasks)</div>
+              <p id="step-core-text" style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.5;">在 Maya 或 Blender 建立低面數基礎大型 (Blockout)，鎖定頭身比、主要剪影識別度與關節旋轉樞紐位置。</p>
+            </div>
+            <div style="background: rgba(0,0,0,0.3); padding: 14px; border-radius: var(--radius-sm);">
+              <div style="font-weight: 700; color: var(--topo-green); font-size: 0.85rem; margin-bottom: 6px;">📤 輸出交付 (Deliverables)</div>
+              <p id="step-output-text" style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.5;">比例正確的 Basemesh (OBJ / FBX)，進入遊戲灰模測試，確認在相機視角下的體積感與移動手感。</p>
+            </div>
+          </div>
+
+          <div class="callout-box" id="step-pitfall-box" style="margin-top: 14px;">
+            <div class="callout-title">⚠️ 此步驟致命地雷 (Critical Pitfall)</div>
+            <span id="step-pitfall-text">急於雕刻肌肉或配件微細節，卻忽略全身頭身比與重心，導致後期幾十萬面雕刻完成後無法修改骨骼長度。</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 3: Phase 1: 概念設定、比例剪影與基礎低模 (Concept & Blockout)
+         ========================================== -->
+    <section class="slide" data-index="3" data-title="Phase 1: 概念設定與基礎大型" data-phase="PHASE 01">
+      <div class="slide-header">
+        <div>
+          <div class="slide-badge-row">
+            <span class="slide-phase-pill pill-cyan">Phase 01</span>
+            <span class="soft-tag">Maya &bull; Blender &bull; PureRef &bull; Photoshop</span>
+          </div>
+          <h2 class="slide-title">概念設定、比例剪影與基礎大型 (Blockout)</h2>
+          <p class="slide-subtitle">打造角色靈魂的第一步：正交視圖、剪影識別度與人體解剖學標準</p>
+        </div>
+      </div>
+
+      <div class="slide-body grid-2col">
+        <!-- Text & Rules -->
+        <div class="content-card">
+          <h3 class="card-title"><span class="icon">📐</span> 基礎大型（Blockout）的三大黃金法則</h3>
+          <ul class="tech-list">
+            <li class="tech-item">
+              <span class="tech-bullet"></span>
+              <div>
+                <strong class="tech-highlight">1. 剪影第一原則（Silhouette First）：</strong>
+                在遠距離戰鬥或快節奏動作遊戲中，玩家依靠 <span class="tech-term">純黑剪影</span> 區分角色職業、威脅等級與動作狀態。如果把材質顏色全關掉後角色難以辨認，設計便已失敗。
+              </div>
+            </li>
+            <li class="tech-item">
+              <span class="tech-bullet"></span>
+              <div>
+                <strong class="tech-highlight">2. 警惕原畫正交視圖的透視陷阱：</strong>
+                2D 原畫常有「透視詐欺」（左側視圖與正面視圖手臂長度對不上）。3D 美術師不可盲目貼圖描邊，必須依據 <span class="tech-term">真實骨骼關節位置</span> 建立解剖基準。
+              </div>
+            </li>
+            <li class="tech-item">
+              <span class="tech-bullet"></span>
+              <div>
+                <strong class="tech-highlight">3. A-Pose vs T-Pose 的工程抉擇：</strong>
+                次世代角色推薦採用 <span class="tech-term">A-Pose (手臂下垂 45°、手掌微內扣)</span>，能最大程度減少肩膀三角肌拉伸變形，並讓手臂內側布料垂墜更自然。
+              </div>
+            </li>
+          </ul>
+
+          <div class="callout-box">
+            <div class="callout-title">💡 業界實務小技巧</div>
+            使用 <strong>PureRef</strong> 工具將人體解剖圖、布料摺皺參考圖與真實軍武配件固定在第二螢幕，絕對不憑空盲捏！
+          </div>
+        </div>
+
+        <!-- Interactive Silhouette Recognizer -->
+        <div class="content-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <h3 class="card-title"><span class="icon">👁️</span> 剪影識別度測試實驗室</h3>
+            <button class="control-btn" id="btn-toggle-silhouette">切換：純黑剪影 / 線框大型</button>
+          </div>
+          
+          <div class="interactive-viewport" style="min-height: 250px;" id="silhouette-viewport">
+            <div class="viewport-overlay">
+              <span class="view-tag" id="silhouette-mode-tag">當前檢視：純黑剪影檢視</span>
+            </div>
+            <!-- SVG Human Base Mesh Silhouette / Wireframe -->
+            <svg id="silhouette-svg" viewBox="0 0 300 280" style="height: 250px;">
+              <!-- Character Silhouette Paths -->
+              <g id="sil-head">
+                <circle cx="150" cy="45" r="22" fill="#000" stroke="#00e5ff" stroke-width="1.5"/>
+              </g>
+              <g id="sil-torso">
+                <path d="M 125 70 L 175 70 L 165 130 L 135 130 Z" fill="#000" stroke="#00e5ff" stroke-width="1.5"/>
+              </g>
+              <!-- A-Pose Arms -->
+              <g id="sil-arm-l">
+                <path d="M 125 72 L 90 120 L 75 160 L 85 163 L 102 124 L 132 80 Z" fill="#000" stroke="#00e5ff" stroke-width="1.5"/>
+              </g>
+              <g id="sil-arm-r">
+                <path d="M 175 72 L 210 120 L 225 160 L 215 163 L 198 124 L 168 80 Z" fill="#000" stroke="#00e5ff" stroke-width="1.5"/>
+              </g>
+              <!-- Pelvis & Legs -->
+              <g id="sil-pelvis">
+                <polygon points="135,130 165,130 172,150 128,150" fill="#000" stroke="#00e5ff" stroke-width="1.5"/>
+              </g>
+              <g id="sil-leg-l">
+                <path d="M 130 150 L 125 210 L 120 260 L 138 260 L 145 210 L 148 150 Z" fill="#000" stroke="#00e5ff" stroke-width="1.5"/>
+              </g>
+              <g id="sil-leg-r">
+                <path d="M 170 150 L 175 210 L 180 260 L 162 260 L 155 210 L 152 150 Z" fill="#000" stroke="#00e5ff" stroke-width="1.5"/>
+              </g>
+              <!-- Cape / Silhouette element showing readability -->
+              <path id="sil-cape" d="M 120 75 Q 70 150 60 220 Q 90 200 115 170 Z" fill="#000" stroke="#00e5ff" stroke-width="1.2" opacity="0.9"/>
+            </svg>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); text-align: center; margin-top: 8px;">
+            在 3D 視窗中按下快捷鍵 <span class="tech-term">7 (Maya)</span> 或切換 Flat Black 材質，測試角色披肩與肩甲剪影是否鮮明。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 4: Phase 2: 高模數位雕刻與微表面 (High-Poly Sculpting)
+         ========================================== -->
+    <section class="slide" data-index="4" data-title="Phase 2: 高模雕刻與微細節" data-phase="PHASE 02">
+      <div class="slide-header">
+        <div>
+          <div class="slide-badge-row">
+            <span class="slide-phase-pill pill-orange">Phase 02</span>
+            <span class="soft-tag">ZBrush &bull; Marvelous Designer &bull; Blender Sculpt</span>
+          </div>
+          <h2 class="slide-title">高模雕刻（High-Poly）：解剖學、布料與微表面</h2>
+          <p class="slide-subtitle">動輒數千萬面的極致細節工藝：從宏觀骨骼肌理到微觀皮膚毛孔</p>
+        </div>
+      </div>
+
+      <div class="slide-body grid-2col">
+        <!-- 3-Tier Details Theory -->
+        <div class="content-card">
+          <h3 class="card-title"><span class="icon">🗿</span> 數位雕刻的三級細節階層理論</h3>
+          <ul class="tech-list">
+            <li class="tech-item">
+              <span class="tech-bullet" style="background: var(--zb-orange); box-shadow: 0 0 8px var(--zb-orange);"></span>
+              <div>
+                <strong style="color: var(--zb-orange);">一級形體（Primary Forms - 60% 權重）：</strong>
+                人體骨骼突起（鎖骨、髂棘、顴骨）、主要肌肉群輪廓、頭型。此階段禁止進入高階細分，使用 <span class="tech-term">Move / ClayBuildup</span> 筆刷反覆推敲。
+              </div>
+            </li>
+            <li class="tech-item">
+              <span class="tech-bullet" style="background: var(--ue-cyan);"></span>
+              <div>
+                <strong style="color: var(--ue-cyan);">二級形體（Secondary Forms - 30% 權重）：</strong>
+                肌肉交接溝槽、脂肪堆積摺疊、皮帶勒肉張力、厚重布料的大摺皺（管狀摺、折疊摺）。
+              </div>
+            </li>
+            <li class="tech-item">
+              <span class="tech-bullet" style="background: var(--sp-crimson);"></span>
+              <div>
+                <strong style="color: var(--sp-crimson);">三級形體（Tertiary Forms - 10% 權重）：</strong>
+                微觀皮膚毛孔、嘴唇乾裂紋、皮件微磨損、金屬鑄造毛刺。可使用 <span class="tech-term">Alpha 筆刷</span> 或由 Substance 3D Painter 表面紋理替代。
+              </div>
+            </li>
+          </ul>
+
+          <div class="callout-box warn">
+            <div class="callout-title">⚠️ 初學者最常犯的重大錯誤</div>
+            在第一級骨骼結構尚不準確時，就急著開啟第 6 級細分 (Subdivision 6) 刷滿臉毛孔與刮痕，導致「整張臉宛如發霉的爛泥」，遠看毫無立體感！
+          </div>
+        </div>
+
+        <!-- Cloth Simulation & Hard Surface -->
+        <div class="content-card">
+          <h3 class="card-title"><span class="icon">👗</span> 現代工作流：Marvelous Designer 布料模擬</h3>
+          <p style="font-size: 0.9rem; color: #cbd5e1; line-height: 1.5; margin-bottom: 12px;">
+            在次世代角色的服裝製作上，純手繪手雕衣褶已逐漸被 <span class="tech-term">MD (Marvelous Designer)</span> 物理板片縫合取代：
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div style="background: rgba(0,0,0,0.3); padding: 10px 14px; border-radius: var(--radius-sm); border-left: 3px solid var(--zb-orange);">
+              <div style="font-weight: 700; color: #fff; font-size: 0.85rem;">真實打版剪裁（Pattern Design）</div>
+              <p style="font-size: 0.8rem; color: #94a3b8;">依照真實成衣版型繪製前後片，透過重力與風力進行自然懸垂運算。</p>
+            </div>
+            <div style="background: rgba(0,0,0,0.3); padding: 10px 14px; border-radius: var(--radius-sm); border-left: 3px solid var(--ue-cyan);">
+              <div style="font-weight: 700; color: #fff; font-size: 0.85rem;">導回 ZBrush 二次雕刻強化</div>
+              <p style="font-size: 0.8rem; color: #94a3b8;">將 MD 導出的高密度網格導入 ZBrush，使用 <span class="tech-term">Standard / DamStandard</span> 筆刷強化邊緣縫線厚度與接縫張力。</p>
+            </div>
+            <div style="background: rgba(0,0,0,0.3); padding: 10px 14px; border-radius: var(--radius-sm); border-left: 3px solid var(--topo-green);">
+              <div style="font-weight: 700; color: #fff; font-size: 0.85rem;">高模的終極定位銘記</div>
+              <p style="font-size: 0.8rem; color: #cbd5e1;"><strong>高模永遠不直接進遊戲！</strong> 幾千萬面的資產只為了輸出 OBJ/FBX 給烘焙軟體採樣法線。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 5: Phase 3: 反拓撲 / 重新拓撲 (Retopology & Edge Flow)
+         ========================================== -->
+    <section class="slide" data-index="5" data-title="Phase 3: 反拓撲與布線邏輯" data-phase="PHASE 03">
+      <div class="slide-header">
+        <div>
+          <div class="slide-badge-row">
+            <span class="slide-phase-pill pill-green">Phase 03</span>
+            <span class="soft-tag">TopoGun 3 &bull; Maya Quad Draw &bull; Blender RetopoFlow</span>
+          </div>
+          <h2 class="slide-title">反拓撲（Retopology）：四邊面與動畫變形布線</h2>
+          <p class="slide-subtitle">為什麼千萬面不能進引擎？從幾何頂點計算到關節彎曲三大定律</p>
+        </div>
+      </div>
+
+      <div class="slide-body grid-2col">
+        <!-- Topology Rules -->
+        <div class="content-card">
+          <h3 class="card-title"><span class="icon">🕸️</span> 動畫拓撲的黃金布線三大定律</h3>
+          <ul class="tech-list">
+            <li class="tech-item">
+              <span class="tech-bullet" style="background: var(--topo-green); box-shadow: 0 0 8px var(--topo-green);"></span>
+              <div>
+                <strong style="color: var(--topo-green);">1. 全四邊面原則（All-Quads Mesh）：</strong>
+                雖然遊戲引擎底層最後會將面自動三角化（Triangulation），但拓撲時堅持純四邊面，才能確保 Catmull-Clark 平滑細分、UV 展開與骨骼權重插值不出現破面裂痕。嚴禁五邊以上多邊面（N-Gons）！
+              </div>
+            </li>
+            <li class="tech-item">
+              <span class="tech-bullet" style="background: var(--topo-green); box-shadow: 0 0 8px var(--topo-green);"></span>
+              <div>
+                <strong style="color: var(--topo-green);">2. 關節三環線法則（The 3-Loop Rule）：</strong>
+                膝蓋、手肘、手指等單向鉸鏈關節，彎曲處必須配置 <span class="tech-term">至少三條緊密環形布線</span>。彎曲時外側拉伸、內側擠壓，才能防止關節塌陷宛如漏氣氣球。
+              </div>
+            </li>
+            <li class="tech-item">
+              <span class="tech-bullet" style="background: var(--topo-green); box-shadow: 0 0 8px var(--topo-green);"></span>
+              <div>
+                <strong style="color: var(--topo-green);">3. 臉部表情同心圓環線（Facial Loops）：</strong>
+                眼眶（眼輪匝肌）、嘴唇（口輪匝肌）、鼻唇溝法令紋必須呈現完整的放射同心圓環線，支援開口笑、眨眼等 52 種 Blendshape 表情變形。
+              </div>
+            </li>
+          </ul>
+
+          <div class="callout-box">
+            <div class="callout-title">💡 拓撲工具推薦</div>
+            業界首選獨立拓撲軟體 <strong>TopoGun 3</strong>（具備對稱補線與筆刷平滑），或使用 <strong>Maya 的 Quad Draw</strong> 搭配 Live Surface 吸附。
+          </div>
+        </div>
+
+        <!-- Interactive Joint Deformation Simulator -->
+        <div class="content-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <h3 class="card-title"><span class="icon">🦾</span> 關節彎曲與拓撲布線互動演示</h3>
+            <button class="control-btn" id="btn-toggle-bend">切換彎曲：0° 直立 / 90° 彎曲</button>
+          </div>
+
+          <div class="interactive-viewport" style="min-height: 250px;">
+            <div class="viewport-overlay">
+              <span class="view-tag" id="joint-status-tag">關節狀態：伸展 0° (立體飽滿)</span>
+            </div>
+
+            <!-- Joint SVG Diagram comparing Bad 1-Loop vs Good 3-Loop -->
+            <svg id="joint-svg" viewBox="0 0 460 220" style="width: 100%; max-height: 220px;">
+              <!-- Left: Bad Topology (1 Loop) -->
+              <g transform="translate(30, 20)">
+                <text x="80" y="15" fill="#ff2a5f" font-size="12" font-weight="700" text-anchor="middle">❌ 不良拓撲（單線折角）</text>
+                <!-- Upper Arm -->
+                <path id="bad-upper" d="M 60 40 L 100 40 L 100 90 L 60 90 Z" fill="none" stroke="#64748b" stroke-width="1.8"/>
+                <!-- Lower Arm Bended -->
+                <path id="bad-lower" d="M 60 90 L 100 90 L 100 150 L 60 150 Z" fill="none" stroke="#ff2a5f" stroke-width="2"/>
+                <circle cx="80" cy="90" r="4" fill="#ff2a5f"/>
+                <text id="bad-warn-text" x="80" y="180" fill="#94a3b8" font-size="11" text-anchor="middle">彎曲時體積直接凹陷塌癟</text>
+              </g>
+
+              <!-- Right: Good Topology (3 Loops) -->
+              <g transform="translate(250, 20)">
+                <text x="80" y="15" fill="#10b981" font-size="12" font-weight="700" text-anchor="middle">✅ 次世代標準（3-Loop 環線）</text>
+                <!-- Upper Arm -->
+                <path id="good-upper" d="M 60 40 L 100 40 L 100 80 L 60 80 Z" fill="none" stroke="#64748b" stroke-width="1.8"/>
+                <!-- 3 Loops Area -->
+                <line x1="60" y1="80" x2="100" y2="80" stroke="#10b981" stroke-width="2"/>
+                <line x1="58" y1="90" x2="102" y2="90" stroke="#10b981" stroke-width="2.2" stroke-dasharray="2,2"/>
+                <line x1="60" y1="100" x2="100" y2="100" stroke="#10b981" stroke-width="2"/>
+                <!-- Lower Arm -->
+                <path id="good-lower" d="M 60 100 L 100 100 L 100 150 L 60 150 Z" fill="none" stroke="#10b981" stroke-width="1.8"/>
+                <text id="good-status-text" x="80" y="180" fill="#cbd5e1" font-size="11" text-anchor="middle">外側拉伸均勻，維持圓潤體積</text>
+              </g>
+            </svg>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); text-align: center; margin-top: 6px;">
+            觀察良好布線如何在膝關節彎曲時，均勻分散頂點位移量，避免穿模破皮。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 6: Phase 4: 拆 UV 與紋素密度 (UV Unwrapping & Texel Density)
+         ========================================== -->
+    <section class="slide" data-index="6" data-title="Phase 4: 拆 UV 與紋素密度" data-phase="PHASE 04">
+      <div class="slide-header">
+        <div>
+          <div class="slide-badge-row">
+            <span class="slide-phase-pill pill-cyan">Phase 04</span>
+            <span class="soft-tag">RizomUV &bull; Maya UV Toolkit &bull; Blender UV</span>
+          </div>
+          <h2 class="slide-title">拆 UV 與紋素密度（Texel Density, TD）</h2>
+          <p class="slide-subtitle">將 3D 空間剝皮攤平成 2D 平面：接縫隱藏、拉伸檢驗與空間利用率極限優化</p>
+        </div>
+      </div>
+
+      <div class="slide-body grid-2col">
+        <!-- UV Rules -->
+        <div class="content-card">
+          <h3 class="card-title"><span class="icon">🗺️</span> UV 拆解工程四大核心原則</h3>
+          <ul class="tech-list">
+            <li class="tech-item">
+              <span class="tech-bullet"></span>
+              <div>
+                <strong class="tech-highlight">1. 切縫（Seams）的隱藏藝術：</strong>
+                切縫應隱藏在玩家最不易察覺的死角：手臂與大腿內側、頭髮遮蓋處、衣物天然接縫、鞋底凹槽。
+              </div>
+            </li>
+            <li class="tech-item">
+              <span class="tech-bullet"></span>
+              <div>
+                <strong class="tech-highlight">2. 硬邊必切原則（Hard Edges Must Cut）：</strong>
+                幾何法線的硬邊（Smoothing Group 分界處）<strong>絕對必須</strong>切開 UV 縫！如果硬邊沒有切 UV，烘焙法線貼圖時交界處必定會產生嚴重的黑色漸層光影髒斑。
+              </div>
+            </li>
+            <li class="tech-item">
+              <span class="tech-bullet"></span>
+              <div>
+                <strong class="tech-highlight">3. 紋素密度統一（Consistent Texel Density）：</strong>
+                <span class="tech-term">TD (px/cm)</span> 代表模型每公分真實尺寸分到的像素多寡。整身貼圖若 TD 不一致，會導致「臉部毛孔模糊、皮帶釦子卻異常清晰」的失衡現象。主角臉部通常會給予 1.5~2 倍的 TD 權重。
+              </div>
+            </li>
+            <li class="tech-item">
+              <span class="tech-bullet"></span>
+              <div>
+                <strong class="tech-highlight">4. 留白邊距（Padding）防黑邊：</strong>
+                UV 島（Islands）之間必須預留至少 8~16 像素間距（Padding），防止遊戲引擎在遠距離產生 Mipmap 降階採樣時將邊緣黑色背景抽入模型。
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Texel Density Interactive Visualizer -->
+        <div class="content-card">
+          <h3 class="card-title"><span class="icon">🏁</span> 棋盤格拉伸與紋素密度檢驗室</h3>
+          <div style="margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
+            <span style="font-size: 0.85rem; color: #cbd5e1;">調整紋素密度 TD 比例：</span>
+            <span id="td-val-label" class="tech-term" style="color: var(--ue-cyan);">標準平衡 (20 px/cm)</span>
+          </div>
+
+          <!-- Slider -->
+          <input type="range" id="td-slider" min="1" max="3" step="1" value="2" style="width: 100%; accent-color: var(--ue-cyan); cursor: pointer; margin-bottom: 14px;">
+
+          <div class="interactive-viewport" style="min-height: 180px; position: relative;">
+            <!-- Dynamic Checkerboard Pattern -->
+            <div id="checker-box" style="width: 100%; height: 180px; background-size: 30px 30px; background-image: linear-gradient(45deg, #1e293b 25%, transparent 25%), linear-gradient(-45deg, #1e293b 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #1e293b 75%), linear-gradient(-45deg, transparent 75%, #1e293b 75%); display: flex; align-items: center; justify-content: center;">
+              <div style="background: rgba(10, 13, 20, 0.85); padding: 8px 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); text-align: center;">
+                <div id="td-status-text" style="font-weight: 700; color: #fff; font-size: 0.95rem;">棋盤格正方無拉伸</div>
+                <div id="td-desc-text" style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">正方形比例完美，貼圖解析度分配合理</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout-box warn" style="margin-top: 12px;">
+            <div class="callout-title">⚠️ 對稱疊 UV（Overlapping）重要安全叮嚀</div>
+            角色對稱部位（左右手、靴子）重疊 UV 以節省 50% 貼圖空間。但在<strong>送入烘焙軟體前，必須將對稱的那一半在 U 軸向平移 +1 格（U+1）</strong>！烘焙完畢後再移回，否則烘焙光線會相互重疊重影！
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 7: Phase 5: 烘焙 (Baking - 維度壓縮的黑科技)
+         ========================================== -->
+    <section class="slide" data-index="7" data-title="Phase 5: 物理烘焙與貼圖矩陣" data-phase="PHASE 05">
+      <div class="slide-header">
+        <div>
+          <div class="slide-badge-row">
+            <span class="slide-phase-pill pill-crimson">Phase 05</span>
+            <span class="soft-tag">Substance 3D Painter &bull; Marmoset Toolbag 4</span>
+          </div>
+          <h2 class="slide-title">物理烘焙（Baking）：維度壓縮的幾何魔法</h2>
+          <p class="slide-subtitle">讓數萬面低模擁有千萬面高模的光影質感：光線投射、外籠（Cage）與關鍵貼圖矩陣</p>
+        </div>
+      </div>
+
+      <div class="slide-body grid-2col">
+        <!-- Baking Mechanics -->
+        <div class="content-card">
+          <h3 class="card-title"><span class="icon">🔥</span> 烘焙的運作原理與外籠（Cage）</h3>
+          <p style="font-size: 0.9rem; color: #cbd5e1; line-height: 1.5; margin-bottom: 12px;">
+            烘焙軟體從低模表面沿著法線方向向外發射光線（Rays），穿透並探測高模表面幾何特徵，將高模的「傾斜角度」轉譯為像素色彩：
+          </p>
+
+          <ul class="tech-list">
+            <li class="tech-item">
+              <span class="tech-bullet" style="background: var(--sp-crimson);"></span>
+              <div>
+                <strong style="color: var(--sp-crimson);">法線貼圖（Normal Map）：</strong>
+                採用切線空間（Tangent Space），以 <span class="tech-term">RGB 色彩對應空間向量 (X, Y, Z)</span>。淡紫色（RGB: 128, 128, 255）代表垂直於表面的朝向。
+              </div>
+            </li>
+            <li class="tech-item">
+              <span class="tech-bullet"></span>
+              <div>
+                <strong class="tech-highlight">DirectX 格式 vs OpenGL 格式（Y 軸翻轉）：</strong>
+                Unreal Engine 5 採用 <span class="tech-term">DirectX (-Y)</span>，而 Maya / Blender / 3ds Max 常用 <span class="tech-term">OpenGL (+Y)</span>。若發現光影凹凸顛倒，只需在 SP 導出時切換或在 UE5 勾選「Invert Green Channel」！
+              </div>
+            </li>
+            <li class="tech-item">
+              <span class="tech-bullet"></span>
+              <div>
+                <strong class="tech-highlight">外籠（Cage）防止光線交叉誤擊：</strong>
+                在手指縫、腋下、雙腿夾角處，直線發射的光線容易穿透擊中對向模型。透過在低模基礎上膨脹出的 Cage 包覆高模，即可精準引導光線射角。
+              </div>
+            </li>
+          </ul>
+
+          <div class="callout-box">
+            <div class="callout-title">💡 業界必備烘焙貼圖矩陣</div>
+            除法線圖外，必須同時烘焙：<span class="tech-term">AO (環境光遮蔽)</span>、<span class="tech-term">Curvature (曲率)</span>、<span class="tech-term">ID Map (材質遮罩)</span>、<span class="tech-term">Thickness (皮膚厚度)</span>。
+          </div>
+        </div>
+
+        <!-- Interactive Split Comparison: Low Poly vs Baked Normal -->
+        <div class="content-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <h3 class="card-title"><span class="icon">🪄</span> 烘焙效果互動對比滑桿</h3>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">左右拖曳滑桿觀察</span>
+          </div>
+
+          <div class="split-slider-container" id="split-container">
+            <!-- Left Layer: Low-Poly Flat Shading -->
+            <div class="split-img-layer" style="background: #0f172a;">
+              <svg viewBox="0 0 320 220" style="width: 80%; height: 80%;">
+                <!-- Low Poly Faceted Sphere -->
+                <polygon points="160,30 210,60 230,110 200,160 160,180 120,160 90,110 110,60" fill="#334155" stroke="#475569" stroke-width="2"/>
+                <polygon points="160,30 160,105 110,60" fill="#475569" stroke="#64748b" stroke-width="1.5"/>
+                <polygon points="160,30 210,60 160,105" fill="#1e293b" stroke="#64748b" stroke-width="1.5"/>
+                <polygon points="110,60 160,105 120,160" fill="#334155" stroke="#64748b" stroke-width="1.5"/>
+                <polygon points="210,60 230,110 160,105" fill="#0f172a" stroke="#64748b" stroke-width="1.5"/>
+                <polygon points="160,105 200,160 160,180" fill="#1e293b" stroke="#64748b" stroke-width="1.5"/>
+                <polygon points="160,105 160,180 120,160" fill="#334155" stroke="#64748b" stroke-width="1.5"/>
+                <text x="160" y="210" fill="#94a3b8" font-size="12" font-weight="700" text-anchor="middle">低模原始平面著色 (Flat Mesh)</text>
+              </svg>
+            </div>
+
+            <!-- Right Layer: High-poly Normal Baked Illusion (Clipped) -->
+            <div class="split-img-layer" id="split-clip-layer" style="background: radial-gradient(circle at 40% 40%, #1e293b 0%, #06090e 100%); clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);">
+              <svg viewBox="0 0 320 220" style="width: 80%; height: 80%;">
+                <defs>
+                  <radialGradient id="sphere-light" cx="35%" cy="35%" r="65%">
+                    <stop offset="0%" stop-color="#ffffff"/>
+                    <stop offset="25%" stop-color="#00e5ff"/>
+                    <stop offset="60%" stop-color="#0284c7"/>
+                    <stop offset="100%" stop-color="#061224"/>
+                  </radialGradient>
+                </defs>
+                <!-- Smooth Shaded Sphere with Intricate Micro-Details -->
+                <circle cx="160" cy="105" r="75" fill="url(#sphere-light)"/>
+                <!-- Baked Micro Screws & Carved Lines -->
+                <circle cx="130" cy="80" r="6" fill="#061224" stroke="#00e5ff" stroke-width="1"/>
+                <circle cx="190" cy="80" r="6" fill="#061224" stroke="#00e5ff" stroke-width="1"/>
+                <path d="M 120 125 Q 160 150 200 125" fill="none" stroke="#082f49" stroke-width="3"/>
+                <circle cx="160" cy="105" r="75" fill="none" stroke="#00e5ff" stroke-width="1" stroke-dasharray="4,6" opacity="0.6"/>
+                <text x="160" y="210" fill="#00e5ff" font-size="12" font-weight="700" text-anchor="middle">烘焙法線貼圖後 (Baked Normal)</text>
+              </svg>
+            </div>
+
+            <!-- Slider Divider Line & Knob -->
+            <div class="split-handle" id="split-handle" style="left: 50%;">
+              <div class="split-knob">↔</div>
+            </div>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); text-align: center; margin-top: 8px;">
+            面數完全相同！低模透過法線向量欺騙光線反射，展現出百萬面的圓潤與刻痕。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 8: Phase 6: PBR 物理材質與 Substance Painter
+         ========================================== -->
+    <section class="slide" data-index="8" data-title="Phase 6: PBR 材質與 Substance Painter" data-phase="PHASE 06">
+      <div class="slide-header">
+        <div>
+          <div class="slide-badge-row">
+            <span class="slide-phase-pill pill-orange">Phase 06</span>
+            <span class="soft-tag">Substance 3D Painter &bull; PBR Metallic/Roughness</span>
+          </div>
+          <h2 class="slide-title">PBR 物理材質與 Substance 3D Painter 紋理繪製</h2>
+          <p class="slide-subtitle">基於物理定律的光學表現：能量守恆、微表面理論與金屬/粗糙度工作流</p>
+        </div>
+      </div>
+
+      <div class="slide-body grid-2col">
+        <!-- PBR Theory -->
+        <div class="content-card">
+          <h3 class="card-title"><span class="icon">🎨</span> PBR 金屬/粗糙度四大通道解析</h3>
+          <ul class="tech-list">
+            <li class="tech-item">
+              <span class="tech-bullet" style="background: #38bdf8;"></span>
+              <div>
+                <strong style="color: #38bdf8;">Base Color / Albedo（固有色）：</strong>
+                純粹的物體色彩資訊。<strong>絕對禁止手繪光影或自帶環境光！</strong> 非金屬通常反射 4% 光線；純金屬則由 Base Color 決定鏡面反射顏色。
+              </div>
+            </li>
+            <li class="tech-item">
+              <span class="tech-bullet" style="background: #e2e8f0;"></span>
+              <div>
+                <strong style="color: #e2e8f0;">Roughness（粗糙度）：</strong>
+                決定物體微表面平整度。值為 <span class="tech-term">0.0 (純黑)</span> 代表極致鏡面反光；<span class="tech-term">1.0 (純白)</span> 代表粗糙霧面漫反射。
+              </div>
+            </li>
+            <li class="tech-item">
+              <span class="tech-bullet" style="background: #fbbf24;"></span>
+              <div>
+                <strong style="color: #fbbf24;">Metallic（金屬度）：</strong>
+                物理上嚴格遵守「非黑即白」二值化。金屬為 <span class="tech-term">1.0</span>，塑膠/木頭/皮革/皮膚為 <span class="tech-term">0.0</span>。只有過渡邊緣生鏽或髒污灰塵才會有中間過渡值。
+              </div>
+            </li>
+            <li class="tech-item">
+              <span class="tech-bullet" style="background: #ec4899;"></span>
+              <div>
+                <strong style="color: #ec4899;">次表面散射（Subsurface Scattering, SSS）：</strong>
+                光線射入皮膚、玉石或蠟燭內部，經過多次微血管散射後透射出紅潤血色。
+              </div>
+            </li>
+          </ul>
+
+          <div class="callout-box">
+            <div class="callout-title">💡 Substance Painter 核心高階技巧</div>
+            善用 <strong>Anchor Points（錨點）</strong>！在底層手繪的高度刮痕，能即時透過錨點傳遞給上層智慧材質生成器，自動在刮痕邊緣生出掉漆與生鏽！
+          </div>
+        </div>
+
+        <!-- Interactive PBR Channel Splitter -->
+        <div class="content-card">
+          <h3 class="card-title"><span class="icon">🔬</span> PBR 貼圖通道拆解檢視室</h3>
+          
+          <!-- Channel Switch Buttons -->
+          <div class="pbr-switcher-row" id="pbr-btn-group">
+            <button class="pbr-btn active" data-channel="final">PBR 最終渲染</button>
+            <button class="pbr-btn" data-channel="albedo">Base Color</button>
+            <button class="pbr-btn" data-channel="roughness">Roughness</button>
+            <button class="pbr-btn" data-channel="metallic">Metallic</button>
+            <button class="pbr-btn" data-channel="normal">Normal</button>
+          </div>
+
+          <div class="interactive-viewport" style="min-height: 220px;" id="pbr-viewport">
+            <div class="viewport-overlay">
+              <span class="view-tag" id="pbr-view-tag">檢視通道：Full PBR Composite</span>
+            </div>
+
+            <!-- SVG PBR Ball Representation -->
+            <svg id="pbr-ball-svg" viewBox="0 0 260 200" style="height: 190px;">
+              <defs>
+                <!-- Final Render Grad -->
+                <radialGradient id="pbr-final-grad" cx="35%" cy="35%" r="65%">
+                  <stop offset="0%" stop-color="#fed7aa"/>
+                  <stop offset="30%" stop-color="#ea580c"/>
+                  <stop offset="70%" stop-color="#9a3412"/>
+                  <stop offset="100%" stop-color="#180c06"/>
+                </radialGradient>
+                <!-- Albedo Grad (Flat without lighting) -->
+                <radialGradient id="pbr-albedo-grad" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#ea580c"/>
+                  <stop offset="100%" stop-color="#c2410c"/>
+                </radialGradient>
+              </defs>
+              <!-- Sphere Base -->
+              <circle id="pbr-circle" cx="130" cy="100" r="75" fill="url(#pbr-final-grad)"/>
+              <!-- Highlight Specular spot -->
+              <ellipse id="pbr-spec" cx="105" cy="75" rx="16" ry="10" fill="#ffffff" opacity="0.85"/>
+              <!-- Rim light -->
+              <path id="pbr-rim" d="M 60 100 A 75 75 0 0 0 165 170" fill="none" stroke="#38bdf8" stroke-width="3" opacity="0.6"/>
+            </svg>
+          </div>
+
+          <div id="pbr-info-banner" style="font-size: 0.82rem; color: #cbd5e1; background: rgba(0,0,0,0.3); padding: 8px 12px; border-radius: var(--radius-sm); margin-top: 8px;">
+            <strong>通道說明：</strong> PBR 最終合成效果。由微表面粗糙度決定反射光圈銳利度，金屬度決定高光顏色。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 9: Phase 7: 骨架綁定與蒙皮 (Rigging & Skinning)
+         ========================================== -->
+    <section class="slide" data-index="9" data-title="Phase 7: 骨架綁定與蒙皮" data-phase="PHASE 07">
+      <div class="slide-header">
+        <div>
+          <div class="slide-badge-row">
+            <span class="slide-phase-pill pill-purple">Phase 07</span>
+            <span class="soft-tag">Maya &bull; Blender &bull; Unreal Engine Control Rig</span>
+          </div>
+          <h2 class="slide-title">骨架綁定與蒙皮（Rigging & Skinning）</h2>
+          <p class="slide-subtitle">賦予 3D 模型骨骼與靈魂：關節軸向對齊、頂點權重熱力圖與糖果紙扭曲解法</p>
+        </div>
+      </div>
+
+      <div class="slide-body grid-2col">
+        <!-- Rigging Theory -->
+        <div class="content-card">
+          <h3 class="card-title"><span class="icon">🦴</span> 骨骼階層與蒙皮權重三大核心觀念</h3>
+          <ul class="tech-list">
+            <li class="tech-item">
+              <span class="tech-bullet" style="background: var(--rig-purple);"></span>
+              <div>
+                <strong style="color: var(--rig-purple);">1. 嚴謹的骨骼階層（Bone Hierarchy）：</strong>
+                Root 根骨骼（座標原點）➔ Pelvis（骨盆核心）➔ Spine 脊椎鏈 ➔ Neck/Head，以及兩側鎖骨與四肢鏈。關節旋轉軸（Joint Orientations）必須嚴格朝向骨骼延伸方向，禁止軸向混亂！
+              </div>
+            </li>
+            <li class="tech-item">
+              <span class="tech-bullet" style="background: var(--rig-purple);"></span>
+              <div>
+                <strong style="color: var(--rig-purple);">2. 頂點蒙皮權重守恆律（$\sum w_i = 1.0$）：</strong>
+                每個頂點最多受 <span class="tech-term">4 ~ 8 根骨骼</span> 共同牽引。所有骨骼影響係數之和必須精確等於 <span class="tech-term">1.0</span>。未正規化（Normalized）的權重會導致模型在動畫中頂點飛散。
+              </div>
+            </li>
+            <li class="tech-item">
+              <span class="tech-bullet" style="background: var(--rig-purple);"></span>
+              <div>
+                <strong style="color: var(--rig-purple);">3. 雙四元數與扭轉骨（Twist Bones）：</strong>
+                解決手腕旋轉 180° 時的「糖果包裝紙塌陷（Candy-wrapper artifact）」。透過在前臂增加 1~2 根 Twist 輔助骨，將旋轉扭矩均勻分散。
+              </div>
+            </li>
+          </ul>
+
+          <div class="callout-box">
+            <div class="callout-title">💡 臉部表情系統雙軌制</div>
+            現代 AAA 遊戲通常結合：<strong>骨架驅動（Joints for jaw/tongue）</strong> + <strong>52 組 Apple ARKit 標準形態鍵（Morph Targets / Blendshapes）</strong>，支援即時臉部動態捕捉！
+          </div>
+        </div>
+
+        <!-- Interactive Weight Painting / Twist Bone Visualizer -->
+        <div class="content-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <h3 class="card-title"><span class="icon">🌡️</span> 蒙皮權重熱力圖與扭轉測試</h3>
+            <button class="control-btn" id="btn-toggle-twist">切換：單一骨骼 (塌陷) / 輔助扭轉骨 (飽滿)</button>
+          </div>
+
+          <div class="interactive-viewport" style="min-height: 250px;">
+            <div class="viewport-overlay">
+              <span class="view-tag" id="rig-status-tag">配置：輔助扭轉骨啟用 (Twist Bone ON)</span>
+            </div>
+
+            <!-- Arm Twist SVG Simulation -->
+            <svg id="rig-arm-svg" viewBox="0 0 400 210" style="width: 100%; height: 210px;">
+              <defs>
+                <!-- Weight Heatmap Gradient (Red 1.0 -> Yellow 0.5 -> Blue 0.0) -->
+                <linearGradient id="heat-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#3b82f6"/>
+                  <stop offset="35%" stop-color="#10b981"/>
+                  <stop offset="70%" stop-color="#fbbf24"/>
+                  <stop offset="100%" stop-color="#ef4444"/>
+                </linearGradient>
+              </defs>
+
+              <!-- Arm Mesh Silhouette with Heatmap -->
+              <path id="arm-mesh-path" d="M 50 70 L 350 70 L 350 140 L 50 140 Z" fill="url(#heat-grad)" stroke="#ffffff" stroke-width="1.5" opacity="0.85"/>
+              
+              <!-- Bones Overlay -->
+              <line x1="50" y1="105" x2="200" y2="105" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="50" cy="105" r="7" fill="#a855f7" stroke="#fff" stroke-width="2"/>
+              <circle cx="200" cy="105" r="6" fill="#a855f7" stroke="#fff" stroke-width="2"/>
+
+              <!-- Forearm Bone / Twist Bones -->
+              <line id="forearm-bone-1" x1="200" y1="105" x2="350" y2="105" stroke="#00e5ff" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="350" cy="105" r="7" fill="#00e5ff" stroke="#fff" stroke-width="2"/>
+
+              <!-- Labels -->
+              <text x="125" y="125" fill="#ffffff" font-size="11" font-weight="700" text-anchor="middle">上臂骨 (Upper Arm)</text>
+              <text id="forearm-label" x="275" y="125" fill="#00e5ff" font-size="11" font-weight="700" text-anchor="middle">前臂骨 + 扭轉骨 (Twist)</text>
+              
+              <!-- Deformation Indicator Text -->
+              <text id="arm-deform-note" x="200" y="180" fill="#cbd5e1" font-size="11" text-anchor="middle">旋轉 180 度時，體積無扭縮，維持真實手腕肌肉飽滿度</text>
+            </svg>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); text-align: center; margin-top: 6px;">
+            紅（權重 1.0，完全跟隨）➔ 黃/綠（過渡平滑 0.5）➔ 藍（權重 0.0，不受影響）。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 10: Phase 8: 遊戲動畫製作與動作循環 (Game Animation)
+         ========================================== -->
+    <section class="slide" data-index="10" data-title="Phase 8: 遊戲動畫製作" data-phase="PHASE 08">
+      <div class="slide-header">
+        <div>
+          <div class="slide-badge-row">
+            <span class="slide-phase-pill pill-cyan">Phase 08</span>
+            <span class="soft-tag">Maya &bull; MotionBuilder &bull; Mocap &bull; Cascadeur</span>
+          </div>
+          <h2 class="slide-title">遊戲動畫製作：關鍵影格、動態捕捉與循環動作</h2>
+          <p class="slide-subtitle">電影鏡頭 vs 遊戲即時響應：Idle、Walk、Run 動作循環與 Root Motion 觀念</p>
+        </div>
+      </div>
+
+      <div class="slide-body grid-2col">
+        <!-- Animation Pipeline -->
+        <div class="content-card">
+          <h3 class="card-title"><span class="icon">🏃</span> 遊戲動畫的核心特性與生產標準</h3>
+          <ul class="tech-list">
+            <li class="tech-item">
+              <span class="tech-bullet"></span>
+              <div>
+                <strong class="tech-highlight">1. 動作循環（Animation Loops）無縫銜接：</strong>
+                走路（Walk）、奔跑（Run）、呼吸待機（Idle）的第 1 格必須與最後一格的骨骼位姿、速度向量完全吻合，避免循環播放時出現瞬間「抽動（Popping）」。
+              </div>
+            </li>
+            <li class="tech-item">
+              <span class="tech-bullet"></span>
+              <div>
+                <strong class="tech-highlight">2. 原地（In-Place）vs 根骨骼運動（Root Motion）：</strong>
+                <span class="tech-term">In-Place</span> 角色像在跑步機上原地踏步，由遊戲程式碼位移膠囊體；<span class="tech-term">Root Motion</span> 則由 Root 骨骼實際位移帶動角色，能 100% 杜絕「腳步滑步（Foot Sliding）」。
+              </div>
+            </li>
+            <li class="tech-item">
+              <span class="tech-bullet"></span>
+              <div>
+                <strong class="tech-highlight">3. 動態捕捉（Mocap）數據清理：</strong>
+                光學或慣性動捕數據導入後，需在 MotionBuilder 或 Maya 清理關節噪點（Jitter）、鎖定腳掌貼地 IK（Foot Plant），再重定向（Retargeting）至自訂骨架。
+              </div>
+            </li>
+          </ul>
+
+          <div class="callout-box">
+            <div class="callout-title">💡 遊戲打擊感秘訣（Hit Pause & Anticipation）</div>
+            優秀的攻擊動作包含：<strong>預備動作（Anticipation - 蓄力）</strong> ➔ <strong>極快揮擊（Instant Strike - 2~3 影格）</strong> ➔ <strong>命中卡頓（Hit Pause / Freeze Frame）</strong> ➔ <strong>收招後搖（Follow Through）</strong>。
+          </div>
+        </div>
+
+        <!-- Walk Cycle Phase Diagram -->
+        <div class="content-card">
+          <h3 class="card-title"><span class="icon">🔄</span> 標準雙足走路循環四個關鍵相位</h3>
+          
+          <div class="interactive-viewport" style="min-height: 250px;">
+            <svg viewBox="0 0 460 210" style="width: 100%; height: 210px;">
+              <!-- 4 Stages: Contact, Down, Passing, Up -->
+              <!-- Stage 1: Contact -->
+              <g transform="translate(15, 20)">
+                <rect x="0" y="0" width="95" height="150" rx="8" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)"/>
+                <!-- Stick Figure Pose: Contact -->
+                <circle cx="48" cy="30" r="12" fill="#00e5ff"/>
+                <line x1="48" y1="42" x2="48" y2="85" stroke="#fff" stroke-width="2.5"/>
+                <!-- Front Leg forward -->
+                <line x1="48" y1="85" x2="30" y2="135" stroke="#00e5ff" stroke-width="2.5"/>
+                <!-- Back Leg backward -->
+                <line x1="48" y1="85" x2="68" y2="135" stroke="#64748b" stroke-width="2.5"/>
+                <text x="48" y="165" fill="#00e5ff" font-size="11" font-weight="700" text-anchor="middle">1. 接觸期 (Contact)</text>
+              </g>
+
+              <!-- Stage 2: Down -->
+              <g transform="translate(125, 20)">
+                <rect x="0" y="0" width="95" height="150" rx="8" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)"/>
+                <circle cx="48" cy="38" r="12" fill="#ff7700"/>
+                <line x1="48" y1="50" x2="48" y2="92" stroke="#fff" stroke-width="2.5"/>
+                <path d="M 48 92 L 38 115 L 35 138" fill="none" stroke="#ff7700" stroke-width="2.5"/>
+                <path d="M 48 92 L 65 115 L 75 135" fill="none" stroke="#64748b" stroke-width="2.5"/>
+                <text x="48" y="165" fill="#ff7700" font-size="11" font-weight="700" text-anchor="middle">2. 緩衝期 (Down)</text>
+              </g>
+
+              <!-- Stage 3: Passing -->
+              <g transform="translate(235, 20)">
+                <rect x="0" y="0" width="95" height="150" rx="8" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)"/>
+                <circle cx="48" cy="28" r="12" fill="#10b981"/>
+                <line x1="48" y1="40" x2="48" y2="83" stroke="#fff" stroke-width="2.5"/>
+                <line x1="48" y1="83" x2="48" y2="138" stroke="#10b981" stroke-width="2.5"/>
+                <path d="M 48 83 L 65 105 L 55 125" fill="none" stroke="#64748b" stroke-width="2.5"/>
+                <text x="48" y="165" fill="#10b981" font-size="11" font-weight="700" text-anchor="middle">3. 跨越期 (Passing)</text>
+              </g>
+
+              <!-- Stage 4: Up -->
+              <g transform="translate(345, 20)">
+                <rect x="0" y="0" width="95" height="150" rx="8" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)"/>
+                <circle cx="48" cy="22" r="12" fill="#a855f7"/>
+                <line x1="48" y1="34" x2="48" y2="78" stroke="#fff" stroke-width="2.5"/>
+                <line x1="48" y1="78" x2="40" y2="136" stroke="#a855f7" stroke-width="2.5"/>
+                <path d="M 48 78 L 70 100 L 75 130" fill="none" stroke="#64748b" stroke-width="2.5"/>
+                <text x="48" y="165" fill="#a855f7" font-size="11" font-weight="700" text-anchor="middle">4. 推進期 (Up)</text>
+              </g>
+
+              <!-- Ground line -->
+              <line x1="10" y1="160" x2="450" y2="160" stroke="#334155" stroke-width="1.5" stroke-dasharray="4,4"/>
+            </svg>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); text-align: center; margin-top: 6px;">
+            四相位重心高度起伏曲線（重心高低差）是賦予角色走路重量感與節奏的關鍵。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 11: Phase 9: 整合至 Unreal Engine (UE5 實戰管線)
+         ========================================== -->
+    <section class="slide" data-index="11" data-title="Phase 9: Unreal Engine 5 實戰整合" data-phase="PHASE 09">
+      <div class="slide-header">
+        <div>
+          <div class="slide-badge-row">
+            <span class="slide-phase-pill pill-cyan">Phase 09</span>
+            <span class="soft-tag">Unreal Engine 5.4+ &bull; FBX / USD &bull; Lumen &bull; Nanite</span>
+          </div>
+          <h2 class="slide-title">Unreal Engine 5 遊戲引擎實戰落地整合</h2>
+          <p class="slide-subtitle">從外部 DCC 資產進軍即時遊戲：ORM 貼圖通道打包、主材質球建置與動畫狀態機</p>
+        </div>
+      </div>
+
+      <div class="slide-body grid-2col">
+        <!-- UE5 Material & Packing -->
+        <div class="content-card">
+          <h3 class="card-title"><span class="icon">📦</span> ORM 貼圖通道打包（Texture Packing）黑科技</h3>
+          <p style="font-size: 0.9rem; color: #cbd5e1; line-height: 1.5; margin-bottom: 12px;">
+            為什麼不把 AO、Roughness、Metallic 分別存成 3 張貼圖？因為 GPU 採樣器（Texture Samplers）有硬體上限，打包成單張貼圖能<strong>狂省 66% 貼圖記憶體與讀取頻寬</strong>！
+          </p>
+
+          <div style="background: rgba(0,0,0,0.4); padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); margin-bottom: 12px;">
+            <div style="font-weight: 700; color: #fff; font-size: 0.85rem; margin-bottom: 8px;">業界標準 ORM 貼圖通道映射：</div>
+            <div style="display: flex; flex-direction: column; gap: 6px; font-size: 0.82rem;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="tech-term" style="color: #ef4444; background: rgba(239, 68, 68, 0.15);">R 通道</span>
+                <span style="color: #f1f5f9;">➔ <strong>Ambient Occlusion (AO)</strong> 縫隙陰影</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="tech-term" style="color: #10b981; background: rgba(16, 185, 129, 0.15);">G 通道</span>
+                <span style="color: #f1f5f9;">➔ <strong>Roughness</strong> 粗糙度</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="tech-term" style="color: #3b82f6; background: rgba(59, 130, 246, 0.15);">B 通道</span>
+                <span style="color: #f1f5f9;">➔ <strong>Metallic</strong> 金屬度</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout-box danger">
+            <div class="callout-title">🚨 UE5 必學關鍵設定：取消勾選 sRGB！</div>
+            ORM 貼圖屬於「線性數學數據（Linear Data）」，並非視覺顏色。<strong>導入 UE5 後必須雙擊貼圖，取消勾選「sRGB」</strong>，否則粗糙度數值會被 Gamma 校正扭曲，導致材質金屬感全毀！
+          </div>
+        </div>
+
+        <!-- AnimBP & Master Material Logic -->
+        <div class="content-card">
+          <h3 class="card-title"><span class="icon">🎮</span> 動畫藍圖（AnimBP）與狀態機架構</h3>
+          
+          <div style="background: #04070c; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 14px; margin-bottom: 12px;">
+            <div style="font-size: 0.85rem; font-weight: 700; color: var(--ue-cyan); margin-bottom: 8px;">動畫狀態機（State Machine）典型邏輯流：</div>
+            <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.82rem; font-family: 'JetBrains Mono', monospace;">
+              <span style="background: rgba(255,255,255,0.06); padding: 6px 10px; border-radius: 4px; color: #fff;">Idle / Run<br><small style="color: #94a3b8;">(BlendSpace)</small></span>
+              <span style="color: var(--ue-cyan);">⤹ IsInAir?</span>
+              <span style="background: rgba(0,229,255,0.15); border: 1px solid var(--ue-cyan); padding: 6px 10px; border-radius: 4px; color: var(--ue-cyan);">Jump Start<br><small>起跳</small></span>
+              <span style="color: var(--ue-cyan);">➔</span>
+              <span style="background: rgba(255,255,255,0.06); padding: 6px 10px; border-radius: 4px; color: #fff;">Jump Loop<br><small style="color: #94a3b8;">滯空墜落</small></span>
+              <span style="color: var(--ue-cyan);">➔</span>
+              <span style="background: rgba(255,255,255,0.06); padding: 6px 10px; border-radius: 4px; color: #fff;">Jump Land<br><small style="color: #94a3b8;">著地緩衝</small></span>
+            </div>
+          </div>
+
+          <h4 style="font-size: 0.95rem; font-weight: 700; color: #fff; margin-bottom: 6px;">UE5 最新次世代渲染技術：</h4>
+          <ul class="tech-list" style="font-size: 0.85rem;">
+            <li class="tech-item">
+              <span class="tech-bullet"></span>
+              <div>
+                <strong>Nanite for Skinned Meshes：</strong> UE 5.4+ 開始支援帶骨骼動畫的 Nanite 角色，大幅解放面數限制！
+              </div>
+            </li>
+            <li class="tech-item">
+              <span class="tech-bullet"></span>
+              <div>
+                <strong>Lumen 動態全局光（Real-time GI）：</strong> 不必再花費數天烘焙靜態光照貼圖（Lightmaps），角色走入陰影即刻呈現自然反彈光。
+              </div>
+            </li>
+            <li class="tech-item">
+              <span class="tech-bullet"></span>
+              <div>
+                <strong>Chaos Cloth 物理布料：</strong> 在 UE5 內部直接為披風與裙擺繪製物理約束，即時隨風飄動。
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 12: 業界規格標準與除錯避坑清單 (Standards & Pitfalls)
+         ========================================== -->
+    <section class="slide" data-index="12" data-title="業界規格標準與避坑清單" data-phase="SUMMARY & SPECS">
+      <div class="slide-header">
+        <div>
+          <div class="slide-badge-row">
+            <span class="slide-phase-pill pill-orange">業界規範速查</span>
+            <span class="soft-tag">Polycount &bull; Texture Resolution &bull; Top 10 Pitfalls</span>
+          </div>
+          <h2 class="slide-title">次世代資產規格基準與學生常踩「十大地雷」</h2>
+          <p class="slide-subtitle">掌握遊戲業界資產預算規範，建立專業除錯清單，確保專案順暢通關</p>
+        </div>
+      </div>
+
+      <div class="slide-body grid-2col">
+        <!-- Specs Table -->
+        <div class="content-card">
+          <h3 class="card-title"><span class="icon">📊</span> AAA 遊戲角色規格預算標準（2025/2026）</h3>
+          <table class="specs-table">
+            <thead>
+              <tr>
+                <th>資產類型</th>
+                <th>三角面數 (Tris)</th>
+                <th>貼圖配置 (Texture Sets)</th>
+                <th>骨骼數量 (Bones)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>主角 (Hero Character)</strong></td>
+                <td>80,000 ~ 150,000</td>
+                <td>2~3 套 4K (頭/身/裝備)</td>
+                <td>150 ~ 250 根</td>
+              </tr>
+              <tr>
+                <td><strong>重要 NPC (Key NPC)</strong></td>
+                <td>50,000 ~ 80,000</td>
+                <td>1~2 套 4K 或 2K</td>
+                <td>100 ~ 150 根</td>
+              </tr>
+              <tr>
+                <td><strong>雜兵 / 怪物 (Grunt/Enemy)</strong></td>
+                <td>20,000 ~ 40,000</td>
+                <td>1 套 2K</td>
+                <td>50 ~ 80 根</td>
+              </tr>
+              <tr>
+                <td><strong>手持武器 (Weapon)</strong></td>
+                <td>8,000 ~ 25,000</td>
+                <td>1 套 2K</td>
+                <td>3 ~ 15 根</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="callout-box" style="margin-top: 14px;">
+            <div class="callout-title">💡 面數並非越低越好</div>
+            在現代 GPU 運算架構中，<strong>Draw Calls（材質數量）與貼圖採樣次數</strong>對效能的影響遠遠大於單純幾萬個三角形面數！合理合併材質球才是優化關鍵。
+          </div>
+        </div>
+
+        <!-- Top 10 Pitfalls Checklist -->
+        <div class="content-card">
+          <h3 class="card-title"><span class="icon">💣</span> 學生初學十大致命地雷與自我診斷</h3>
+          <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.82rem; overflow-y: auto; max-height: 290px; padding-right: 4px;">
+            <div style="background: rgba(255, 42, 95, 0.08); border-left: 3px solid var(--sp-crimson); padding: 6px 10px; border-radius: 4px;">
+              <strong>1. 法線凹凸顛倒：</strong> 綠通道 Y 軸顛倒（DirectX 與 OpenGL 格式未對齊）。
+            </div>
+            <div style="background: rgba(255, 42, 95, 0.08); border-left: 3px solid var(--sp-crimson); padding: 6px 10px; border-radius: 4px;">
+              <strong>2. 硬邊黑線髒斑：</strong> 模型硬邊（Hard Edge）交界處未在 UV 上切開 Seam。
+            </div>
+            <div style="background: rgba(255, 42, 95, 0.08); border-left: 3px solid var(--sp-crimson); padding: 6px 10px; border-radius: 4px;">
+              <strong>3. 未凍結變換（Freeze Transforms）：</strong> DCC 軟體導出前未重置位移縮放，進引擎模型旋轉 90 度或縮放爆炸。
+            </div>
+            <div style="background: rgba(255, 42, 95, 0.08); border-left: 3px solid var(--sp-crimson); padding: 6px 10px; border-radius: 4px;">
+              <strong>4. ORM 貼圖勾了 sRGB：</strong> 導致粗糙度被校正變亮，在 UE5 呈現死白無光澤。
+            </div>
+            <div style="background: rgba(255, 42, 95, 0.08); border-left: 3px solid var(--sp-crimson); padding: 6px 10px; border-radius: 4px;">
+              <strong>5. 對稱烘焙重疊穿幫：</strong> 疊 UV 烘焙時忘記將對稱部分平移 U+1。
+            </div>
+            <div style="background: rgba(255, 42, 95, 0.08); border-left: 3px solid var(--sp-crimson); padding: 6px 10px; border-radius: 4px;">
+              <strong>6. 關節體積塌癟：</strong> 膝蓋手肘沒有做 3-Loop 環線布線。
+            </div>
+            <div style="background: rgba(255, 42, 95, 0.08); border-left: 3px solid var(--sp-crimson); padding: 6px 10px; border-radius: 4px;">
+              <strong>7. 蒙皮頂點權重未正規化：</strong> 頂點未受任何骨骼牽引或總和不為 1.0。
+            </div>
+            <div style="background: rgba(255, 42, 95, 0.08); border-left: 3px solid var(--sp-crimson); padding: 6px 10px; border-radius: 4px;">
+              <strong>8. 單位尺寸不一致：</strong> Maya 預設公厘 (mm) 或公尺 (m) 未改為公分 (cm)。
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 13: 結語與專案評量指導 (Conclusion & Portfolio)
+         ========================================== -->
+    <section class="slide" data-index="13" data-title="結語與作品集建構心法" data-phase="PORTFOLIO GUIDE">
+      <div class="slide-header">
+        <div>
+          <div class="slide-badge-row">
+            <span class="slide-phase-pill pill-cyan">畢業專案與就業導航</span>
+            <span class="soft-tag">ArtStation 規格 &bull; 業界實務作品集標準</span>
+          </div>
+          <h2 class="slide-title">結語：打造符合業界 AAA 標準的專業作品集</h2>
+          <p class="slide-subtitle">次世代遊戲美術學習地圖與求職 ArtStation 展示必備要件</p>
+        </div>
+      </div>
+
+      <div class="slide-body grid-2col">
+        <!-- Portfolio Standard Checklist -->
+        <div class="content-card">
+          <h3 class="card-title"><span class="icon">🏆</span> AAA 遊戲公司主美最想看見的作品集展示</h3>
+          <ul class="tech-list">
+            <li class="tech-item">
+              <span class="tech-bullet"></span>
+              <div>
+                <strong class="tech-highlight">1. 360 度轉盤影片（Turntable Video）：</strong>
+                在 Unreal Engine 5 內搭建三點光源，錄製 1080p 60FPS 旋轉展示，呈現即時動態光影變化。
+              </div>
+            </li>
+            <li class="tech-item">
+              <span class="tech-bullet"></span>
+              <div>
+                <strong class="tech-highlight">2. 乾淨拓撲線框圖（Wireframe Breakdown）：</strong>
+                展示低模四邊面布線，證明自己深諳動畫變形原理，而非只會 ZRemesher 一鍵偷吃步。
+              </div>
+            </li>
+            <li class="tech-item">
+              <span class="tech-bullet"></span>
+              <div>
+                <strong class="tech-highlight">3. PBR 貼圖分解圖（Texture Maps Breakdown）：</strong>
+                並列展示 Base Color、Roughness、Normal、Metallic 與 AO 貼圖，展現對材質物理邏輯的深刻理解。
+              </div>
+            </li>
+            <li class="tech-item">
+              <span class="tech-bullet"></span>
+              <div>
+                <strong class="tech-highlight">4. 姿勢與表情動態（Posed & Expressions）：</strong>
+                不要只放呆板的 A-Pose！為角色綁定骨骼擺出具備張力的戰鬥姿態，並展示 2~3 組表情 Blendshapes。
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Instructor Summary Box -->
+        <div class="content-card" style="border-left: 4px solid var(--ue-cyan); justify-content: space-between;">
+          <div>
+            <h3 class="card-title"><span class="icon">🎓</span> 教授給同學的期末期許</h3>
+            <p style="font-size: 0.95rem; line-height: 1.7; color: #cbd5e1; margin-bottom: 16px;">
+              「次世代遊戲製作管線看似繁複龐大，但其背後的底層思維其實只有一個：<strong>用科學與工程的嚴謹布線，承載藝術與靈魂的自由雕琢。</strong>
+              <br><br>
+              從每一條 edge loop 的流向、每一個 UV seam 的隱藏，到每一道 PBR 粗糙度數值的推敲，都是身為專業 3D 遊戲藝術家必備的匠人精神。期望大家都能在 Unreal Engine 5 的數位世界中，創造出震撼世界的頂尖角色！」
+            </p>
+          </div>
+
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <button class="control-btn" id="btn-print-handout" style="flex: 1; padding: 10px; background: var(--ue-cyan); color: #06090e; font-weight: 800; border-color: var(--ue-cyan);">
+              🖨️ 列印 / 匯出完整講義 PDF
+            </button>
+            <button class="control-btn" id="btn-restart-deck" style="padding: 10px 16px;">
+              ⏮️ 返回封面
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Bottom Deck Footer -->
+  <footer class="deck-footer">
+    <div class="keyboard-hints">
+      <span>快捷鍵導覽：</span>
+      <span class="key-badge">← / → 上下一頁</span>
+      <span class="key-badge">Space 下一頁</span>
+      <span class="key-badge">G 目錄縮圖</span>
+      <span class="key-badge">N 講義講稿</span>
+      <span class="key-badge">P 講義模式</span>
+      <span class="key-badge">F 全螢幕</span>
+    </div>
+    <div>
+      <span>3D 數位遊戲藝術與動畫專業課程 &bull; 次世代管線講義</span>
+    </div>
+  </footer>
+
+  <!-- Lecture Notes Drawer (Professor Speaking Script) -->
+  <aside class="notes-drawer" id="notes-drawer">
+    <div class="drawer-header">
+      <div class="drawer-title">
+        <span>🎙️ 講師備忘講稿 (Instructor Lecture Notes)</span>
+      </div>
+      <button class="control-btn" id="btn-close-notes" style="padding: 2px 8px; font-size: 0.75rem;">✕ 關閉</button>
+    </div>
+    <div class="drawer-body" id="notes-content">
+      <!-- Injected dynamically by JS per slide -->
+    </div>
+  </aside>
+
+  <!-- Slide Grid Modal -->
+  <div class="grid-modal" id="grid-modal">
+    <div class="modal-header">
+      <h2 style="font-size: 1.5rem; font-weight: 800; color: #fff;">📋 講義章節快速導覽 (Slide Directory)</h2>
+      <button class="control-btn" id="btn-close-grid" style="padding: 6px 14px;">✕ 關閉目錄 (Esc)</button>
+    </div>
+    <div class="grid-cards-container" id="grid-cards-container">
+      <!-- Injected dynamically by JS -->
+    </div>
+  </div>
+
+  <!-- JavaScript Application Logic -->
+  <script>
+    // Lecture Notes Data per Slide for the Professor
+    const lectureNotes = {
+      1: {
+        tag: "課程破題與學習動機激發",
+        script: "各位大專同學早安！今天我們要深入探討現代 AAA 遊戲工業最核心的骨幹——『次世代遊戲美術製作管線』。很多初學者進入這門課常問我：『老師，既然 Unreal Engine 5 有了 Nanite，我是不是在 ZBrush 雕刻完 2,000 萬面的模型，就可以直接丟進遊戲引擎用了？』答案是：絕對不行！骨架蒙皮變形、即時物理碰撞與貼圖採樣依然受限於即時運算幀率。今天這堂課，我們就要帶大家揭開『雙軌制管線』如何將千萬面細節精準壓縮至數萬面低模中的奧秘！",
+        focus: "讓學生理解『離線渲染 (CG/電影)』與『即時渲染 (遊戲 60FPS)』的本質差異。"
+      },
+      2: {
+        tag: "建立宏觀管線認知",
+        script: "請大家看這張雙軌管線地圖。很多同學做專案失敗，不是因為技術不好，而是因為『工序錯亂』。例如：還沒確認好剪影大型就急著雕刻毛孔；或者 UV 還沒拆完就急著刷貼圖。請記住這張圖的流向：上軌是幾何細節軌，下軌是引擎就緒軌，兩者在『物理烘焙』交匯，再分流進入材質與骨架動畫，最後在 UE5 落地。",
+        focus: "強調工序前後依賴關係，任何前置環節的偷懶，都會在後期導致推倒重來。"
+      },
+      3: {
+        tag: "概念與大型的重要性",
+        script: "在 Phase 1，我們強調『剪影第一（Silhouette First）』。請同學按一下簡報上的剪影切換按鈕。在遊戲實際畫面中，角色常常只佔螢幕高度的 10% 到 20%。如果純黑剪影看不出職業、體型或裝備特徵，上再多細緻貼圖都是徒勞無功。另外，強烈建議採用 A-Pose 而非 T-Pose，肩膀三角肌才不會過度拉伸拉扁。",
+        focus: "提醒學生注意 2D 原畫的三視圖誤差，解剖結構以 3D 骨骼關節為準。"
+      },
+      4: {
+        tag: "高模雕刻的層次把控",
+        script: "雕刻千萬面時，記住『三級細節階層理論』。很多同學一進 ZBrush，骨架肌肉還沒對準，就急著拿 Alpha 刷滿臉青春痘與毛孔。這在業界稱為『髒亂（Noise）』而非細節。第一級骨骼結構必須佔據 60% 的審美精力，二級衣褶 30%，微毛孔最後 10% 甚至能交給 Substance Painter 來做。",
+        focus: "講解 Marvelous Designer 打版與物理模擬如何提升服裝真實感。"
+      },
+      5: {
+        tag: "反拓撲的核心靈魂",
+        script: "現在進入全流程最考驗耐心的環節——反拓撲（Retopology）。為什麼一定要純四邊面？因為動畫師拉扯骨骼時，三角形和多邊面（N-Gons）會產生奇怪的光影死角與撕裂。請特別看右邊的關節彎曲演示：膝蓋與手肘必須遵守『3-Loop 法則』，否則一旦彎曲 90 度，手臂就會像被折斷的水管一樣扁掉！",
+        focus: "引導學生動手操作拓撲彎曲滑桿，觀察 3 條環線如何保持體積圓潤。"
+      },
+      6: {
+        tag: "拆 UV 與紋素密度計算",
+        script: "拆 UV 就像幫模型『剝皮』攤平成 2D 平面。這裡有兩個考試必考重點：第一，硬邊（Hard Edges）交界處必須切 UV Seam，否則法線烘焙必出黑邊！第二，紋素密度（Texel Density）。很多同學的模型為什麼臉很糊、鞋子卻很清晰？就是因為 TD 沒有分配均勻！主角的臉通常需要最高權重。",
+        focus: "解釋對稱疊 UV（Overlapping）在烘焙時必須平移 +1 的原因。"
+      },
+      7: {
+        tag: "維度壓縮的物理烘焙",
+        script: "烘焙（Baking）是次世代美術最神奇的黑科技！大家拖曳右側的互動滑桿：明明是同一個低面數球體，烘焙上法線貼圖後，光線竟然能呈現出圓潤的高光與深刻的刻痕。法線貼圖用 RGB 偽裝成向量方向。請特別注意：Unreal Engine 5 是 DirectX 格式（-Y），如果綠通道反了，凹槽看起來就會變成凸起！",
+        focus: "解釋外籠（Cage）如何避免手指與腋下光線穿透誤擊。"
+      },
+      8: {
+        tag: "PBR 物理材質原理",
+        script: "在 Substance 3D Painter 中，我們繪製的是 PBR 物理材質。請同學切換上方按鈕觀察各通道：Base Color 純淨無陰影、Roughness 控制光圈散開程度、Metallic 遵循非黑即白（0 或 1）。別忘了運用 Anchor Points（錨點）讓下層雕刻的刮痕自動傳遞給上層生成器，這才叫專業聰明的工作流！",
+        focus: "點擊各通道按鈕，向學生展示材質並非一團顏色，而是多重物理層的疊加。"
+      },
+      9: {
+        tag: "骨架蒙皮與變形守恆",
+        script: "進到骨架與蒙皮。骨骼就像人體骨架，關節軸向一定要一致。蒙皮時最常見的 Bug 就是『糖果包裝紙扭縮（Candy-wrapper artifact）』，當手腕轉 180 度時整隻手扭扁成麻花。解法就是加入 Twist Bones（扭轉輔助骨），將旋轉角度平均分配給兩根骨頭。",
+        focus: "強調頂點權重總和必須為 1.0 的數學守恆定律。"
+      },
+      10: {
+        tag: "遊戲動畫的模組化思維",
+        script: "遊戲動畫跟電影完全不同！電影是線性單向播放，遊戲則隨時會被玩家的手把打斷。所以我們製作的是 Idle、Walk、Run 等循環動畫。請注意 In-Place（原地踩跑步機）與 Root Motion（根骨骼位移）的差異，要徹底避免腳步滑步，Root Motion 是最頂尖的方案。",
+        focus: "解析走路循環四大關鍵相位（Contact, Down, Passing, Up）與重心起伏。"
+      },
+      11: {
+        tag: "Unreal Engine 5 落地實戰",
+        script: "到了最後整合階段，把資產送進 Unreal Engine 5！請務必記住 ORM 貼圖通道打包：Red 放 AO、Green 放 Roughness、Blue 放 Metallic。還有最關鍵的一點——導入 UE5 後必須取消勾選 sRGB！否則貼圖會被 Gamma 增亮，導致金屬感與粗糙度全面崩潰！",
+        focus: "介紹動畫藍圖狀態機切換與 UE5 Nanite/Lumen 次世代特性。"
+      },
+      12: {
+        tag: "除錯與規格避坑",
+        script: "這是老師幫大家整理的『新手十大地雷清單』與 AAA 規格速查表。期末專案交件前，請務必逐一核對：Freeze Transforms 做了沒？單位是不是公分？ORM 有沒有關 sRGB？法線 Y 軸有沒有翻轉？這份清單能幫大家省下幾十個小時的除錯時間。",
+        focus: "指導學生如何以專業標準自我檢查作業。"
+      },
+      13: {
+        tag: "作品集與期末總結",
+        script: "最後，同學們要拿去投遞遊戲公司的 ArtStation 作品集，千萬不要只放單純的照片。主美要看的是：360 度轉盤影片、乾淨的線框拓撲圖、拆解的 PBR 貼圖，以及帶骨架的動態姿態。大家可以點擊下方的『匯出完整講義 PDF』，隨時複習今天的所有知識點！",
+        focus: "激勵學生打造符合國際標準的次世代 3D 美術作品集。"
+      }
+    };
+
+    // Application State
+    let currentSlide = 1;
+    const totalSlides = 13;
+    let audioEnabled = true;
+
+    // Web Audio Synthesizer for High-Tech Clicks
+    const audioCtx = (window.AudioContext || window.webkitAudioContext) ? new (window.AudioContext || window.webkitAudioContext)() : null;
+    function playSfx(type = 'click') {
+      if (!audioEnabled || !audioCtx) return;
+      try {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        const now = audioCtx.currentTime;
+        if (type === 'click') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(800, now);
+          osc.frequency.exponentialRampToValueAtTime(400, now + 0.05);
+          gain.gain.setValueAtTime(0.08, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+          osc.start(now);
+          osc.stop(now + 0.05);
+        } else if (type === 'switch') {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(500, now);
+          osc.frequency.exponentialRampToValueAtTime(1000, now + 0.08);
+          gain.gain.setValueAtTime(0.06, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+          osc.start(now);
+          osc.stop(now + 0.08);
+        }
+      } catch (e) {
+        console.warn('Audio not allowed yet', e);
+      }
+    }
+
+    // DOM Elements
+    const slides = document.querySelectorAll('.slide');
+    const slideCounter = document.getElementById('slide-counter');
+    const progressBar = document.getElementById('progress-bar');
+    const btnPrev = document.getElementById('btn-prev');
+    const btnNext = document.getElementById('btn-next');
+    const btnNotes = document.getElementById('btn-notes');
+    const btnMode = document.getElementById('btn-mode');
+    const btnAudio = document.getElementById('btn-audio');
+    const btnFullscreen = document.getElementById('btn-fullscreen');
+    const notesDrawer = document.getElementById('notes-drawer');
+    const notesContent = document.getElementById('notes-content');
+    const btnCloseNotes = document.getElementById('btn-close-notes');
+    const gridModal = document.getElementById('grid-modal');
+    const gridCardsContainer = document.getElementById('grid-cards-container');
+    const btnToggleGrid = document.getElementById('btn-toggle-grid');
+    const deckJumpBtn = document.getElementById('deck-jump-btn');
+    const btnCloseGrid = document.getElementById('btn-close-grid');
+
+    // Update Slide UI
+    function showSlide(index) {
+      if (index < 1) index = 1;
+      if (index > totalSlides) index = totalSlides;
+
+      const prevIndex = currentSlide;
+      currentSlide = index;
+
+      slides.forEach((slide) => {
+        const slideIdx = parseInt(slide.dataset.index, 10);
+        slide.classList.remove('active', 'prev', 'next');
+        if (slideIdx === currentSlide) {
+          slide.classList.add('active');
+        } else if (slideIdx < currentSlide) {
+          slide.classList.add('prev');
+        } else {
+          slide.classList.add('next');
+        }
+      });
+
+      // Update Counter & Progress
+      slideCounter.textContent = `SLIDE ${String(currentSlide).padStart(2, '0')} / ${totalSlides}`;
+      const progressPercent = ((currentSlide - 1) / (totalSlides - 1)) * 100;
+      progressBar.style.width = `${progressPercent}%`;
+
+      // Update Lecture Notes
+      updateLectureNotes();
+
+      // Sound
+      if (prevIndex !== currentSlide) {
+        playSfx('click');
+      }
+
+      // Update Grid Modal Active States
+      updateGridModalActive();
+    }
+
+    function updateLectureNotes() {
+      const data = lectureNotes[currentSlide] || {
+        tag: "課堂解說",
+        script: "詳細說明次世代遊戲美術製作流程細節。",
+        focus: "引導學生理解核心觀念。"
+      };
+
+      notesContent.innerHTML = `
+        <div class="notes-section">
+          <div class="notes-tag">🎯 本頁教學核心目標</div>
+          <div style="font-weight: 700; color: #fff; margin-bottom: 8px;">${data.tag}</div>
+          <div style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5;">${data.focus}</div>
+        </div>
+        <div class="notes-section" style="border-top: 1px solid var(--border-subtle); padding-top: 12px;">
+          <div class="notes-tag" style="color: var(--ue-cyan);">🗣️ 老師授課推薦口述講稿</div>
+          <p style="color: #cbd5e1; font-size: 0.88rem; line-height: 1.6;">${data.script}</p>
+        </div>
+      `;
+    }
+
+    // Build Grid Modal
+    function buildGridModal() {
+      gridCardsContainer.innerHTML = '';
+      slides.forEach(slide => {
+        const idx = parseInt(slide.dataset.index, 10);
+        const title = slide.dataset.title || `第 ${idx} 講`;
+        const phase = slide.dataset.phase || '';
+
+        const card = document.createElement('div');
+        card.className = `thumb-card ${idx === currentSlide ? 'active' : ''}`;
+        card.innerHTML = `
+          <div>
+            <div class="thumb-num">PHASE ${String(idx).padStart(2, '0')} &bull; ${phase}</div>
+            <div class="thumb-title">${title}</div>
+          </div>
+          <div class="thumb-desc">點擊跳轉至此單元 ➔</div>
+        `;
+        card.addEventListener('click', () => {
+          showSlide(idx);
+          gridModal.classList.remove('open');
+        });
+        gridCardsContainer.appendChild(card);
+      });
+    }
+
+    function updateGridModalActive() {
+      const cards = gridCardsContainer.querySelectorAll('.thumb-card');
+      cards.forEach((card, i) => {
+        if (i + 1 === currentSlide) {
+          card.classList.add('active');
+        } else {
+          card.classList.remove('active');
+        }
+      });
+    }
+
+    // Navigation Events
+    btnPrev.addEventListener('click', () => showSlide(currentSlide - 1));
+    btnNext.addEventListener('click', () => showSlide(currentSlide + 1));
+
+    btnNotes.addEventListener('click', () => {
+      notesDrawer.classList.toggle('open');
+      btnNotes.classList.toggle('active', notesDrawer.classList.contains('open'));
+      playSfx('switch');
+    });
+
+    btnCloseNotes.addEventListener('click', () => {
+      notesDrawer.classList.remove('open');
+      btnNotes.classList.remove('active');
+    });
+
+    btnToggleGrid.addEventListener('click', () => {
+      gridModal.classList.toggle('open');
+      playSfx('switch');
+    });
+    deckJumpBtn.addEventListener('click', () => {
+      gridModal.classList.toggle('open');
+      playSfx('switch');
+    });
+    btnCloseGrid.addEventListener('click', () => {
+      gridModal.classList.remove('open');
+    });
+
+    // Handout Mode Toggle
+    btnMode.addEventListener('click', () => {
+      document.body.classList.toggle('handout-mode');
+      const isHandout = document.body.classList.contains('handout-mode');
+      btnMode.classList.toggle('active', isHandout);
+      btnMode.querySelector('span').textContent = isHandout ? '🖥️ 簡報模式' : '📖 講義模式';
+      playSfx('switch');
+    });
+
+    // Audio Toggle
+    btnAudio.addEventListener('click', () => {
+      audioEnabled = !audioEnabled;
+      document.getElementById('audio-icon').textContent = audioEnabled ? '🔊' : '🔇';
+      btnAudio.classList.toggle('active', !audioEnabled);
+      if (audioEnabled) playSfx('click');
+    });
+
+    // Fullscreen Toggle
+    btnFullscreen.addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+    });
+
+    // Keyboard Shortcuts
+    window.addEventListener('keydown', (e) => {
+      if (gridModal.classList.contains('open') && e.key === 'Escape') {
+        gridModal.classList.remove('open');
+        return;
+      }
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        showSlide(currentSlide + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        showSlide(currentSlide - 1);
+      } else if (e.key === 'Home') {
+        showSlide(1);
+      } else if (e.key === 'End') {
+        showSlide(totalSlides);
+      } else if (e.key === 'g' || e.key === 'G') {
+        gridModal.classList.toggle('open');
+        playSfx('switch');
+      } else if (e.key === 'n' || e.key === 'N') {
+        notesDrawer.classList.toggle('open');
+        btnNotes.classList.toggle('active', notesDrawer.classList.contains('open'));
+        playSfx('switch');
+      } else if (e.key === 'p' || e.key === 'P') {
+        btnMode.click();
+      } else if (e.key === 'f' || e.key === 'F') {
+        btnFullscreen.click();
+      } else if (e.key === 'm' || e.key === 'M') {
+        btnAudio.click();
+      }
+    });
+
+    // --- Interactive Component 1: Slide 2 Pipeline Step Inspector ---
+    const pipelineData = {
+      1: {
+        icon: "📐",
+        title: "01. 概念設計與基礎大型 (Concept & Blockout)",
+        soft: "Maya / Blender / PureRef / Photoshop",
+        role: "概念與前期規劃",
+        input: "2D 原畫三視圖、情緒板、世界觀設定與標準人體尺寸規範。",
+        core: "建立低面數基礎大型 (Blockout)，鎖定頭身比、主要剪影識別度與關節樞紐位置。",
+        output: "比例正確的 Basemesh (OBJ / FBX)，進遊戲灰模驗證相機體積感與手感。",
+        pitfall: "急於雕刻微細節，卻忽略頭身比與重心，導致後期幾十萬面雕刻完成後無法修改骨架長度。"
+      },
+      2: {
+        icon: "🗿",
+        title: "02. 高模數位雕刻 (High-Poly Sculpting)",
+        soft: "ZBrush / Marvelous Designer / Blender",
+        role: "細節幾何塑形",
+        input: "基礎低模 Basemesh 與解剖學肌肉參考圖、服裝成衣打版圖。",
+        core: "運用三級細節階層理論，雕刻解剖肌肉輪廓、衣物皺褶、裝甲厚度與微毛孔。",
+        output: "高達數千萬面的高模幾何體 (OBJ / ZTL)，專門作為法線烘焙數據來源。",
+        pitfall: "在骨骼結構尚未精準前就開啟高階細分狂刷毛孔，導致整體造型鬆散髒亂。"
+      },
+      3: {
+        icon: "🕸️",
+        title: "03. 反拓撲與布線 (Retopology)",
+        soft: "TopoGun 3 / Maya Quad Draw / Blender",
+        role: "動畫與引擎就緒網格",
+        input: "數千萬面高模雕刻檔案。",
+        core: "在不破壞高模輪廓的前提下，手工布出全四邊面 (Quads) 與關節 3-Loop 環形布線。",
+        output: "數萬面輕量化遊戲就緒網格 (Low-Poly Game Mesh)。",
+        pitfall: "關節處缺少環形線，導致蒙皮彎曲時體積直接凹陷癟塌；留有多邊面 (N-Gons)。"
+      },
+      4: {
+        icon: "🗺️",
+        title: "04. 拆 UV 與紋素密度 (UV Unwrapping)",
+        soft: "RizomUV / Maya UV Editor",
+        role: "2D 貼圖坐標系展開",
+        input: "拓撲完成的 Low-poly 幾何網格。",
+        core: "切開並展開至 [0, 1] UV 空間，隱藏切縫、消除拉伸，並統一各部位 Texel Density (TD)。",
+        output: "展開完整的 UV Layout，對稱疊 UV 在烘焙前移至 U+1 空間。",
+        pitfall: "硬邊 (Hard Edge) 處未切 UV Seam，導致後續法線貼圖烘焙產生嚴重黑邊光影髒斑。"
+      },
+      5: {
+        icon: "🔥",
+        title: "05. 物理烘焙 (Baking)",
+        soft: "Substance 3D Painter / Marmoset Toolbag",
+        role: "幾何資訊維度壓縮",
+        input: "千萬面高模 + 拓撲低模 + 外籠 (Cage)。",
+        core: "發射光線探測高模法線朝向，烘焙出切線空間法線、AO、曲率、ID 與厚度貼圖。",
+        output: "Normal, AO, Curvature, ID, Thickness 貼圖矩陣 (16-bit TIFF / PNG)。",
+        pitfall: "光線穿透腋下手指造成重影；DirectX 與 OpenGL Y 軸綠通道顛倒導致凹凸反向。"
+      },
+      6: {
+        icon: "🎨",
+        title: "06. PBR 材質繪製 (Texturing)",
+        soft: "Substance 3D Painter",
+        role: "物理光學材質表現",
+        input: "低模 + 烘焙貼圖矩陣。",
+        core: "遵循物理光學原理，繪製 BaseColor, Roughness, Metallic，並將 AO/Rough/Metal 打包為 ORM 貼圖。",
+        output: "UE5 專用貼圖集 (BaseColor, Normal, ORM 打包貼圖)。",
+        pitfall: "在 Base Color 中畫入人為光影；金屬度未遵守非黑即白原則；ORM 貼圖誤勾選 sRGB。"
+      },
+      7: {
+        icon: "🦴",
+        title: "07. 骨架綁定與蒙皮 (Rigging & Skinning)",
+        soft: "Maya / Blender / Unreal Control Rig",
+        role: "角色骨骼結構與權重賦予",
+        input: "低模網格與角色體型比例。",
+        core: "建構嚴謹關節階層、校準旋轉軸向，繪製頂點蒙皮權重，並配置手腕 Twist 輔助骨。",
+        output: "已完成蒙皮綁定的 Skeletal Mesh (FBX)。",
+        pitfall: "未重置凍結變換 (Freeze Transforms)；頂點權重未正規化 (總和不等於 1.0)。"
+      },
+      8: {
+        icon: "🏃",
+        title: "08. 動作動畫製作 (Animation)",
+        soft: "Maya / MotionBuilder / Mocap",
+        role: "動態表現與循環動作",
+        input: "已綁定骨架的角色資產與動作捕捉數據。",
+        core: "製作 Idle, Walk, Run 動作循環，調整 Root Motion 避免腳步滑步，優化打擊蓄力與受擊節奏。",
+        output: "Animation Sequences (FBX) 與 Blendshapes 表情數據。",
+        pitfall: "循環動作起迄影格未無縫銜接造成抽動；腳步速度未與角色膠囊體移動速度匹配。"
+      },
+      9: {
+        icon: "🎮",
+        title: "09. Unreal Engine 5 實戰整合 (Engine Setup)",
+        soft: "Unreal Engine 5.4+ / Nanite / Lumen",
+        role: "遊戲引擎最終組裝",
+        input: "Skeletal Mesh + ORM 貼圖集 + Anim FBX。",
+        core: "建立 Master Material 節點網絡、配置 Blend Space 混合空間與狀態機，設定次表面皮膚與物理布料。",
+        output: "隨時可受玩家控制器操控的高品質遊戲角色 (Playable Character BP)。",
+        pitfall: "貼圖忘了關閉 sRGB 導致材質反光爆掉；單位未設為公分 (cm) 導致角色忽大忽小。"
+      }
+    };
+
+    const stepNodes = document.querySelectorAll('.pipeline-step-node');
+    const stepDetailBox = document.getElementById('step-detail-box');
+    const stepIcon = document.getElementById('step-icon');
+    const stepTitle = document.getElementById('step-title');
+    const stepSoft = document.getElementById('step-softwares');
+    const stepRole = document.getElementById('step-role-badge');
+    const stepInput = document.getElementById('step-input-text');
+    const stepCore = document.getElementById('step-core-text');
+    const stepOutput = document.getElementById('step-output-text');
+    const stepPitfall = document.getElementById('step-pitfall-text');
+
+    stepNodes.forEach(node => {
+      node.addEventListener('click', () => {
+        stepNodes.forEach(n => n.classList.remove('active'));
+        node.classList.add('active');
+        const s = parseInt(node.dataset.step, 10);
+        const d = pipelineData[s];
+        if (d) {
+          stepIcon.textContent = d.icon;
+          stepTitle.textContent = d.title;
+          stepSoft.textContent = d.soft;
+          stepRole.textContent = d.role;
+          stepInput.textContent = d.input;
+          stepCore.textContent = d.core;
+          stepOutput.textContent = d.output;
+          stepPitfall.textContent = d.pitfall;
+          playSfx('click');
+        }
+      });
+    });
+
+    // --- Interactive Component 2: Slide 3 Silhouette Tester ---
+    const btnToggleSilhouette = document.getElementById('btn-toggle-silhouette');
+    const silSvg = document.getElementById('silhouette-svg');
+    const silTag = document.getElementById('silhouette-mode-tag');
+    let isSilhouetteMode = true;
+
+    if (btnToggleSilhouette) {
+      btnToggleSilhouette.addEventListener('click', () => {
+        isSilhouetteMode = !isSilhouetteMode;
+        playSfx('switch');
+        if (isSilhouetteMode) {
+          silTag.textContent = "當前檢視：純黑剪影檢視 (Silhouette View)";
+          silSvg.querySelectorAll('circle, path, polygon').forEach(el => {
+            el.setAttribute('fill', '#000');
+            el.setAttribute('stroke', '#00e5ff');
+            el.setAttribute('stroke-width', '1.5');
+          });
+        } else {
+          silTag.textContent = "當前檢視：線框結構大型 (Wireframe Basemesh)";
+          silSvg.querySelectorAll('circle, path, polygon').forEach(el => {
+            el.setAttribute('fill', 'rgba(0, 229, 255, 0.12)');
+            el.setAttribute('stroke', '#00e5ff');
+            el.setAttribute('stroke-width', '2');
+          });
+        }
+      });
+    }
+
+    // --- Interactive Component 3: Slide 5 Joint Deformation Simulator ---
+    const btnToggleBend = document.getElementById('btn-toggle-bend');
+    const jointTag = document.getElementById('joint-status-tag');
+    const badLower = document.getElementById('bad-lower');
+    const goodLower = document.getElementById('good-lower');
+    const badWarnText = document.getElementById('bad-warn-text');
+    let isBended = false;
+
+    if (btnToggleBend) {
+      btnToggleBend.addEventListener('click', () => {
+        isBended = !isBended;
+        playSfx('switch');
+        if (isBended) {
+          jointTag.textContent = "關節狀態：彎曲 90° (觀察塌縮對比)";
+          // Bend bad arm (collapsing into triangle/pinched fold)
+          badLower.setAttribute('d', 'M 60 90 L 100 90 L 140 100 L 90 120 Z');
+          badWarnText.textContent = "嚴重體積塌陷 (Volume Collapse)，光影破面！";
+          badWarnText.setAttribute('fill', '#ff2a5f');
+
+          // Bend good arm (maintains 3-loop round curvature)
+          goodLower.setAttribute('d', 'M 60 100 L 100 100 L 130 140 L 90 150 Z');
+        } else {
+          jointTag.textContent = "關節狀態：伸展 0° (立體飽滿)";
+          badLower.setAttribute('d', 'M 60 90 L 100 90 L 100 150 L 60 150 Z');
+          badWarnText.textContent = "彎曲時體積直接凹陷塌癟";
+          badWarnText.setAttribute('fill', '#94a3b8');
+
+          goodLower.setAttribute('d', 'M 60 100 L 100 100 L 100 150 L 60 150 Z');
+        }
+      });
+    }
+
+    // --- Interactive Component 4: Slide 6 Texel Density Slider ---
+    const tdSlider = document.getElementById('td-slider');
+    const tdLabel = document.getElementById('td-val-label');
+    const checkerBox = document.getElementById('checker-box');
+    const tdStatusText = document.getElementById('td-status-text');
+    const tdDescText = document.getElementById('td-desc-text');
+
+    if (tdSlider) {
+      tdSlider.addEventListener('input', (e) => {
+        const val = parseInt(e.target.value, 10);
+        playSfx('click');
+        if (val === 1) {
+          tdLabel.textContent = "低密度 / 拉伸過度 (8 px/cm)";
+          checkerBox.style.backgroundSize = "60px 20px"; // Stretched
+          tdStatusText.textContent = "❌ 嚴重矩形拉伸變形";
+          tdStatusText.style.color = "#ff2a5f";
+          tdDescText.textContent = "UV 未作 Unfold 平滑展開，貼圖到模型上會被強行拉長模糊";
+        } else if (val === 2) {
+          tdLabel.textContent = "標準平衡 (20 px/cm)";
+          checkerBox.style.backgroundSize = "30px 30px"; // Square
+          tdStatusText.textContent = "✅ 棋盤格正方無拉伸";
+          tdStatusText.style.color = "#00e5ff";
+          tdDescText.textContent = "正方形比例完美，全身紋素密度均勻一致";
+        } else {
+          tdLabel.textContent = "面部高解析聚焦 (40 px/cm)";
+          checkerBox.style.backgroundSize = "15px 15px"; // Dense Square
+          tdStatusText.textContent = "🌟 高權重超精緻密集區";
+          tdStatusText.style.color = "#10b981";
+          tdDescText.textContent = "專門給予角色臉部與眼睛，確保近景鏡頭特寫毛孔栩栩如生";
+        }
+      });
+    }
+
+    // --- Interactive Component 5: Slide 7 Split Comparison Slider ---
+    const splitContainer = document.getElementById('split-container');
+    const splitClipLayer = document.getElementById('split-clip-layer');
+    const splitHandle = document.getElementById('split-handle');
+    let isDraggingSplit = false;
+
+    if (splitContainer && splitClipLayer && splitHandle) {
+      function updateSplit(x) {
+        const rect = splitContainer.getBoundingClientRect();
+        let percent = ((x - rect.left) / rect.width) * 100;
+        if (percent < 5) percent = 5;
+        if (percent > 95) percent = 95;
+
+        splitClipLayer.style.clipPath = `polygon(${percent}% 0, 100% 0, 100% 100%, ${percent}% 100%)`;
+        splitHandle.style.left = `${percent}%`;
+      }
+
+      splitContainer.addEventListener('mousedown', (e) => {
+        isDraggingSplit = true;
+        updateSplit(e.clientX);
+      });
+      window.addEventListener('mousemove', (e) => {
+        if (isDraggingSplit) {
+          updateSplit(e.clientX);
+        }
+      });
+      window.addEventListener('mouseup', () => {
+        if (isDraggingSplit) {
+          isDraggingSplit = false;
+        }
+      });
+
+      // Touch support
+      splitContainer.addEventListener('touchstart', (e) => {
+        isDraggingSplit = true;
+        if (e.touches[0]) updateSplit(e.touches[0].clientX);
+      });
+      window.addEventListener('touchmove', (e) => {
+        if (isDraggingSplit && e.touches[0]) {
+          updateSplit(e.touches[0].clientX);
+        }
+      });
+      window.addEventListener('touchend', () => {
+        isDraggingSplit = false;
+      });
+    }
+
+    // --- Interactive Component 6: Slide 8 PBR Layer Inspector ---
+    const pbrBtns = document.querySelectorAll('.pbr-btn');
+    const pbrCircle = document.getElementById('pbr-circle');
+    const pbrSpec = document.getElementById('pbr-spec');
+    const pbrRim = document.getElementById('pbr-rim');
+    const pbrTag = document.getElementById('pbr-view-tag');
+    const pbrBanner = document.getElementById('pbr-info-banner');
+
+    if (pbrBtns.length > 0) {
+      pbrBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          pbrBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const channel = btn.dataset.channel;
+          playSfx('switch');
+
+          if (channel === 'final') {
+            pbrTag.textContent = "檢視通道：Full PBR Composite (最終物理光影)";
+            pbrCircle.setAttribute('fill', 'url(#pbr-final-grad)');
+            pbrSpec.style.display = 'block';
+            pbrRim.style.display = 'block';
+            pbrBanner.innerHTML = "<strong>PBR 最終合成：</strong> 融合微表面散射、環境全局光與菲涅爾反射，展現物理真實質感。";
+          } else if (channel === 'albedo') {
+            pbrTag.textContent = "檢視通道：Base Color / Albedo (純固有色)";
+            pbrCircle.setAttribute('fill', '#ea580c');
+            pbrSpec.style.display = 'none';
+            pbrRim.style.display = 'none';
+            pbrBanner.innerHTML = "<strong>Base Color：</strong> 絕無光影！純粹的物質顏色（皮革色/皮膚色）。";
+          } else if (channel === 'roughness') {
+            pbrTag.textContent = "檢視通道：Roughness (灰階粗糙度)";
+            pbrCircle.setAttribute('fill', '#475569');
+            pbrSpec.style.display = 'none';
+            pbrRim.style.display = 'none';
+            pbrBanner.innerHTML = "<strong>Roughness：</strong> 灰階數據。越黑 (0.0) 越光滑鏡面，越白 (1.0) 越粗糙霧面。";
+          } else if (channel === 'metallic') {
+            pbrTag.textContent = "檢視通道：Metallic (金屬度二值圖)";
+            pbrCircle.setAttribute('fill', '#0f172a'); // Dielectric is 0 (pure black)
+            pbrSpec.style.display = 'none';
+            pbrRim.style.display = 'none';
+            pbrBanner.innerHTML = "<strong>Metallic：</strong> 嚴格非黑即白！非金屬電介質為 0 (黑)，導體純金屬為 1 (白)。";
+          } else if (channel === 'normal') {
+            pbrTag.textContent = "檢視通道：Normal Map (切線空間法線)";
+            pbrCircle.setAttribute('fill', '#818cf8'); // Typical normal map purple
+            pbrSpec.style.display = 'none';
+            pbrRim.style.display = 'none';
+            pbrBanner.innerHTML = "<strong>Normal Map：</strong> 淡紫色基準 (128,128,255)，以 RGB 空間向量偽裝微觀幾何朝向。";
+          }
+        });
+      });
+    }
+
+    // --- Interactive Component 7: Slide 9 Rigging Twist Bone Toggle ---
+    const btnToggleTwist = document.getElementById('btn-toggle-twist');
+    const rigStatusTag = document.getElementById('rig-status-tag');
+    const armMeshPath = document.getElementById('arm-mesh-path');
+    const forearmLabel = document.getElementById('forearm-label');
+    const armDeformNote = document.getElementById('arm-deform-note');
+    let twistEnabled = true;
+
+    if (btnToggleTwist) {
+      btnToggleTwist.addEventListener('click', () => {
+        twistEnabled = !twistEnabled;
+        playSfx('switch');
+        if (twistEnabled) {
+          rigStatusTag.textContent = "配置：輔助扭轉骨啟用 (Twist Bone ON)";
+          armMeshPath.setAttribute('d', 'M 50 70 L 350 70 L 350 140 L 50 140 Z');
+          forearmLabel.textContent = "前臂骨 + 扭轉骨 (Twist)";
+          forearmLabel.setAttribute('fill', '#00e5ff');
+          armDeformNote.textContent = "旋轉 180 度時，體積無扭縮，維持真實手腕肌肉飽滿度";
+          armDeformNote.setAttribute('fill', '#cbd5e1');
+        } else {
+          rigStatusTag.textContent = "配置：單一骨骼 (糖果紙扭縮 Collapse)";
+          // Pinched in middle like candy wrapper
+          armMeshPath.setAttribute('d', 'M 50 70 L 200 70 L 275 100 L 350 70 L 350 140 L 275 110 L 200 140 L 50 140 Z');
+          forearmLabel.textContent = "單一前臂骨 (旋轉 180° 崩塌)";
+          forearmLabel.setAttribute('fill', '#ff2a5f');
+          armDeformNote.textContent = "❌ 糖果紙效應：手腕旋轉時網格像轉動糖果紙般被絞緊塌扁！";
+          armDeformNote.setAttribute('fill', '#ff2a5f');
+        }
+      });
+    }
+
+    // Print & Restart Handlers
+    const btnPrint = document.getElementById('btn-print-handout');
+    if (btnPrint) {
+      btnPrint.addEventListener('click', () => {
+        document.body.classList.add('handout-mode');
+        btnMode.classList.add('active');
+        btnMode.querySelector('span').textContent = '🖥️ 簡報模式';
+        setTimeout(() => {
+          window.print();
+        }, 300);
+      });
+    }
+
+    const btnRestart = document.getElementById('btn-restart-deck');
+    if (btnRestart) {
+      btnRestart.addEventListener('click', () => {
+        showSlide(1);
+      });
+    }
+
+    // Initialize App
+    buildGridModal();
+    showSlide(1);
+  </script>
+</body>
+</html>
