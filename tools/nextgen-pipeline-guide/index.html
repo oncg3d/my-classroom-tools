@@ -1016,6 +1016,39 @@
             </li>
           </ul>
 
+          <!-- Concept Diagram for Slide 1 -->
+          <div style="background: rgba(0,0,0,0.35); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 10px; margin-top: 12px;">
+            <div style="font-size: 0.78rem; font-weight: 700; color: var(--ue-cyan); margin-bottom: 6px; display: flex; align-items: center; gap: 5px;">
+              <span>📐 觀念圖解：次世代雙軌維度壓縮與即時算力平衡</span>
+            </div>
+            <svg viewBox="0 0 460 72" style="width: 100%; height: 72px;">
+              <!-- High-Poly Box -->
+              <rect x="8" y="10" width="112" height="52" rx="6" fill="rgba(255,119,0,0.12)" stroke="var(--zb-orange)" stroke-width="1.5"/>
+              <text x="64" y="31" fill="var(--zb-orange)" font-size="10.5" font-weight="800" text-anchor="middle">高模雕刻 (Millions)</text>
+              <text x="64" y="47" fill="#94a3b8" font-size="8.5" text-anchor="middle">2,000萬面 • 離線極限細節</text>
+
+              <!-- Arrow 1: Baking -->
+              <path d="M 124 36 L 178 36" stroke="var(--sp-crimson)" stroke-width="2"/>
+              <polygon points="178,32 186,36 178,40" fill="var(--sp-crimson)"/>
+              <text x="153" y="27" fill="var(--sp-crimson)" font-size="8.5" font-weight="800" text-anchor="middle">烘焙採樣</text>
+
+              <!-- Normal Map Box -->
+              <rect x="188" y="10" width="94" height="52" rx="6" fill="rgba(129,140,248,0.15)" stroke="#818cf8" stroke-width="1.5"/>
+              <text x="235" y="31" fill="#818cf8" font-size="10.5" font-weight="800" text-anchor="middle">法線貼圖 (Normal)</text>
+              <text x="235" y="47" fill="#cbd5e1" font-size="8.5" text-anchor="middle">RGB 向量偽裝光影</text>
+
+              <!-- Arrow 2: Mapping -->
+              <path d="M 286 36 L 338 36" stroke="var(--ue-cyan)" stroke-width="2"/>
+              <polygon points="338,32 346,36 338,40" fill="var(--ue-cyan)"/>
+              <text x="314" y="27" fill="var(--ue-cyan)" font-size="8.5" font-weight="800" text-anchor="middle">貼圖映射</text>
+
+              <!-- Low-Poly Box -->
+              <rect x="348" y="10" width="104" height="52" rx="6" fill="rgba(0,229,255,0.12)" stroke="var(--ue-cyan)" stroke-width="1.5"/>
+              <text x="400" y="31" fill="var(--ue-cyan)" font-size="10.5" font-weight="800" text-anchor="middle">遊戲低模 (In-Engine)</text>
+              <text x="400" y="47" fill="#10b981" font-size="8.5" font-weight="700" text-anchor="middle">4萬面 • 60 FPS 即時流暢</text>
+            </svg>
+          </div>
+
           <div class="callout-box">
             <div class="callout-title">💡 教授給學生的核心心法</div>
             「次世代美術從來不是比誰的面數多，而是比誰能用<strong>最精準的拓撲布線與最合理的貼圖預算</strong>，在遊戲引擎中榨出最極致的視覺震撼。」
@@ -1173,6 +1206,42 @@
             </div>
           </div>
 
+          <!-- Slide 2 Concept Diagram: Asset Pipeline Flow -->
+          <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 10px 14px; margin-top: 14px;">
+            <div style="font-size: 0.78rem; font-weight: 700; color: var(--ue-cyan); margin-bottom: 8px;">🔄 觀念圖解：次世代資產檔案在跨軟體流水線中的流通格式（Pipeline File Hand-off）</div>
+            <svg viewBox="0 0 760 48" style="width: 100%; height: 48px;">
+              <g transform="translate(10, 8)">
+                <rect x="0" y="0" width="80" height="30" rx="4" fill="rgba(255,255,255,0.06)" stroke="#64748b"/>
+                <text x="40" y="19" fill="#f1f5f9" font-size="10" font-weight="700" text-anchor="middle">.PSD / .PNG</text>
+              </g>
+              <path d="M 95 23 L 115 23" stroke="#94a3b8" stroke-width="1.8"/>
+              <g transform="translate(120, 8)">
+                <rect x="0" y="0" width="90" height="30" rx="4" fill="rgba(0,180,216,0.15)" stroke="var(--maya-teal)"/>
+                <text x="45" y="19" fill="var(--maya-teal)" font-size="10" font-weight="700" text-anchor="middle">Base.FBX</text>
+              </g>
+              <path d="M 215 23 L 235 23" stroke="#94a3b8" stroke-width="1.8"/>
+              <g transform="translate(240, 8)">
+                <rect x="0" y="0" width="95" height="30" rx="4" fill="rgba(255,119,0,0.15)" stroke="var(--zb-orange)"/>
+                <text x="47" y="19" fill="var(--zb-orange)" font-size="10" font-weight="700" text-anchor="middle">High_Sculpt.OBJ</text>
+              </g>
+              <path d="M 340 23 L 360 23" stroke="#94a3b8" stroke-width="1.8"/>
+              <g transform="translate(365, 8)">
+                <rect x="0" y="0" width="90" height="30" rx="4" fill="rgba(16,185,129,0.15)" stroke="var(--topo-green)"/>
+                <text x="45" y="19" fill="var(--topo-green)" font-size="10" font-weight="700" text-anchor="middle">Low_UV.FBX</text>
+              </g>
+              <path d="M 460 23 L 480 23" stroke="#94a3b8" stroke-width="1.8"/>
+              <g transform="translate(485, 8)">
+                <rect x="0" y="0" width="105" height="30" rx="4" fill="rgba(255,42,95,0.15)" stroke="var(--sp-crimson)"/>
+                <text x="52" y="19" fill="var(--sp-crimson)" font-size="10" font-weight="700" text-anchor="middle">Bake_16bit.TIFF</text>
+              </g>
+              <path d="M 595 23 L 615 23" stroke="#94a3b8" stroke-width="1.8"/>
+              <g transform="translate(620, 8)">
+                <rect x="0" y="0" width="110" height="30" rx="4" fill="rgba(0,229,255,0.18)" stroke="var(--ue-cyan)" stroke-width="1.5"/>
+                <text x="55" y="19" fill="var(--ue-cyan)" font-size="10" font-weight="800" text-anchor="middle">UE5_Hero.uasset</text>
+              </g>
+            </svg>
+          </div>
+
           <div class="callout-box" id="step-pitfall-box" style="margin-top: 14px;">
             <div class="callout-title">⚠️ 此步驟致命地雷 (Critical Pitfall)</div>
             <span id="step-pitfall-text">急於雕刻肌肉或配件微細節，卻忽略全身頭身比與重心，導致後期幾十萬面雕刻完成後無法修改骨骼長度。</span>
@@ -1223,6 +1292,36 @@
               </div>
             </li>
           </ul>
+
+          <!-- Slide 3 Concept Diagram: A-Pose vs T-Pose & Proportions -->
+          <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 10px; margin-top: 12px;">
+            <div style="font-size: 0.78rem; font-weight: 700; color: var(--ue-cyan); margin-bottom: 6px;">📐 觀念圖解：A-Pose（自然放鬆 45°）vs T-Pose（平舉 90°）肩膀肌理張力對照</div>
+            <svg viewBox="0 0 460 76" style="width: 100%; height: 76px;">
+              <!-- Left: T-Pose (90 deg) -->
+              <g transform="translate(10, 5)">
+                <rect x="0" y="0" width="210" height="64" rx="5" fill="rgba(255,42,95,0.06)" stroke="rgba(255,42,95,0.4)"/>
+                <text x="105" y="18" fill="var(--sp-crimson)" font-size="10" font-weight="700" text-anchor="middle">❌ T-Pose 平舉 90°：肩膀過度拉扯</text>
+                <!-- Head & Spine -->
+                <circle cx="105" cy="32" r="8" fill="#64748b"/>
+                <line x1="105" y1="40" x2="105" y2="60" stroke="#64748b" stroke-width="2"/>
+                <!-- T Arms horizontal -->
+                <line x1="45" y1="42" x2="165" y2="42" stroke="var(--sp-crimson)" stroke-width="2.2"/>
+                <path d="M 85 40 Q 105 32 125 40" fill="none" stroke="var(--sp-crimson)" stroke-width="1.8" stroke-dasharray="2,2"/>
+                <text x="105" y="56" fill="#94a3b8" font-size="8" text-anchor="middle">手臂放鬆垂下時三角肌嚴重擠壓穿模</text>
+              </g>
+              <!-- Right: A-Pose (45 deg) -->
+              <g transform="translate(240, 5)">
+                <rect x="0" y="0" width="210" height="64" rx="5" fill="rgba(0,229,255,0.06)" stroke="rgba(0,229,255,0.4)"/>
+                <text x="105" y="18" fill="var(--ue-cyan)" font-size="10" font-weight="800" text-anchor="middle">✅ A-Pose 下垂 45°：次世代工業首選</text>
+                <circle cx="105" cy="30" r="8" fill="#00e5ff"/>
+                <line x1="105" y1="38" x2="105" y2="60" stroke="#fff" stroke-width="2"/>
+                <!-- A Arms angled 45 deg -->
+                <line x1="105" y1="40" x2="65" y2="58" stroke="var(--ue-cyan)" stroke-width="2.2"/>
+                <line x1="105" y1="40" x2="145" y2="58" stroke="var(--ue-cyan)" stroke-width="2.2"/>
+                <text x="105" y="56" fill="#cbd5e1" font-size="8" text-anchor="middle">肩膀三角肌自然平順，布料懸垂無穿刺</text>
+              </g>
+            </svg>
+          </div>
 
           <div class="callout-box">
             <div class="callout-title">💡 業界實務小技巧</div>
@@ -1321,6 +1420,25 @@
             </li>
           </ul>
 
+          <!-- Slide 4 Concept Diagram: 3-Tier Detail Pyramid -->
+          <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 10px; margin-top: 12px;">
+            <div style="font-size: 0.78rem; font-weight: 700; color: var(--zb-orange); margin-bottom: 6px;">📐 觀念圖解：三級雕刻細節金字塔與時間精力分配權重</div>
+            <svg viewBox="0 0 460 72" style="width: 100%; height: 72px;">
+              <!-- 3-Tier Pyramid Representation -->
+              <!-- Base (Tier 1) -->
+              <polygon points="120,64 340,64 300,42 160,42" fill="rgba(255,119,0,0.18)" stroke="var(--zb-orange)" stroke-width="1.5"/>
+              <text x="230" y="56" fill="var(--zb-orange)" font-size="10" font-weight="800" text-anchor="middle">一級骨骼大型 (60% 精力) • ClayBuildup / Move</text>
+
+              <!-- Mid (Tier 2) -->
+              <polygon points="160,42 300,42 270,22 190,22" fill="rgba(0,229,255,0.18)" stroke="var(--ue-cyan)" stroke-width="1.5"/>
+              <text x="230" y="35" fill="var(--ue-cyan)" font-size="9" font-weight="800" text-anchor="middle">二級肌理與衣褶 (30%) • DamStandard / Pinch</text>
+
+              <!-- Apex (Tier 3) -->
+              <polygon points="190,22 270,22 230,4" fill="rgba(255,42,95,0.25)" stroke="var(--sp-crimson)" stroke-width="1.5"/>
+              <text x="230" y="16" fill="#fff" font-size="7.5" font-weight="800" text-anchor="middle">三級毛孔 (10%)</text>
+            </svg>
+          </div>
+
           <div class="callout-box warn">
             <div class="callout-title">⚠️ 初學者最常犯的重大錯誤</div>
             在第一級骨骼結構尚不準確時，就急著開啟第 6 級細分 (Subdivision 6) 刷滿臉毛孔與刮痕，導致「整張臉宛如發霉的爛泥」，遠看毫無立體感！
@@ -1394,6 +1512,39 @@
               </div>
             </li>
           </ul>
+
+          <!-- Slide 5 Concept Diagram: Facial & Joint Edge Loops -->
+          <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 10px; margin-top: 12px;">
+            <div style="font-size: 0.78rem; font-weight: 700; color: var(--topo-green); margin-bottom: 6px;">🕸️ 觀念圖解：臉部口眼同心圓環線（Facial Loops）與四邊面細分流向</div>
+            <svg viewBox="0 0 460 76" style="width: 100%; height: 76px;">
+              <!-- Eye Loop Schematic -->
+              <g transform="translate(30, 8)">
+                <ellipse cx="60" cy="28" rx="36" ry="20" fill="none" stroke="var(--topo-green)" stroke-width="1.8"/>
+                <ellipse cx="60" cy="28" rx="22" ry="12" fill="none" stroke="var(--topo-green)" stroke-width="1.8" stroke-dasharray="2,2"/>
+                <circle cx="60" cy="28" r="5" fill="var(--ue-cyan)"/>
+                <text x="60" y="58" fill="#cbd5e1" font-size="9" font-weight="700" text-anchor="middle">眼輪匝肌同心環線 (閉眼/眨眼)</text>
+              </g>
+
+              <!-- Mouth Loop Schematic -->
+              <g transform="translate(190, 8)">
+                <ellipse cx="70" cy="28" rx="42" ry="18" fill="none" stroke="var(--topo-green)" stroke-width="1.8"/>
+                <ellipse cx="70" cy="28" rx="26" ry="10" fill="none" stroke="var(--topo-green)" stroke-width="1.8" stroke-dasharray="2,2"/>
+                <line x1="50" y1="28" x2="90" y2="28" stroke="#f43f5e" stroke-width="2"/>
+                <text x="70" y="58" fill="#cbd5e1" font-size="9" font-weight="700" text-anchor="middle">口輪匝肌同心環線 (微笑/張嘴)</text>
+              </g>
+
+              <!-- Quad vs N-Gon -->
+              <g transform="translate(330, 8)">
+                <rect x="15" y="10" width="34" height="34" fill="rgba(16,185,129,0.15)" stroke="var(--topo-green)" stroke-width="1.5"/>
+                <line x1="32" y1="10" x2="32" y2="44" stroke="var(--topo-green)" stroke-width="1"/>
+                <line x1="15" y1="27" x2="49" y2="27" stroke="var(--topo-green)" stroke-width="1"/>
+                <text x="32" y="58" fill="var(--topo-green)" font-size="9" font-weight="800" text-anchor="middle">全四邊面 ✅</text>
+
+                <polygon points="80,10 105,18 100,42 70,44 60,26" fill="rgba(255,42,95,0.15)" stroke="var(--sp-crimson)" stroke-width="1.5"/>
+                <text x="82" y="58" fill="var(--sp-crimson)" font-size="9" font-weight="800" text-anchor="middle">五邊面 ❌</text>
+              </g>
+            </svg>
+          </div>
 
           <div class="callout-box">
             <div class="callout-title">💡 拓撲工具推薦</div>
@@ -1497,6 +1648,40 @@
               </div>
             </li>
           </ul>
+
+          <!-- Slide 6 Concept Diagram: Hard Edge Seam & U+1 Overlap -->
+          <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 10px; margin-top: 12px;">
+            <div style="font-size: 0.78rem; font-weight: 700; color: var(--ue-cyan); margin-bottom: 6px;">📐 觀念圖解：硬邊（Hard Edge）未切 UV 黑斑成因 ＆ 對稱疊 UV 平移 U+1</div>
+            <svg viewBox="0 0 460 76" style="width: 100%; height: 76px;">
+              <!-- Left: Hard Edge Seam -->
+              <g transform="translate(10, 6)">
+                <rect x="0" y="0" width="210" height="64" rx="5" fill="rgba(255,42,95,0.06)" stroke="rgba(255,42,95,0.4)"/>
+                <text x="105" y="16" fill="var(--sp-crimson)" font-size="9.5" font-weight="700" text-anchor="middle">❌ 硬邊未切 Seam：法線漸層穿幫</text>
+                <path d="M 40 46 L 75 25 L 110 46" fill="none" stroke="#fff" stroke-width="2"/>
+                <line x1="75" y1="25" x2="75" y2="48" stroke="var(--sp-crimson)" stroke-width="2.5"/>
+                <ellipse cx="75" cy="27" rx="14" ry="4" fill="rgba(0,0,0,0.8)"/>
+                <text x="145" y="36" fill="#94a3b8" font-size="8.5">頂點法線被拉扯</text>
+                <text x="145" y="48" fill="var(--sp-crimson)" font-size="8.5" font-weight="700">烘焙必生黑色死角！</text>
+              </g>
+
+              <!-- Right: U+1 Overlapping -->
+              <g transform="translate(240, 6)">
+                <rect x="0" y="0" width="210" height="64" rx="5" fill="rgba(0,229,255,0.06)" stroke="rgba(0,229,255,0.4)"/>
+                <text x="105" y="16" fill="var(--ue-cyan)" font-size="9.5" font-weight="800" text-anchor="middle">✅ 對稱 UV 烘焙時平移 U+1</text>
+                <rect x="30" y="24" width="30" height="30" fill="none" stroke="var(--ue-cyan)" stroke-width="1.2"/>
+                <text x="45" y="42" fill="var(--ue-cyan)" font-size="7.5" text-anchor="middle">[0,1] 左手</text>
+
+                <path d="M 68 39 L 98 39" stroke="var(--ue-cyan)" stroke-width="1.5" stroke-dasharray="2,2"/>
+                <polygon points="98,36 104,39 98,42" fill="var(--ue-cyan)"/>
+                <text x="86" y="34" fill="var(--zb-orange)" font-size="7.5" font-weight="700" text-anchor="middle">+1.0</text>
+
+                <rect x="110" y="24" width="30" height="30" fill="none" stroke="var(--zb-orange)" stroke-width="1.2"/>
+                <text x="125" y="42" fill="var(--zb-orange)" font-size="7.5" text-anchor="middle">[1,2] 右手</text>
+                <text x="175" y="40" fill="#cbd5e1" font-size="8">避免光線</text>
+                <text x="175" y="52" fill="#cbd5e1" font-size="8">左右重疊重影</text>
+              </g>
+            </svg>
+          </div>
         </div>
 
         <!-- Texel Density Interactive Visualizer -->
@@ -1574,6 +1759,44 @@
               </div>
             </li>
           </ul>
+
+          <!-- Slide 7 Concept Diagram: Cage & Normal Direction -->
+          <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 10px; margin-top: 12px;">
+            <div style="font-size: 0.78rem; font-weight: 700; color: var(--sp-crimson); margin-bottom: 6px;">🔥 觀念圖解：外籠（Cage）引導投射光線 ＆ DirectX / OpenGL 綠通道翻轉</div>
+            <svg viewBox="0 0 460 76" style="width: 100%; height: 76px;">
+              <!-- Cage ray projection -->
+              <g transform="translate(10, 6)">
+                <rect x="0" y="0" width="220" height="64" rx="5" fill="rgba(255,42,95,0.06)" stroke="rgba(255,42,95,0.4)"/>
+                <text x="110" y="16" fill="var(--sp-crimson)" font-size="9.5" font-weight="700" text-anchor="middle">外籠 (Cage) 精準光線導向</text>
+                <!-- Low poly line -->
+                <path d="M 25 48 L 70 38 L 115 48" fill="none" stroke="#64748b" stroke-width="2"/>
+                <!-- High poly curved surface -->
+                <path d="M 25 45 Q 70 20 115 45" fill="none" stroke="var(--zb-orange)" stroke-width="2.5"/>
+                <!-- Cage line (expanded) -->
+                <path d="M 25 22 L 70 12 L 115 22" fill="none" stroke="var(--sp-crimson)" stroke-width="1.5" stroke-dasharray="3,3"/>
+                <!-- Ray arrows -->
+                <line x1="45" y1="18" x2="45" y2="46" stroke="#00e5ff" stroke-width="1.5"/>
+                <line x1="70" y1="12" x2="70" y2="38" stroke="#00e5ff" stroke-width="1.5"/>
+                <line x1="95" y1="18" x2="95" y2="46" stroke="#00e5ff" stroke-width="1.5"/>
+                <text x="165" y="36" fill="#cbd5e1" font-size="8.5">外籠包覆高模</text>
+                <text x="165" y="48" fill="#10b981" font-size="8.5" font-weight="700">防止夾角穿透！</text>
+              </g>
+
+              <!-- DirectX vs OpenGL -->
+              <g transform="translate(245, 6)">
+                <rect x="0" y="0" width="205" height="64" rx="5" fill="rgba(0,229,255,0.06)" stroke="rgba(0,229,255,0.4)"/>
+                <text x="102" y="16" fill="var(--ue-cyan)" font-size="9.5" font-weight="800" text-anchor="middle">綠通道 Y 軸朝向判定</text>
+                <!-- OpenGL -->
+                <rect x="20" y="24" width="75" height="32" rx="4" fill="rgba(255,255,255,0.04)" stroke="#64748b"/>
+                <text x="57" y="38" fill="#cbd5e1" font-size="8" text-anchor="middle">OpenGL (+Y)</text>
+                <text x="57" y="49" fill="var(--maya-teal)" font-size="8" font-weight="700" text-anchor="middle">綠色在上方</text>
+                <!-- DirectX (UE5) -->
+                <rect x="110" y="24" width="75" height="32" rx="4" fill="rgba(0,229,255,0.12)" stroke="var(--ue-cyan)"/>
+                <text x="147" y="38" fill="#cbd5e1" font-size="8" text-anchor="middle">DirectX (-Y)</text>
+                <text x="147" y="49" fill="var(--ue-cyan)" font-size="8" font-weight="800" text-anchor="middle">UE5 綠色在下方</text>
+              </g>
+            </svg>
+          </div>
 
           <div class="callout-box">
             <div class="callout-title">💡 業界必備烘焙貼圖矩陣</div>
@@ -1688,6 +1911,57 @@
               </div>
             </li>
           </ul>
+
+          <!-- Concept Diagram for Slide 8 -->
+          <div style="background: rgba(0,0,0,0.35); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 10px; margin-top: 12px;">
+            <div style="font-size: 0.78rem; font-weight: 700; color: var(--ue-cyan); margin-bottom: 6px; display: flex; align-items: center; gap: 5px;">
+              <span>📐 觀念圖解：光學能量守恆與光線分流平衡式 (Energy Conservation)</span>
+            </div>
+            <svg viewBox="0 0 460 95" style="width: 100%; height: 95px;">
+              <!-- Material Boundary line -->
+              <line x1="20" y1="48" x2="210" y2="48" stroke="#475569" stroke-width="2"/>
+              <text x="30" y="44" fill="#64748b" font-size="8.5">物體表面 (介質交界面)</text>
+              <rect x="20" y="49" width="190" height="42" fill="rgba(255,255,255,0.03)"/>
+              <text x="30" y="80" fill="#475569" font-size="8">內部微結構介質</text>
+
+              <!-- Incident Ray -->
+              <line x1="45" y1="12" x2="115" y2="48" stroke="#facc15" stroke-width="2.5"/>
+              <polygon points="108,44 117,48 112,40" fill="#facc15"/>
+              <text x="45" y="10" fill="#facc15" font-size="9" font-weight="700">入射光束 (100%)</text>
+
+              <!-- Specular Ray -->
+              <line x1="115" y1="48" x2="185" y2="12" stroke="#00e5ff" stroke-width="2"/>
+              <polygon points="178,16 187,12 182,20" fill="#00e5ff"/>
+              <text x="135" y="24" fill="#00e5ff" font-size="8.5" font-weight="700">鏡面反射 (Specular)</text>
+
+              <!-- Refracted / Diffuse Rays -->
+              <path d="M 115 48 C 120 62 135 68 150 72" fill="none" stroke="#fb923c" stroke-width="1.8" stroke-dasharray="3,2"/>
+              <path d="M 115 48 C 105 60 95 65 80 75" fill="none" stroke="#fb923c" stroke-width="1.8" stroke-dasharray="3,2"/>
+              <path d="M 115 48 C 112 65 110 75 112 85" fill="none" stroke="#fb923c" stroke-width="1.8" stroke-dasharray="3,2"/>
+              <text x="148" y="86" fill="#fb923c" font-size="8.5" font-weight="700">漫反射 (Diffuse)</text>
+
+              <!-- Right: Energy Balance Bar & Formula -->
+              <rect x="235" y="10" width="215" height="78" rx="6" fill="rgba(0,0,0,0.4)" stroke="rgba(255,255,255,0.1)"/>
+              <text x="342" y="26" fill="#f1f5f9" font-size="9.5" font-weight="700" text-anchor="middle">能量守恆總量條 (Max = 100%)</text>
+
+              <!-- Stacked Bar -->
+              <g transform="translate(247, 34)">
+                <!-- Specular slice -->
+                <rect x="0" y="0" width="40" height="18" rx="3 0 0 3" fill="#00e5ff"/>
+                <text x="20" y="12" fill="#000" font-size="8" font-weight="800" text-anchor="middle">高光</text>
+                <!-- Diffuse slice -->
+                <rect x="42" y="0" width="105" height="18" fill="#fb923c"/>
+                <text x="94" y="12" fill="#000" font-size="8" font-weight="800" text-anchor="middle">漫反射 (Albedo)</text>
+                <!-- Absorption slice -->
+                <rect x="149" y="0" width="42" height="18" rx="0 3 3 0" fill="#ef4444"/>
+                <text x="170" y="12" fill="#fff" font-size="8" font-weight="800" text-anchor="middle">吸收</text>
+              </g>
+
+              <!-- Formula -->
+              <text x="342" y="70" fill="#38bdf8" font-size="8.5" font-family="'JetBrains Mono', monospace" text-anchor="middle">出射光 = 鏡面高光 + 漫反射 ≤ 入射光</text>
+              <text x="342" y="82" fill="#94a3b8" font-size="7.5" text-anchor="middle">非金屬高光約4% • 純金屬無漫反射(100%高光)</text>
+            </svg>
+          </div>
 
           <div class="callout-box">
             <div class="callout-title">💡 現代雙工作流之爭：為什麼 Metallic/Roughness 勝出？</div>
@@ -1861,6 +2135,57 @@
             </li>
           </ul>
 
+          <!-- Concept Diagram for Slide 9 -->
+          <div style="background: rgba(0,0,0,0.35); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 10px; margin-top: 12px;">
+            <div style="font-size: 0.78rem; font-weight: 700; color: var(--zb-orange); margin-bottom: 6px; display: flex; align-items: center; gap: 5px;">
+              <span>📐 觀念圖解：Substance Painter 圖層堆疊與錨點 (Anchor Point) 聯動機制</span>
+            </div>
+            <svg viewBox="0 0 460 98" style="width: 100%; height: 98px;">
+              <!-- Layer 3 (Top): Edge Wear -->
+              <rect x="10" y="8" width="220" height="24" rx="4" fill="rgba(239, 68, 68, 0.15)" stroke="#ef4444" stroke-width="1.2"/>
+              <text x="18" y="24" fill="#fca5a5" font-size="9" font-weight="700">Layer 3: 邊緣磨損與生鏽 (Edge Wear)</text>
+              <rect x="175" y="12" width="50" height="16" rx="3" fill="#ef4444"/>
+              <text x="200" y="24" fill="#fff" font-size="7.5" font-weight="800" text-anchor="middle">智慧遮罩</text>
+
+              <!-- Layer 2 (Mid): Hand-painted Scratches with Anchor -->
+              <rect x="10" y="38" width="220" height="24" rx="4" fill="rgba(0, 229, 255, 0.15)" stroke="var(--ue-cyan)" stroke-width="1.2"/>
+              <text x="18" y="54" fill="#7dd3fc" font-size="9" font-weight="700">Layer 2: 手繪凹痕 (Height Scratch)</text>
+              <rect x="175" y="42" width="50" height="16" rx="3" fill="#0284c7"/>
+              <text x="200" y="54" fill="#fff" font-size="7.5" font-weight="800" text-anchor="middle">⚓ 設為錨點</text>
+
+              <!-- Layer 1 (Bottom): Base Metal -->
+              <rect x="10" y="68" width="220" height="24" rx="4" fill="rgba(251, 191, 36, 0.15)" stroke="#fbbf24" stroke-width="1.2"/>
+              <text x="18" y="84" fill="#fde68a" font-size="9" font-weight="700">Layer 1: 基礎金屬底漆 (Base Steel)</text>
+              <text x="185" y="84" fill="#fbbf24" font-size="8" font-weight="700">Metallic 1.0</text>
+
+              <!-- Anchor Data Flow Curve -->
+              <path d="M 200 42 C 200 34 195 30 190 28" fill="none" stroke="#00e5ff" stroke-width="2" stroke-dasharray="3,2"/>
+              <polygon points="188,32 184,27 192,26" fill="#00e5ff"/>
+              <text x="238" y="38" fill="#00e5ff" font-size="7.5" font-weight="700">即時參照</text>
+
+              <!-- Right Flow: Bake Maps -> Generator -> Outputs -->
+              <!-- Bake Maps Input -->
+              <rect x="260" y="10" width="85" height="78" rx="5" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)"/>
+              <text x="302" y="24" fill="#cbd5e1" font-size="8" font-weight="700" text-anchor="middle">烘焙網格貼圖</text>
+              <text x="302" y="38" fill="#94a3b8" font-size="7.5" text-anchor="middle">• Curvature 曲率</text>
+              <text x="302" y="52" fill="#94a3b8" font-size="7.5" text-anchor="middle">• Ambient Occlusion</text>
+              <text x="302" y="66" fill="#94a3b8" font-size="7.5" text-anchor="middle">• World Normal</text>
+              <text x="302" y="80" fill="#94a3b8" font-size="7.5" text-anchor="middle">• Position / ID</text>
+
+              <!-- Arrow to Export -->
+              <path d="M 348 49 L 368 49" stroke="var(--zb-orange)" stroke-width="2"/>
+              <polygon points="368,45 376,49 368,53" fill="var(--zb-orange)"/>
+
+              <!-- Export Pack -->
+              <rect x="378" y="10" width="75" height="78" rx="5" fill="rgba(255,119,0,0.12)" stroke="var(--zb-orange)" stroke-width="1.2"/>
+              <text x="415" y="24" fill="var(--zb-orange)" font-size="8" font-weight="800" text-anchor="middle">UE5 導出通道</text>
+              <text x="415" y="40" fill="#38bdf8" font-size="7.5" font-weight="700" text-anchor="middle">BaseColor</text>
+              <text x="415" y="54" fill="#ef4444" font-size="7.5" font-weight="700" text-anchor="middle">ORM 打包貼圖</text>
+              <text x="415" y="68" fill="#818cf8" font-size="7.5" font-weight="700" text-anchor="middle">Normal 法線</text>
+              <text x="415" y="82" fill="#10b981" font-size="7.5" font-weight="700" text-anchor="middle">Emissive / SSS</text>
+            </svg>
+          </div>
+
           <div class="callout-box">
             <div class="callout-title">💡 Substance Painter 核心高階技巧</div>
             善用 <strong>Anchor Points（錨點）</strong>！在底層手繪的高度刮痕，能即時透過錨點傳遞給上層智慧材質生成器，自動在刮痕邊緣生出掉漆與生鏽！
@@ -1959,6 +2284,74 @@
               </div>
             </li>
           </ul>
+
+          <!-- Concept Diagram for Slide 10 -->
+          <div style="background: rgba(0,0,0,0.35); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 10px; margin-top: 12px;">
+            <div style="font-size: 0.78rem; font-weight: 700; color: #c084fc; margin-bottom: 6px; display: flex; align-items: center; gap: 5px;">
+              <span>📐 觀念圖解：標準骨骼階層樹 (Bone Hierarchy) 與頂點權重正規化 (Normalization)</span>
+            </div>
+            <svg viewBox="0 0 460 98" style="width: 100%; height: 98px;">
+              <!-- Hierarchy Tree -->
+              <g transform="translate(10, 8)">
+                <!-- Root -->
+                <rect x="0" y="28" width="60" height="24" rx="4" fill="rgba(168,85,247,0.25)" stroke="#a855f7" stroke-width="1.5"/>
+                <text x="30" y="44" fill="#f3e8ff" font-size="8.5" font-weight="800" text-anchor="middle">Root (原點)</text>
+
+                <!-- Line to Pelvis -->
+                <line x1="60" y1="40" x2="80" y2="40" stroke="#a855f7" stroke-width="2"/>
+
+                <!-- Pelvis -->
+                <rect x="80" y="28" width="62" height="24" rx="4" fill="rgba(168,85,247,0.18)" stroke="#a855f7" stroke-width="1.2"/>
+                <text x="111" y="44" fill="#e9d5ff" font-size="8.5" font-weight="700" text-anchor="middle">Pelvis (骨盆)</text>
+
+                <!-- Branching Lines -->
+                <path d="M 142 35 L 160 16 L 175 16" fill="none" stroke="#a855f7" stroke-width="1.5"/>
+                <path d="M 142 45 L 160 64 L 175 64" fill="none" stroke="#a855f7" stroke-width="1.5"/>
+
+                <!-- Upper Branch: Spine -> Head / Arm -->
+                <rect x="175" y="4" width="75" height="22" rx="4" fill="rgba(0,229,255,0.15)" stroke="var(--ue-cyan)" stroke-width="1.2"/>
+                <text x="212" y="19" fill="#7dd3fc" font-size="8" font-weight="700" text-anchor="middle">Spine ➔ Head / Arms</text>
+
+                <!-- Lower Branch: Thigh -> Foot -->
+                <rect x="175" y="54" width="75" height="22" rx="4" fill="rgba(16,185,129,0.15)" stroke="#10b981" stroke-width="1.2"/>
+                <text x="212" y="69" fill="#6ee7b7" font-size="8" font-weight="700" text-anchor="middle">Thigh ➔ Leg / Foot</text>
+              </g>
+
+              <!-- Divider -->
+              <line x1="275" y1="8" x2="275" y2="90" stroke="rgba(255,255,255,0.1)" stroke-width="1" stroke-dasharray="3,3"/>
+
+              <!-- Weight Normalization Visualizer -->
+              <g transform="translate(285, 8)">
+                <text x="80" y="12" fill="#fff" font-size="8.5" font-weight="700" text-anchor="middle">頂點權重守恆 (Σ Wi = 1.0)</text>
+                
+                <!-- Joint Vertex Node -->
+                <circle cx="20" cy="46" r="8" fill="#ef4444" stroke="#fff" stroke-width="1.5"/>
+                <text x="20" y="49" fill="#fff" font-size="7.5" font-weight="800" text-anchor="middle">V</text>
+                <text x="20" y="66" fill="#94a3b8" font-size="7" text-anchor="middle">網格頂點</text>
+
+                <!-- Influence Lines -->
+                <line x1="28" y1="42" x2="52" y2="30" stroke="#a855f7" stroke-width="2"/>
+                <line x1="28" y1="50" x2="52" y2="62" stroke="#00e5ff" stroke-width="2"/>
+
+                <!-- Influence Bars -->
+                <g transform="translate(56, 20)">
+                  <rect x="0" y="0" width="65" height="18" rx="3" fill="rgba(168,85,247,0.3)" stroke="#a855f7" stroke-width="1"/>
+                  <rect x="0" y="0" width="42" height="18" rx="3" fill="#a855f7"/>
+                  <text x="45" y="13" fill="#fff" font-size="7.5" font-weight="700">上臂: 0.65</text>
+                </g>
+                <g transform="translate(56, 52)">
+                  <rect x="0" y="0" width="65" height="18" rx="3" fill="rgba(0,229,255,0.3)" stroke="var(--ue-cyan)" stroke-width="1"/>
+                  <rect x="0" y="0" width="23" height="18" rx="3" fill="var(--ue-cyan)"/>
+                  <text x="30" y="13" fill="#fff" font-size="7.5" font-weight="700">前臂: 0.35</text>
+                </g>
+
+                <!-- Sum Result Badge -->
+                <rect x="126" y="28" width="42" height="34" rx="4" fill="rgba(16,185,129,0.2)" stroke="#10b981" stroke-width="1.2"/>
+                <text x="147" y="42" fill="#10b981" font-size="7.5" font-weight="800" text-anchor="middle">總和</text>
+                <text x="147" y="56" fill="#34d399" font-size="9" font-weight="900" text-anchor="middle">1.00</text>
+              </g>
+            </svg>
+          </div>
 
           <div class="callout-box">
             <div class="callout-title">💡 臉部表情系統雙軌制</div>
@@ -2059,6 +2452,73 @@
               </div>
             </li>
           </ul>
+
+          <!-- Concept Diagram for Slide 11 -->
+          <div style="background: rgba(0,0,0,0.35); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 10px; margin-top: 12px;">
+            <div style="font-size: 0.78rem; font-weight: 700; color: var(--ue-cyan); margin-bottom: 6px; display: flex; align-items: center; gap: 5px;">
+              <span>📐 觀念圖解：原地 (In-Place) vs 根骨骼位移 (Root Motion) 與打擊時序剖析</span>
+            </div>
+            <svg viewBox="0 0 460 98" style="width: 100%; height: 98px;">
+              <!-- Left Box: In-Place vs Root Motion -->
+              <g transform="translate(8, 8)">
+                <rect x="0" y="0" width="105" height="78" rx="5" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)"/>
+                <text x="52" y="16" fill="#94a3b8" font-size="8.5" font-weight="700" text-anchor="middle">原地踏步 (In-Place)</text>
+                <!-- Treadmill stickman -->
+                <circle cx="52" cy="30" r="5" fill="#64748b"/>
+                <line x1="52" y1="35" x2="52" y2="48" stroke="#64748b" stroke-width="1.5"/>
+                <line x1="52" y1="48" x2="42" y2="60" stroke="#64748b" stroke-width="1.5"/>
+                <line x1="52" y1="48" x2="62" y2="60" stroke="#64748b" stroke-width="1.5"/>
+                <!-- Treadmill ground arrow -->
+                <line x1="30" y1="64" x2="74" y2="64" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="3,2"/>
+                <text x="52" y="74" fill="#f59e0b" font-size="7" font-weight="700" text-anchor="middle">程式碼位移 ➔ 易滑步</text>
+              </g>
+
+              <g transform="translate(120, 8)">
+                <rect x="0" y="0" width="112" height="78" rx="5" fill="rgba(0,229,255,0.08)" stroke="var(--ue-cyan)" stroke-width="1.2"/>
+                <text x="56" y="16" fill="var(--ue-cyan)" font-size="8.5" font-weight="700" text-anchor="middle">根骨骼位移 (Root Motion)</text>
+                <!-- Moving stickman with root trail -->
+                <circle cx="68" cy="30" r="5" fill="var(--ue-cyan)"/>
+                <line x1="68" y1="35" x2="68" y2="48" stroke="#fff" stroke-width="1.5"/>
+                <line x1="68" y1="48" x2="56" y2="60" stroke="var(--ue-cyan)" stroke-width="1.5"/>
+                <line x1="68" y1="48" x2="80" y2="60" stroke="var(--ue-cyan)" stroke-width="1.5"/>
+                <!-- Root trajectory vector arrow -->
+                <path d="M 25 64 L 75 64" stroke="#10b981" stroke-width="2"/>
+                <polygon points="75,61 82,64 75,67" fill="#10b981"/>
+                <text x="56" y="74" fill="#10b981" font-size="7" font-weight="800" text-anchor="middle">Root 驅動膠囊 ➔ 零滑步</text>
+              </g>
+
+              <!-- Right: Attack Timing Timeline -->
+              <g transform="translate(242, 8)">
+                <rect x="0" y="0" width="210" height="78" rx="5" fill="rgba(0,0,0,0.4)" stroke="rgba(255,255,255,0.1)"/>
+                <text x="105" y="16" fill="#fff" font-size="8.5" font-weight="700" text-anchor="middle">動作打擊感 4 階段時序結構</text>
+
+                <!-- Timeline Bar -->
+                <g transform="translate(10, 26)">
+                  <!-- Phase 1: Anticipation -->
+                  <rect x="0" y="0" width="55" height="24" rx="3 0 0 3" fill="#3b82f6"/>
+                  <text x="27" y="12" fill="#fff" font-size="7.5" font-weight="700" text-anchor="middle">1.蓄力拉後</text>
+                  <text x="27" y="21" fill="#bfdbfe" font-size="6.5" text-anchor="middle">12 Frames</text>
+
+                  <!-- Phase 2: Instant Strike -->
+                  <rect x="56" y="0" width="38" height="24" fill="#eab308"/>
+                  <text x="75" y="12" fill="#000" font-size="7.5" font-weight="900" text-anchor="middle">2.斬擊</text>
+                  <text x="75" y="21" fill="#713f12" font-size="6.5" font-weight="800" text-anchor="middle">2~3f ⚡</text>
+
+                  <!-- Phase 3: Hit Pause -->
+                  <rect x="95" y="0" width="38" height="24" fill="#ef4444"/>
+                  <text x="114" y="12" fill="#fff" font-size="7.5" font-weight="900" text-anchor="middle">3.頓點</text>
+                  <text x="114" y="21" fill="#fee2e2" font-size="6.5" font-weight="800" text-anchor="middle">3f 💥</text>
+
+                  <!-- Phase 4: Follow-Through -->
+                  <rect x="134" y="0" width="56" height="24" rx="0 3 3 0" fill="#8b5cf6"/>
+                  <text x="162" y="12" fill="#fff" font-size="7.5" font-weight="700" text-anchor="middle">4.收招後搖</text>
+                  <text x="162" y="21" fill="#ede9fe" font-size="6.5" text-anchor="middle">15 Frames</text>
+                </g>
+
+                <text x="105" y="66" fill="#94a3b8" font-size="7.5" text-anchor="middle">快慢節奏對比（慢蓄力 ➔ 極速揮 ➔ 瞬間定格）</text>
+              </g>
+            </svg>
+          </div>
 
           <div class="callout-box">
             <div class="callout-title">💡 遊戲打擊感秘訣（Hit Pause & Anticipation）</div>
@@ -2168,6 +2628,76 @@
             </div>
           </div>
 
+          <!-- Concept Diagram for Slide 12 -->
+          <div style="background: rgba(0,0,0,0.35); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 10px; margin-top: 10px;">
+            <div style="font-size: 0.78rem; font-weight: 700; color: var(--ue-cyan); margin-bottom: 6px; display: flex; align-items: center; gap: 5px;">
+              <span>📐 觀念圖解：UE5 主材質節點網絡連線 (Material Graph Pinout)</span>
+            </div>
+            <svg viewBox="0 0 460 115" style="width: 100%; height: 115px;">
+              <!-- Texture Sample Node 1: BaseColor -->
+              <rect x="8" y="6" width="130" height="28" rx="4" fill="#1e293b" stroke="#38bdf8" stroke-width="1.2"/>
+              <text x="14" y="22" fill="#38bdf8" font-size="8" font-weight="700">T_Hero_BaseColor (sRGB:✓)</text>
+              <circle cx="132" cy="20" r="3.5" fill="#38bdf8"/>
+              <!-- Wire to BaseColor -->
+              <path d="M 135 20 C 220 20 230 22 308 22" fill="none" stroke="#38bdf8" stroke-width="1.8"/>
+
+              <!-- Texture Sample Node 2: ORM Packed (Crucial) -->
+              <rect x="8" y="38" width="130" height="46" rx="4" fill="#0f172a" stroke="#f59e0b" stroke-width="1.5"/>
+              <text x="14" y="50" fill="#f59e0b" font-size="7.8" font-weight="800">T_Hero_ORM [sRGB: ✗]</text>
+              <!-- R Pin -->
+              <circle cx="132" cy="56" r="3.5" fill="#ef4444"/>
+              <text x="122" y="58" fill="#ef4444" font-size="7" font-weight="800" text-anchor="end">R</text>
+              <!-- G Pin -->
+              <circle cx="132" cy="67" r="3.5" fill="#10b981"/>
+              <text x="122" y="69" fill="#10b981" font-size="7" font-weight="800" text-anchor="end">G</text>
+              <!-- B Pin -->
+              <circle cx="132" cy="78" r="3.5" fill="#3b82f6"/>
+              <text x="122" y="80" fill="#3b82f6" font-size="7" font-weight="800" text-anchor="end">B</text>
+
+              <!-- Wires from ORM -->
+              <!-- R -> Ambient Occlusion (Bottom) -->
+              <path d="M 135 56 C 210 56 220 94 308 94" fill="none" stroke="#ef4444" stroke-width="1.6"/>
+              <!-- G -> Roughness -->
+              <path d="M 135 67 C 210 67 220 58 308 58" fill="none" stroke="#10b981" stroke-width="1.6"/>
+              <!-- B -> Metallic -->
+              <path d="M 135 78 C 210 78 220 34 308 34" fill="none" stroke="#3b82f6" stroke-width="1.6"/>
+
+              <!-- Texture Sample Node 3: Normal -->
+              <rect x="8" y="88" width="130" height="24" rx="4" fill="#1e293b" stroke="#818cf8" stroke-width="1.2"/>
+              <text x="14" y="103" fill="#818cf8" font-size="8" font-weight="700">T_Hero_Normal (Normal:✓)</text>
+              <circle cx="132" cy="100" r="3.5" fill="#818cf8"/>
+              <!-- Wire to Normal -->
+              <path d="M 135 100 C 220 100 230 82 308 82" fill="none" stroke="#818cf8" stroke-width="1.8"/>
+
+              <!-- UE5 Main Material Node -->
+              <rect x="310" y="6" width="142" height="104" rx="5" fill="#090d16" stroke="var(--ue-cyan)" stroke-width="1.5"/>
+              <rect x="310" y="6" width="142" height="15" rx="5 5 0 0" fill="rgba(0,229,255,0.2)"/>
+              <text x="381" y="17" fill="#fff" font-size="8" font-weight="800" text-anchor="middle">M_Hero_Character (Master)</text>
+
+              <!-- Pins -->
+              <circle cx="313" cy="22" r="3.5" fill="#38bdf8"/>
+              <text x="320" y="25" fill="#e2e8f0" font-size="7.5">Base Color</text>
+
+              <circle cx="313" cy="34" r="3.5" fill="#3b82f6"/>
+              <text x="320" y="37" fill="#e2e8f0" font-size="7.5">Metallic (金屬度)</text>
+
+              <circle cx="313" cy="46" r="3.5" fill="#64748b"/>
+              <text x="320" y="49" fill="#94a3b8" font-size="7.5">Specular (預設 0.5)</text>
+
+              <circle cx="313" cy="58" r="3.5" fill="#10b981"/>
+              <text x="320" y="61" fill="#e2e8f0" font-size="7.5">Roughness (粗糙度)</text>
+
+              <circle cx="313" cy="70" r="3.5" fill="#64748b"/>
+              <text x="320" y="73" fill="#94a3b8" font-size="7.5">Emissive Color</text>
+
+              <circle cx="313" cy="82" r="3.5" fill="#818cf8"/>
+              <text x="320" y="85" fill="#e2e8f0" font-size="7.5">Normal (切線法線)</text>
+
+              <circle cx="313" cy="94" r="3.5" fill="#ef4444"/>
+              <text x="320" y="97" fill="#e2e8f0" font-size="7.5">Ambient Occlusion</text>
+            </svg>
+          </div>
+
           <div class="callout-box danger">
             <div class="callout-title">🚨 UE5 必學關鍵設定：取消勾選 sRGB！</div>
             ORM 貼圖屬於「線性數學數據（Linear Data）」，並非視覺顏色。<strong>導入 UE5 後必須雙擊貼圖，取消勾選「sRGB」</strong>，否則粗糙度數值會被 Gamma 校正扭曲，導致材質金屬感全毀！
@@ -2272,6 +2802,46 @@
             </tbody>
           </table>
 
+          <!-- Concept Diagram for Slide 13 -->
+          <div style="background: rgba(0,0,0,0.35); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 10px; margin-top: 12px;">
+            <div style="font-size: 0.78rem; font-weight: 700; color: var(--warn-amber); margin-bottom: 6px; display: flex; align-items: center; gap: 5px;">
+              <span>📐 觀念圖解：Draw Calls (材質調用) vs 面數效能瓶頸剖析</span>
+            </div>
+            <svg viewBox="0 0 460 88" style="width: 100%; height: 88px;">
+              <!-- Bad Case Box -->
+              <g transform="translate(10, 6)">
+                <rect x="0" y="0" width="210" height="74" rx="5" fill="rgba(239,68,68,0.08)" stroke="#ef4444" stroke-width="1.2"/>
+                <text x="105" y="18" fill="#f87171" font-size="8.5" font-weight="800" text-anchor="middle">❌ 效能殺手：材質過度碎裂 (10+ 材質球)</text>
+                
+                <!-- CPU Draw Call blocks -->
+                <g transform="translate(15, 26)">
+                  <rect x="0" y="0" width="32" height="20" rx="3" fill="#ef4444"/>
+                  <text x="16" y="13" fill="#fff" font-size="7" font-weight="700" text-anchor="middle">Call 1</text>
+                  <rect x="36" y="0" width="32" height="20" rx="3" fill="#ef4444"/>
+                  <text x="52" y="13" fill="#fff" font-size="7" font-weight="700" text-anchor="middle">Call 2</text>
+                  <rect x="72" y="0" width="32" height="20" rx="3" fill="#ef4444"/>
+                  <text x="88" y="13" fill="#fff" font-size="7" font-weight="700" text-anchor="middle">Call 3...</text>
+                  <text x="140" y="14" fill="#fca5a5" font-size="8" font-weight="800">× 10 次</text>
+                </g>
+                <text x="105" y="64" fill="#fca5a5" font-size="7.5" text-anchor="middle">面數僅 2萬，但 CPU 切換狀態過載 ➔ 掉幀卡頓</text>
+              </g>
+
+              <!-- Good Case Box -->
+              <g transform="translate(240, 6)">
+                <rect x="0" y="0" width="210" height="74" rx="5" fill="rgba(16,185,129,0.08)" stroke="#10b981" stroke-width="1.2"/>
+                <text x="105" y="18" fill="#34d399" font-size="8.5" font-weight="800" text-anchor="middle">✅ 次世代正規做法：材質整合 (1~2 套 ORM)</text>
+                
+                <!-- Single Draw Call block -->
+                <g transform="translate(15, 26)">
+                  <rect x="0" y="0" width="105" height="20" rx="3" fill="#10b981"/>
+                  <text x="52" y="13" fill="#000" font-size="7.5" font-weight="800" text-anchor="middle">單一 Draw Call 批次發送</text>
+                  <text x="145" y="14" fill="#34d399" font-size="8" font-weight="800">× 1 次</text>
+                </g>
+                <text x="105" y="64" fill="#6ee7b7" font-size="7.5" text-anchor="middle">面數高達 10萬，GPU 瞬間並行繪製 ➔ 120 FPS</text>
+              </g>
+            </svg>
+          </div>
+
           <div class="callout-box" style="margin-top: 14px;">
             <div class="callout-title">💡 面數並非越低越好</div>
             在現代 GPU 運算架構中，<strong>Draw Calls（材質數量）與貼圖採樣次數</strong>對效能的影響遠遠大於單純幾萬個三角形面數！合理合併材質球才是優化關鍵。
@@ -2360,6 +2930,62 @@
               </div>
             </li>
           </ul>
+
+          <!-- Concept Diagram for Slide 14 -->
+          <div style="background: rgba(0,0,0,0.35); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 10px; margin-top: 12px;">
+            <div style="font-size: 0.78rem; font-weight: 700; color: var(--ue-cyan); margin-bottom: 6px; display: flex; align-items: center; gap: 5px;">
+              <span>📐 觀念圖解：ArtStation AAA 角色作品集「黃金四宮格展示板」標準版面</span>
+            </div>
+            <svg viewBox="0 0 460 98" style="width: 100%; height: 98px;">
+              <!-- Panel 1: Beauty Render -->
+              <g transform="translate(10, 6)">
+                <rect x="0" y="0" width="102" height="68" rx="4" fill="rgba(0, 229, 255, 0.1)" stroke="var(--ue-cyan)" stroke-width="1.2"/>
+                <circle cx="51" cy="30" r="14" fill="#0284c7" stroke="#38bdf8" stroke-width="1.5"/>
+                <ellipse cx="46" cy="24" rx="4" ry="2.5" fill="#fff" opacity="0.8"/>
+                <text x="51" y="56" fill="var(--ue-cyan)" font-size="7.5" font-weight="800" text-anchor="middle">1. UE5 寫實渲染</text>
+                <text x="51" y="64" fill="#94a3b8" font-size="6.5" text-anchor="middle">光影氛圍展示</text>
+              </g>
+
+              <!-- Panel 2: Wireframe -->
+              <g transform="translate(122, 6)">
+                <rect x="0" y="0" width="102" height="68" rx="4" fill="rgba(16, 185, 129, 0.1)" stroke="#10b981" stroke-width="1.2"/>
+                <!-- Wireframe grid mesh circle -->
+                <circle cx="51" cy="30" r="14" fill="none" stroke="#10b981" stroke-width="1"/>
+                <line x1="37" y1="30" x2="65" y2="30" stroke="#10b981" stroke-width="0.8"/>
+                <line x1="51" y1="16" x2="51" y2="44" stroke="#10b981" stroke-width="0.8"/>
+                <ellipse cx="51" cy="30" rx="9" ry="14" fill="none" stroke="#10b981" stroke-width="0.8"/>
+                <text x="51" y="56" fill="#34d399" font-size="7.5" font-weight="800" text-anchor="middle">2. 低模拓撲線框</text>
+                <text x="51" y="64" fill="#94a3b8" font-size="6.5" text-anchor="middle">四邊面布線證明</text>
+              </g>
+
+              <!-- Panel 3: Texture Maps -->
+              <g transform="translate(234, 6)">
+                <rect x="0" y="0" width="102" height="68" rx="4" fill="rgba(255, 119, 0, 0.1)" stroke="var(--zb-orange)" stroke-width="1.2"/>
+                <!-- 3 tiny texture slices -->
+                <rect x="25" y="18" width="15" height="22" fill="#ea580c" stroke="#fff" stroke-width="0.5"/>
+                <rect x="44" y="18" width="15" height="22" fill="#059669" stroke="#fff" stroke-width="0.5"/>
+                <rect x="63" y="18" width="15" height="22" fill="#4f46e5" stroke="#fff" stroke-width="0.5"/>
+                <text x="51" y="56" fill="var(--zb-orange)" font-size="7.5" font-weight="800" text-anchor="middle">3. PBR 貼圖拆解</text>
+                <text x="51" y="64" fill="#94a3b8" font-size="6.5" text-anchor="middle">Albedo / ORM / N</text>
+              </g>
+
+              <!-- Panel 4: Action Pose -->
+              <g transform="translate(346, 6)">
+                <rect x="0" y="0" width="102" height="68" rx="4" fill="rgba(168, 85, 247, 0.1)" stroke="#a855f7" stroke-width="1.2"/>
+                <!-- Dynamic pose stickman -->
+                <circle cx="58" cy="22" r="4.5" fill="#a855f7"/>
+                <line x1="58" y1="26" x2="52" y2="38" stroke="#fff" stroke-width="1.5"/>
+                <line x1="52" y1="38" x2="38" y2="44" stroke="#a855f7" stroke-width="1.5"/>
+                <line x1="52" y1="38" x2="64" y2="45" stroke="#a855f7" stroke-width="1.5"/>
+                <line x1="56" y1="30" x2="70" y2="24" stroke="#38bdf8" stroke-width="1.5"/>
+                <text x="51" y="56" fill="#c084fc" font-size="7.5" font-weight="800" text-anchor="middle">4. 角色張力姿態</text>
+                <text x="51" y="64" fill="#94a3b8" font-size="6.5" text-anchor="middle">骨架動作與表情</text>
+              </g>
+
+              <!-- Footer Bar -->
+              <text x="230" y="88" fill="#94a3b8" font-size="7.5" text-anchor="middle">💡 AAA 遊戲主美審查 30 秒定生死：具備完整四宮格，方能展現全流程專業資產交付能力！</text>
+            </svg>
+          </div>
         </div>
 
         <!-- Instructor Summary Box -->
